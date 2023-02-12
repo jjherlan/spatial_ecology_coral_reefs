@@ -4,3 +4,7 @@ author: "jjh"
 format: revealjs
 editor: visual
 ---
+
+## Scientific Question
+
+![](image1.png){.absolute top = 200 left = 0 width = "350" height = "300"}
