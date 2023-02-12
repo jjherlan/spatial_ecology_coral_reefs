@@ -14,3 +14,9 @@ require(knitr)
 ```{r dpi = 72}
 knitr::include_graphics("rpn_wave_fig_c.png")
 ```
+
+#### Wave Power
+
+```{r dpi = 72}
+knitr::include_graphics("rpn_wave_power_fig2.png")
+```
