@@ -49,6 +49,8 @@ website:
         text: Percent Cover
       - href: content/dispersion_presentation.qmd
         text: Pocilloporid Dispersion
+      - href: content/coral_size.qmd
+        text: Colony Size
 
 format:
   html:
