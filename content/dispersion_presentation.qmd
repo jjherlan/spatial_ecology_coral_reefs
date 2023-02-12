@@ -1,9 +1,7 @@
 ---
 title: "Pocilloporid Dispersion at Rapa Nui"
 author: "jjh"
-output:
-  revealjs::revealjs_presentation:
-    incremental: true
+format: revealjs
 editor: visual
 ---
 
@@ -13,7 +11,8 @@ require(knitr)
 
 ::: incremental
 
-- Different patterns of dispersion
+## Different patterns of dispersion {.smaller}
+
 - Environmental heterogeneity
 
 :::
@@ -27,4 +26,50 @@ knitr::include_graphics("rpn_wave_fig_c.png")
 ```{r dpi = 72}
 knitr::include_graphics("rpn_wave_power_fig2.png")
 ```
+
+----
+:::: {.columns}
+
+::: {.column width="60%"}
+Left column
+
+```{r dpi = 72}
+knitr::include_graphics("rpn_wave_fig_c.png")
+```
+
+:::
+
+::: {.column width="40%"}
+
+Right column
+
+```{r dpi = 72}
+knitr::include_graphics("rpn_wave_power_fig2.png")
+```
+
+:::
+
+::::
+
+----
+```{r dpi = 72}
+knitr::include_graphics("rpn_wave_fig_c.png")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

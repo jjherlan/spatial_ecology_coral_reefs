@@ -1,0 +1,350 @@
+site,site2,depth,species,a,b,c,p
+Anakena,Anakena,deep,POCI,18,15,9,1.6075
+Anakena,Anakena,deep,POCI,17,14,7,1.6075
+Anakena,Anakena,deep,POCI,19,17,15,1.6075
+Anakena,Anakena,deep,POCI,14,10,7,1.6075
+Anakena,Anakena,deep,POCI,16,15,8,1.6075
+Anakena,Anakena,deep,POCI,13,10,11,1.6075
+Anakena,Anakena,deep,POCI,15,14,7,1.6075
+Anakena,Anakena,deep,POCI,18,15,11,1.6075
+Anakena,Anakena,deep,POCI,10,10,10,1.6075
+Anakena,Anakena,mid,POCI,19,15,14,1.6075
+Anakena,Anakena,mid,POCI,16,17,14,1.6075
+Anakena,Anakena,mid,POCI,15,15,15,1.6075
+Anakena,Anakena,mid,POCI,14,10,6,1.6075
+Anakena,Anakena,mid,POCI,5,5,2,1.6075
+Anakena,Anakena,mid,POCI,16,10,8,1.6075
+Anakena,Anakena,mid,POCI,17,15,10,1.6075
+Anakena,Anakena,mid,POCI,13,8,7,1.6075
+Anakena,Anakena,mid,POCI,15,14,10,1.6075
+Anakena,Anakena,mid,POCI,18,14,9,1.6075
+Anakena,Anakena,mid,POCI,15,15,10,1.6075
+Anakena,Anakena,shallow,POCI,10,5,6,1.6075
+Anakena,Anakena,shallow,POCI,18,10,8,1.6075
+Anakena,Anakena,shallow,POCI,22,20,16,1.6075
+Anakena,Anakena,shallow,POCI,6,5,5,1.6075
+Anakena,Anakena,shallow,POCI,19,11,15,1.6075
+Anakena,Anakena,shallow,POCI,17,15,15,1.6075
+Anakena,Anakena,shallow,POCI,14,10,6,1.6075
+Anakena,Anakena,shallow,POCI,17,14,14,1.6075
+Anakena,Anakena,shallow,POCI,19,15,12,1.6075
+Anakena,Anakena,shallow,POCI,16,10,10,1.6075
+Anakena,Anakena,shallow,POCI,15,15,10,1.6075
+Manavai,Manavai,deep,POCI,14,10,6,1.6075
+Manavai,Manavai,deep,POCI,17,8,6,1.6075
+Manavai,Manavai,deep,POCI,19,14,11,1.6075
+Manavai,Manavai,deep,POCI,16,15,8,1.6075
+Manavai,Manavai,deep,POCI,19,18,11,1.6075
+Manavai,Manavai,deep,POCI,12,9,9,1.6075
+Manavai,Manavai,deep,POCI,11,6,7,1.6075
+Manavai,Manavai,deep,POCI,17,15,8,1.6075
+Manavai,Manavai,deep,POCI,19,18,10,1.6075
+Manavai,Manavai,deep,POCI,18,17,15,1.6075
+Manavai,Manavai,deep,POCI,16,14,7,1.6075
+Manavai,Manavai,deep,POCI,6,6,5,1.6075
+Manavai,Manavai,deep,POCI,14,11,6,1.6075
+Manavai,Manavai,deep,POCI,18,15,12,1.6075
+Manavai,Manavai,deep,POCI,21,17,10,1.6075
+Manavai,Manavai,deep,POCI,17,16,13,1.6075
+Manavai,Manavai,deep,POCI,14,10,9,1.6075
+Manavai,Manavai,deep,POCI,17,14,6,1.6075
+Manavai,Manavai,deep,POCI,21,17,12,1.6075
+Manavai,Manavai,deep,POCI,10,10,5,1.6075
+Manavai,Manavai,deep,POCI,15,10,10,1.6075
+Manavai,Manavai,deep,POCI,19,12,6,1.6075
+Manavai,Manavai,deep,POCI,13,12,12,1.6075
+Manavai,Manavai,deep,POCI,12,15,9,1.6075
+Manavai,Manavai,deep,POCI,11,15,10,1.6075
+Manavai,Manavai,deep,POCI,10,5,8,1.6075
+Manavai,Manavai,deep,POCI,5,5,5,1.6075
+Manavai,Manavai,deep,POCI,3,3,3,1.6075
+Manavai,Manavai,deep,POCI,8,7,5,1.6075
+Manavai,Manavai,deep,POCI,10,12,8,1.6075
+Manavai,Manavai,deep,POCI,10,10,5,1.6075
+Manavai,Manavai,deep,POCI,12,17,10,1.6075
+Manavai,Manavai,deep,POCI,17,15,9,1.6075
+Manavai,Manavai,deep,POCI,20,10,19,1.6075
+Manavai,Manavai,deep,POCI,20,12,10,1.6075
+Manavai,Manavai,deep,POCI,7,2,3,1.6075
+Manavai,Manavai,deep,POCI,15,19,12,1.6075
+Manavai,Manavai,mid,POCI,5,5,5,1.6075
+Manavai,Manavai,mid,POCI,10,10,7,1.6075
+Manavai,Manavai,mid,POCI,15,5,7,1.6075
+Manavai,Manavai,mid,POCI,21,16,12,1.6075
+Manavai,Manavai,mid,POCI,12,20,10,1.6075
+Manavai,Manavai,mid,POCI,3,3,3,1.6075
+Manavai,Manavai,mid,POCI,10,12,5,1.6075
+Manavai,Manavai,mid,POCI,12,10,5,1.6075
+Manavai,Manavai,mid,POCI,12,12,10,1.6075
+Manavai,Manavai,shallow,POCI,18,18,18,1.6075
+Manavai,Manavai,shallow,POCI,15,15,10,1.6075
+Manavai,Manavai,shallow,POCI,15,12,10,1.6075
+Manavai,Manavai,shallow,POCI,10,10,10,1.6075
+Manavai,Manavai,shallow,POCI,20,20,10,1.6075
+Manavai,Manavai,shallow,POCI,27,10,10,1.6075
+Manavai,Manavai,shallow,POCI,19,19,10,1.6075
+Manavai,Manavai,shallow,POCI,10,10,5,1.6075
+Motu Nui,southeast,shallow,POCI,15,15,10,1.6075
+Motu Nui,southeast,shallow,POCI,16,12,8,1.6075
+Motu Nui,southeast,shallow,POCI,12,10,7,1.6075
+Motu Nui,southeast,shallow,POCI,16,15,6,1.6075
+Motu Nui,southeast,shallow,POCI,25,16,14,1.6075
+Motu Nui,southeast,shallow,POCI,22,16,15,1.6075
+Motu Nui,southeast,shallow,POCI,16,15,10,1.6075
+Motu Nui,southeast,shallow,POCI,18,12,6,1.6075
+Motu Nui,southeast,shallow,POCI,17,16,6,1.6075
+Motu Nui,southeast,shallow,POCI,17,12,8,1.6075
+Motu Nui,southeast,shallow,POCI,16,15,6,1.6075
+Motu Nui,southeast,shallow,POCI,20,14,12,1.6075
+Motu Nui,southeast,shallow,POCI,20,17,11,1.6075
+Motu Nui,southeast,shallow,POCI,27,16,14,1.6075
+Motu Nui,southeast,shallow,POCI,21,19,10,1.6075
+Motu Nui,southeast,shallow,POCI,20,17,6,1.6075
+Motu Nui,southeast,shallow,POCI,16,9,7,1.6075
+Motu Nui,southeast,shallow,POCI,17,16,10,1.6075
+Motu Nui,southeast,shallow,POCI,25,19,7,1.6075
+Motu Nui,southeast,shallow,POCI,26,10,12,1.6075
+Motu Nui,southeast,shallow,POCI,19,12,10,1.6075
+Motu Nui,southeast,shallow,POCI,25,21,14,1.6075
+Motu Nui,southeast,shallow,POCI,20,19,15,1.6075
+Motu Nui,southeast,shallow,POCI,12,10,6,1.6075
+Motu Nui,southeast,shallow,POCI,25,20,12,1.6075
+Motu Nui,southeast,shallow,POCI,25,15,15,1.6075
+Motu Nui,southeast,shallow,POCI,27,12,12,1.6075
+Motu Nui,southeast,shallow,POCI,14,12,6,1.6075
+Motu Nui,southeast,shallow,POCI,17,15,14,1.6075
+Motu Nui,southeast,shallow,POCI,9,7,4,1.6075
+Motu Nui,southeast,shallow,POCI,27,20,12,1.6075
+Motu Nui,southeast,shallow,POCI,22,16,11,1.6075
+Motu Nui,southeast,shallow,POCI,15,15,5,1.6075
+Motu Nui,southeast,shallow,POCI,15,15,10,1.6075
+Motu Nui,southeast,shallow,POCI,3,3,1,1.6075
+Motu Nui,southeast,shallow,POCI,5,5,1,1.6075
+Motu Nui,southeast,shallow,POCI,10,5,5,1.6075
+Motu Nui,southeast,shallow,POCI,15,10,5,1.6075
+Motu Nui,southeast,shallow,POCI,1,1,1,1.6075
+Motu Nui,southeast,shallow,POCI,10,10,5,1.6075
+Motu Nui,southeast,shallow,POCI,20,10,10,1.6075
+Motu Nui,southeast,shallow,POCI,20,20,10,1.6075
+Motu Nui,southeast,shallow,POCI,20,20,10,1.6075
+Motu Nui,southeast,shallow,POCI,15,15,15,1.6075
+Motu Nui,southeast,shallow,POCI,5,5,5,1.6075
+Motu Nui,southeast,shallow,POCI,10,10,5,1.6075
+Motu Nui,southeast,shallow,POCI,15,15,15,1.6075
+Motu Nui,southeast,shallow,POCI,20,20,10,1.6075
+Motu Nui,southeast,shallow,POCI,15,15,10,1.6075
+Motu Nui,southeast,shallow,POCI,20,20,10,1.6075
+Motu Nui,southeast,shallow,POCI,5,5,5,1.6075
+Motu Nui,southeast,shallow,POCI,15,15,10,1.6075
+Motu Nui,southeast,shallow,POCI,15,10,15,1.6075
+Motu Nui,southeast,shallow,POCI,20,20,10,1.6075
+Motu Nui,southeast,shallow,POCI,10,10,5,1.6075
+Motu Nui,southeast,shallow,POCI,10,5,5,1.6075
+Motu Nui,southeast,shallow,POCI,10,10,5,1.6075
+Motu Nui,southeast,shallow,POCI,15,15,15,1.6075
+Motu Nui,southeast,shallow,POCI,15,10,10,1.6075
+Motu Nui,southeast,shallow,POCI,5,5,5,1.6075
+Motu Nui,southeast,shallow,POCI,10,5,5,1.6075
+Motu Nui,southeast,shallow,POCI,2,2,2,1.6075
+Motu Nui,southeast,shallow,POCI,2,2,2,1.6075
+Motu Nui,southeast,shallow,POCI,2,2,2,1.6075
+Motu Nui,southeast,shallow,POCI,5,5,2,1.6075
+Motu Nui,southeast,shallow,POCI,17,15,10,1.6075
+Motu Nui,southeast,shallow,POCI,10,10,5,1.6075
+Motu Nui,southeast,shallow,POCI,10,10,5,1.6075
+Motu Nui,southeast,shallow,POCI,20,10,10,1.6075
+Motu Nui,southeast,shallow,POCI,15,10,10,1.6075
+Motu Nui,southeast,shallow,POCI,20,20,10,1.6075
+Motu Nui,southeast,shallow,POCI,20,10,15,1.6075
+Motu Nui,southeast,shallow,POCI,15,10,5,1.6075
+Motu Nui,southeast,shallow,POCI,3,3,1,1.6075
+Motu Nui,southeast,shallow,POCI,3,3,1,1.6075
+Motu Tautara,Motu_Tautara,deep,POCI,15,14,7,1.6075
+Motu Tautara,Motu_Tautara,deep,POCI,14,9,9,1.6075
+Motu Tautara,Motu_Tautara,deep,POCI,7,6,4,1.6075
+Motu Tautara,Motu_Tautara,deep,POCI,6,3,3,1.6075
+Motu Tautara,Motu_Tautara,deep,POCI,17,12,9,1.6075
+Motu Tautara,Motu_Tautara,deep,POCI,12,10,8,1.6075
+Motu Tautara,Motu_Tautara,deep,POCI,27,15,13,1.6075
+Motu Tautara,Motu_Tautara,deep,POCI,17,16,8,1.6075
+Motu Tautara,Motu_Tautara,deep,POCI,16,14,8,1.6075
+Motu Tautara,Motu_Tautara,deep,POCI,17,15,8,1.6075
+Motu Tautara,Motu_Tautara,deep,POCI,18,16,16,1.6075
+Motu Tautara,Motu_Tautara,deep,POCI,16,12,8,1.6075
+Motu Tautara,Motu_Tautara,deep,POCI,24,17,15,1.6075
+Motu Tautara,Motu_Tautara,deep,POCI,10,10,5,1.6075
+Motu Tautara,Motu_Tautara,deep,POCI,15,10,10,1.6075
+Motu Tautara,Motu_Tautara,deep,POCI,20,20,20,1.6075
+Motu Tautara,Motu_Tautara,deep,POCI,10,10,10,1.6075
+Motu Tautara,Motu_Tautara,deep,POCI,20,15,10,1.6075
+Motu Tautara,Motu_Tautara,deep,POCI,10,10,5,1.6075
+Motu Tautara,Motu_Tautara,deep,POCI,10,10,10,1.6075
+Motu Tautara,Motu_Tautara,deep,POCI,15,15,10,1.6075
+Motu Tautara,Motu_Tautara,deep,POCI,10,10,10,1.6075
+Motu Tautara,Motu_Tautara,mid,POCI,17,15,12,1.6075
+Motu Tautara,Motu_Tautara,mid,POCI,27,17,12,1.6075
+Motu Tautara,Motu_Tautara,mid,POCI,19,17,12,1.6075
+Motu Tautara,Motu_Tautara,mid,POCI,17,10,7,1.6075
+Motu Tautara,Motu_Tautara,mid,POCI,17,14,8,1.6075
+Motu Tautara,Motu_Tautara,mid,POCI,17,15,12,1.6075
+Motu Tautara,Motu_Tautara,mid,POCI,17,12,6,1.6075
+Motu Tautara,Motu_Tautara,mid,POCI,35,28,11,1.6075
+Motu Tautara,Motu_Tautara,mid,POCI,25,17,9,1.6075
+Motu Tautara,Motu_Tautara,mid,POCI,25,25,17,1.6075
+Motu Tautara,Motu_Tautara,mid,POCI,27,25,16,1.6075
+Motu Tautara,Motu_Tautara,mid,POCI,20,17,12,1.6075
+Motu Tautara,Motu_Tautara,mid,POCI,27,24,17,1.6075
+Motu Tautara,Motu_Tautara,mid,POCI,27,20,14,1.6075
+Motu Tautara,Motu_Tautara,mid,POCI,22,15,12,1.6075
+Motu Tautara,Motu_Tautara,mid,POCI,15,12,7,1.6075
+Motu Tautara,Motu_Tautara,mid,POCI,15,15,12,1.6075
+Motu Tautara,Motu_Tautara,mid,POCI,20,15,9,1.6075
+Motu Tautara,Motu_Tautara,mid,POCI,16,11,6,1.6075
+Motu Tautara,Motu_Tautara,mid,POCI,27,10,11,1.6075
+Motu Tautara,Motu_Tautara,mid,POCI,20,10,10,1.6075
+Motu Tautara,Motu_Tautara,mid,POCI,15,10,10,1.6075
+Motu Tautara,Motu_Tautara,mid,POCI,15,15,15,1.6075
+Motu Tautara,Motu_Tautara,mid,POCI,25,15,10,1.6075
+Motu Tautara,Motu_Tautara,mid,POCI,20,20,5,1.6075
+Motu Tautara,Motu_Tautara,mid,POCI,15,15,15,1.6075
+Motu Tautara,Motu_Tautara,mid,POCI,10,10,10,1.6075
+Motu Tautara,Motu_Tautara,mid,POCI,10,5,5,1.6075
+Motu Tautara,Motu_Tautara,mid,POCI,10,10,5,1.6075
+Motu Tautara,Motu_Tautara,mid,POCI,5,3,1,1.6075
+Motu Tautara,Motu_Tautara,mid,POCI,12,10,5,1.6075
+Motu Tautara,Motu_Tautara,mid,POCI,15,15,10,1.6075
+Motu Tautara,Motu_Tautara,mid,POCI,20,10,10,1.6075
+Motu Tautara,Motu_Tautara,shallow,POCI,15,7,7,1.6075
+Motu Tautara,Motu_Tautara,shallow,POCI,26,21,18,1.6075
+Motu Tautara,Motu_Tautara,shallow,POCI,17,16,12,1.6075
+Motu Tautara,Motu_Tautara,shallow,POCI,17,11,11,1.6075
+Motu Tautara,Motu_Tautara,shallow,POCI,20,24,12,1.6075
+Motu Tautara,Motu_Tautara,shallow,POCI,19,16,10,1.6075
+Motu Tautara,Motu_Tautara,shallow,POCI,33,22,11,1.6075
+Motu Tautara,Motu_Tautara,shallow,POCI,15,14,8,1.6075
+Motu Tautara,Motu_Tautara,shallow,POCI,27,19,9,1.6075
+Motu Tautara,Motu_Tautara,shallow,POCI,22,17,8,1.6075
+Motu Tautara,Motu_Tautara,shallow,POCI,28,26,9,1.6075
+Motu Tautara,Motu_Tautara,shallow,POCI,28,16,14,1.6075
+Motu Tautara,Motu_Tautara,shallow,POCI,36,27,15,1.6075
+Motu Tautara,Motu_Tautara,shallow,POCI,21,15,16,1.6075
+Motu Tautara,Motu_Tautara,shallow,POCI,33,22,14,1.6075
+Motu Tautara,Motu_Tautara,shallow,POCI,27,24,16,1.6075
+Motu Tautara,Motu_Tautara,shallow,POCI,32,22,17,1.6075
+Motu Tautara,Motu_Tautara,shallow,POCI,26,20,15,1.6075
+Motu Tautara,Motu_Tautara,shallow,POCI,27,20,6,1.6075
+Motu Tautara,Motu_Tautara,shallow,POCI,19,16,7,1.6075
+Motu Tautara,Motu_Tautara,shallow,POCI,21,17,14,1.6075
+Motu Tautara,Motu_Tautara,shallow,POCI,26,25,15,1.6075
+Motu Tautara,Motu_Tautara,shallow,POCI,21,16,15,1.6075
+Motu Tautara,Motu_Tautara,shallow,POCI,16,15,14,1.6075
+Motu Tautara,Motu_Tautara,shallow,POCI,21,20,9,1.6075
+Motu Tautara,Motu_Tautara,shallow,POCI,7,24,14,1.6075
+Motu Tautara,Motu_Tautara,shallow,POCI,25,20,10,1.6075
+Motu Tautara,Motu_Tautara,shallow,POCI,30,20,10,1.6075
+Motu Tautara,Motu_Tautara,shallow,POCI,30,30,10,1.6075
+Motu Tautara,Motu_Tautara,shallow,POCI,25,25,10,1.6075
+Motu Tautara,Motu_Tautara,shallow,POCI,22,20,25,1.6075
+Motu Tautara,Motu_Tautara,shallow,POCI,30,30,30,1.6075
+Motu Tautara,Motu_Tautara,shallow,POCI,20,25,20,1.6075
+Motu Tautara,Motu_Tautara,shallow,POCI,25,30,5,1.6075
+Motu Tautara,Motu_Tautara,shallow,POCI,25,20,10,1.6075
+Motu Tautara,Motu_Tautara,shallow,POCI,20,20,20,1.6075
+Motu Tautara,Motu_Tautara,shallow,POCI,25,20,10,1.6075
+Motu Tautara,Motu_Tautara,shallow,POCI,30,20,10,1.6075
+Motu Tautara,Motu_Tautara,shallow,POCI,10,10,10,1.6075
+Motu Tautara,Motu_Tautara,shallow,POCI,10,10,10,1.6075
+Motu Tautara,Motu_Tautara,shallow,POCI,25,25,10,1.6075
+Motu Tautara,Motu_Tautara,shallow,POCI,20,20,20,1.6075
+Motu Tautara,Motu_Tautara,shallow,POCI,25,20,10,1.6075
+Motu Tautara,Motu_Tautara,shallow,POCI,25,20,10,1.6075
+Motu Tautara,Motu_Tautara,shallow,POCI,12,10,5,1.6075
+Motu Tautara,Motu_Tautara,shallow,POCI,5,5,5,1.6075
+Motu Tautara,Motu_Tautara,shallow,POCI,10,5,5,1.6075
+Motu Tautara,Motu_Tautara,shallow,POCI,22,25,10,1.6075
+Motu Tautara,Motu_Tautara,shallow,POCI,15,15,15,1.6075
+Motu Tautara,Motu_Tautara,shallow,POCI,10,10,10,1.6075
+Motu Tautara,Motu_Tautara,shallow,POCI,20,20,20,1.6075
+Motu Tautara,Motu_Tautara,shallow,POCI,20,20,10,1.6075
+Vaihu,southeast,deep,POCI,16,15,14,1.6075
+Vaihu,southeast,deep,POCI,19,17,11,1.6075
+Vaihu,southeast,deep,POCI,26,20,10,1.6075
+Vaihu,southeast,deep,POCI,19,17,16,1.6075
+Vaihu,southeast,deep,POCI,17,17,15,1.6075
+Vaihu,southeast,deep,POCI,5,5,5,1.6075
+Vaihu,southeast,deep,POCI,15,10,7,1.6075
+Vaihu,southeast,deep,POCI,25,17,8,1.6075
+Vaihu,southeast,deep,POCI,14,10,7,1.6075
+Vaihu,southeast,deep,POCI,19,16,11,1.6075
+Vaihu,southeast,deep,POCI,17,14,9,1.6075
+Vaihu,southeast,deep,POCI,17,16,11,1.6075
+Vaihu,southeast,deep,POCI,16,14,9,1.6075
+Vaihu,southeast,deep,POCI,15,8,8,1.6075
+Vaihu,southeast,deep,POCI,34,27,12,1.6075
+Vaihu,southeast,deep,POCI,17,15,9,1.6075
+Vaihu,southeast,deep,POCI,17,16,9,1.6075
+Vaihu,southeast,deep,POCI,17,14,6,1.6075
+Vaihu,southeast,deep,POCI,28,17,11,1.6075
+Vaihu,southeast,deep,POCI,18,16,9,1.6075
+Vaihu,southeast,deep,POCI,22,15,16,1.6075
+Vaihu,southeast,deep,POCI,17,14,14,1.6075
+Vaihu,southeast,deep,POCI,18,17,15,1.6075
+Vaihu,southeast,deep,POCI,10,10,5,1.6075
+Vaihu,southeast,deep,POCI,15,15,10,1.6075
+Vaihu,southeast,deep,POCI,25,25,10,1.6075
+Vaihu,southeast,deep,POCI,25,15,10,1.6075
+Vaihu,southeast,deep,POCI,10,10,10,1.6075
+Vaihu,southeast,deep,POCI,30,25,10,1.6075
+Vaihu,southeast,deep,POCI,20,15,15,1.6075
+Vaihu,southeast,deep,POCI,15,15,10,1.6075
+Vaihu,southeast,deep,POCI,15,15,10,1.6075
+Vaihu,southeast,deep,POCI,10,10,5,1.6075
+Vaihu,southeast,deep,POCI,10,10,5,1.6075
+Vaihu,southeast,deep,POCI,5,5,5,1.6075
+Vaihu,southeast,deep,POCI,3,3,3,1.6075
+Vaihu,southeast,deep,POCI,10,10,10,1.6075
+Vaihu,southeast,deep,POCI,10,50,10,1.6075
+Vaihu,southeast,deep,POCI,20,20,10,1.6075
+Vaihu,southeast,deep,POCI,20,20,10,1.6075
+Vaihu,southeast,deep,POCI,10,10,10,1.6075
+Vaihu,southeast,deep,POCI,10,10,10,1.6075
+Vaihu,southeast,deep,POCI,3,3,1,1.6075
+Vaihu,southeast,deep,POCI,20,10,5,1.6075
+Vaihu,southeast,deep,POCI,10,10,10,1.6075
+Vaihu,southeast,mid,POCI,10,10,5,1.6075
+Vaihu,southeast,mid,POCI,5,5,5,1.6075
+Vaihu,southeast,mid,POCI,39,19,14,1.6075
+Vaihu,southeast,mid,POCI,20,22,7,1.6075
+Vaihu,southeast,mid,POCI,19,17,10,1.6075
+Vaihu,southeast,mid,POCI,24,22,12,1.6075
+Vaihu,southeast,mid,POCI,19,17,10,1.6075
+Vaihu,southeast,mid,POCI,22,19,9,1.6075
+Vaihu,southeast,mid,POCI,19,19,17,1.6075
+Vaihu,southeast,mid,POCI,17,17,10,1.6075
+Vaihu,southeast,mid,POCI,10,5,7,1.6075
+Vaihu,southeast,mid,POCI,20,12,10,1.6075
+Vaihu,southeast,mid,POCI,10,10,5,1.6075
+Vaihu,southeast,mid,POCI,12,11,1,1.6075
+Vaihu,southeast,mid,POCI,21,12,7,1.6075
+Vaihu,southeast,mid,POCI,17,17,5,1.6075
+Vaihu,southeast,mid,POCI,29,20,10,1.6075
+Vaihu,southeast,mid,POCI,25,20,10,1.6075
+Vaihu,southeast,mid,POCI,12,15,5,1.6075
+Vaihu,southeast,mid,POCI,12,15,5,1.6075
+Vaihu,southeast,mid,POCI,30,30,10,1.6075
+Vaihu,southeast,mid,POCI,29,25,20,1.6075
+Vaihu,southeast,mid,POCI,19,19,12,1.6075
+Vaihu,southeast,mid,POCI,35,20,20,1.6075
+Vaihu,southeast,mid,POCI,10,10,10,1.6075
+Vaihu,southeast,mid,POCI,22,19,12,1.6075
+Vaihu,southeast,mid,POCI,5,5,5,1.6075
+Vaihu,southeast,mid,POCI,29,12,20,1.6075
+Vaihu,southeast,mid,POCI,12,11,10,1.6075
+Vaihu,southeast,mid,POCI,12,10,10,1.6075
+Vaihu,southeast,mid,POCI,20,20,30,1.6075
+Vaihu,southeast,mid,POCI,20,12,10,1.6075
+Vaihu,southeast,mid,POCI,12,12,10,1.6075
+Vaihu,southeast,mid,POCI,19,19,12,1.6075
+Vaihu,southeast,mid,POCI,20,10,10,1.6075
+Vaihu,southeast,mid,POCI,25,19,9,1.6075
+Vaihu,southeast,mid,POCI,35,19,15,1.6075
