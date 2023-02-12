@@ -5,6 +5,12 @@ format: revealjs
 editor: visual
 ---
 
-## Scientific Question
+```{r}
+require(knitr)
+```
 
-![](image1.png){.absolute top = 200 left = 0 width = "350" height = "300"}
+#### Study Site
+
+```{r dpi = 72}
+knitr::include_graphics("rpn_wave_fig_c.png")
+```
