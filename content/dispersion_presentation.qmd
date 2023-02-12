@@ -1,22 +1,30 @@
 ---
 title: "Pocilloporid Dispersion at Rapa Nui"
 author: "jjh"
-format: revealjs
+output:
+  revealjs::revealjs_presentation:
+    incremental: true
 editor: visual
 ---
 
-```{r}
+```{r, include = FALSE}
 require(knitr)
 ```
 
-#### Study Site
+::: incremental
 
+- Different patterns of dispersion
+- Environmental heterogeneity
+
+:::
+
+----
 ```{r dpi = 72}
 knitr::include_graphics("rpn_wave_fig_c.png")
 ```
 
-#### Wave Power
-
+----
 ```{r dpi = 72}
 knitr::include_graphics("rpn_wave_power_fig2.png")
 ```
+
