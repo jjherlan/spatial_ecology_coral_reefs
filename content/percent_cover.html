@@ -128,6 +128,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   }
 }</script>
 
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 </head>
 
@@ -220,7 +221,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </nav>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#methods-for-analyzing-percent-cover-of-pocilloporid-coral" id="toc-methods-for-analyzing-percent-cover-of-pocilloporid-coral" class="nav-link active" data-scroll-target="#methods-for-analyzing-percent-cover-of-pocilloporid-coral">Methods for analyzing percent cover of pocilloporid coral</a></li>
+  <li><a href="#interpreting-results-for-pocilloporid-corals" id="toc-interpreting-results-for-pocilloporid-corals" class="nav-link" data-scroll-target="#interpreting-results-for-pocilloporid-corals">Interpreting results for pocilloporid corals</a>
+  <ul class="collapse">
+  <li><a href="#classical-analysis" id="toc-classical-analysis" class="nav-link" data-scroll-target="#classical-analysis">Classical Analysis</a></li>
+  <li><a href="#beta-regression-with-no-variable-precision-phi" id="toc-beta-regression-with-no-variable-precision-phi" class="nav-link" data-scroll-target="#beta-regression-with-no-variable-precision-phi">Beta regression with no variable precision <span class="math inline">\(\phi\)</span></a></li>
+  <li><a href="#variable-precision-phi" id="toc-variable-precision-phi" class="nav-link" data-scroll-target="#variable-precision-phi">Variable precision <span class="math inline">\(\phi\)</span></a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/nmfs-opensci/NOAA-quarto-simple/edit/main/content/percent_cover.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/nmfs-opensci/NOAA-quarto-simple/blob/main/content/percent_cover.qmd" class="toc-action">View source</a></p><p><a href="https://github.com/nmfs-opensci/NOAA-quarto-simple/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -254,232 +267,912 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
+<p>Wrote a function to create a table from <code>betreg</code> object that can be used in <code>xtable()</code></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>poci_size <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">'coral_size.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>Fcn.CreateSummary.betareg<span class="ot">&lt;-</span><span class="cf">function</span>(object.betareg){</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  OUT<span class="ot">&lt;-</span><span class="fu">summary</span>(object.betareg)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a> tab<span class="ot">&lt;-</span><span class="fu">rbind</span>(OUT<span class="sc">$</span>coefficients<span class="sc">$</span>mean,OUT<span class="sc">$</span>coefficients<span class="sc">$</span>precision)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">return</span>(tab)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>   }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<div class="fold s">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>poci_size.gg <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"poci_size_main.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Rows: 3639 Columns: 10
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: ","
-chr (3): level, Site, cover
-dbl (7): layer, class, id, area, enn, para, size_cm
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(poci_size.gg, <span class="fu">aes</span>(<span class="at">x =</span> size_cm)) <span class="sc">+</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">fill =</span> <span class="st">"#333399"</span>) <span class="sc">+</span> </span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">#below here is ylabel, xlabel, and main title</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Frequency"</span>) <span class="sc">+</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="cn">NULL</span>) <span class="sc">+</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="fu">expression</span>(<span class="st">"Coral size "</span> (cm<span class="sc">**</span><span class="dv">2</span>))) <span class="sc">+</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> Site, <span class="at">ncol =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">#theme sets sizes, text, etc</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>), </span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>), </span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y  =</span> <span class="fu">element_text</span>(<span class="at">size=</span> <span class="dv">10</span>),</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.x  =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>), </span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>),</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>),</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">size =</span> <span class="dv">14</span>),</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>        <span class="co"># change plot background, grid lines, etc (just examples so you can see)</span></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"white"</span>),</span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.minor.y =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.major =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"white"</span>),</span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"white"</span>),</span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>        <span class="at">strip.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>, <span class="at">colour =</span> <span class="st">"#FFFFFF"</span>),</span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>        <span class="at">strip.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">'#000066'</span>)</span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(pland_decimal <span class="sc">~</span> Site, <span class="at">data =</span> p_cover)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="percent_cover_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>poci_size2 <span class="ot">&lt;-</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>poci_size <span class="sc">%&gt;%</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">size_cm =</span> area<span class="sc">*</span><span class="dv">10000</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Site) <span class="sc">%&gt;%</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">mean =</span> <span class="fu">mean</span>(size_cm), </span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>                   <span class="at">sd =</span> <span class="fu">sd</span>(size_cm), </span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>                   <span class="at">n =</span> <span class="fu">n</span>(),</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>                   <span class="at">se =</span> sd<span class="sc">/</span><span class="fu">sqrt</span>(n)</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">se =</span> sd <span class="sc">/</span> <span class="fu">sqrt</span>(n),</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>         <span class="at">lower.ci =</span> mean <span class="sc">-</span> <span class="fu">qt</span>(<span class="dv">1</span> <span class="sc">-</span> (<span class="fl">0.05</span> <span class="sc">/</span> <span class="dv">2</span>), n <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> se,</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>         <span class="at">upper.ci =</span> mean <span class="sc">+</span> <span class="fu">qt</span>(<span class="dv">1</span> <span class="sc">-</span> (<span class="fl">0.05</span> <span class="sc">/</span> <span class="dv">2</span>), n <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> se) <span class="sc">%&gt;%</span></span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate_at</span>(<span class="fu">vars</span>(Site), factor) <span class="sc">%&gt;%</span></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(</span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>          <span class="at">location =</span> <span class="fu">c</span>(<span class="st">'Anakena'</span>, <span class="st">'Manavai'</span>, <span class="st">'Southeast'</span>)</span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>          ) <span class="sc">%&gt;%</span></span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate_at</span>(<span class="fu">vars</span>(location), factor)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<section id="methods-for-analyzing-percent-cover-of-pocilloporid-coral" class="level2">
+<h2 class="anchored" data-anchor-id="methods-for-analyzing-percent-cover-of-pocilloporid-coral">Methods for analyzing percent cover of pocilloporid coral</h2>
+<p>One option for dealing with the 0 and 1 values is to transform them to be slightly less than one or more than zero. This approach assumes that the data are consistent with a common beta distribution. We fit five models to the data: three variations on the beta model and two linear model approaches.</p>
+<p>A beta regression assuming a common spatial aggregation <span class="math inline">\(\delta\)</span> or precision parameter (<span class="math inline">\(\phi\)</span>) (object named: mod.beta1). Notice that <span class="math inline">\(\delta= \frac{1}{1+\phi}\)</span> and <span class="math inline">\(\phi=\frac{(1-\delta)}{\delta}\)</span>. A beta regression assuming each year had a different <span class="math inline">\(\phi\)</span> parameter (object named: mod.beta2).</p>
+<p>Another option for modeling the data is to use a zero-one augmented beta model. Currently, the betareg package does not implement this model directly. Therefore, we follow the theoretical results shown in Ospina and Ferrari (2010) that suggest a three-part model can be fit to the data. Basically, we use logistic regression with response an indicator variable for whether or not the plot had zero recorded cover, another logistic regression with response an indicator for whether or not the plot had 100<span class="math inline">\(\%\)</span> recorded percent cover, and then the beta regression is used to model the continuous percent cover observations ranging from greater than 0 and less than 1.</p>
+<p>Other options based on assuming that the residuals are normally distributed is to use a linear model with a logit-transformed response (object named: mod.lmlogit) or a linear model with response untransformed proportions (object named: mod.lmraw).</p>
+<p>For comparison this applies a logit-transformation to the empirical proportions and then uses a standard linear regression model.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>poci_size.gg <span class="ot">&lt;-</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  poci_size <span class="sc">%&gt;%</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">size_cm =</span> area<span class="sc">*</span><span class="dv">10000</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate_at</span>(<span class="fu">vars</span>(Site), factor)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>model_1.lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(size_cm <span class="sc">~</span> Site, <span class="at">data =</span> poci_size.gg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>model_1.lm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>p_cover_mod.aov1 <span class="ot">&lt;-</span> <span class="fu">aov</span>(pland_decimal <span class="sc">~</span> Site, <span class="at">data =</span> p_cover)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(p_cover_mod.aov1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = size_cm ~ Site, data = poci_size.gg)
-
-Coefficients:
-(Intercept)      Siteman      Sitevhu  
-     110.67        40.18       120.81  </code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_1.lm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = size_cm ~ Site, data = poci_size.gg)
-
-Residuals:
-    Min      1Q  Median      3Q     Max 
--231.46  -91.09  -16.44   70.33 1160.47 
-
-Coefficients:
-            Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)   110.67      11.18   9.896  &lt; 2e-16 ***
-Siteman        40.18      13.07   3.074  0.00212 ** 
-Sitevhu       120.81      11.42  10.575  &lt; 2e-16 ***
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 130.4 on 3636 degrees of freedom
-Multiple R-squared:  0.05804,   Adjusted R-squared:  0.05752 
-F-statistic:   112 on 2 and 3636 DF,  p-value: &lt; 2.2e-16</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(model_1.lm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="percent_cover_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Anova</span>(model_1.lm, <span class="at">type =</span> <span class="st">"III"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Anova Table (Type III tests)
-
-Response: size_cm
-              Sum Sq   Df F value    Pr(&gt;F)    
-(Intercept)  1665764    1  97.933 &lt; 2.2e-16 ***
-Site         3810826    2 112.022 &lt; 2.2e-16 ***
-Residuals   61845547 3636                      
+<pre><code>             Df Sum Sq Mean Sq F value Pr(&gt;F)    
+Site          2  7.342   3.671   837.5 &lt;2e-16 ***
+Residuals   450  1.972   0.004                   
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>post_hoc.model_1.lm <span class="ot">&lt;-</span> <span class="fu">glht</span>(model_1.lm, <span class="at">linfct =</span> <span class="fu">mcp</span>(<span class="at">Site =</span> <span class="st">'Tukey'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>model_1.aov <span class="ot">&lt;-</span> <span class="fu">aov</span>(size_cm <span class="sc">~</span> Site, <span class="at">data =</span> poci_size.gg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Tukey's test</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>tukey <span class="ot">&lt;-</span> <span class="fu">TukeyHSD</span>(model_1.aov)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># compact letter display</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>cld <span class="ot">&lt;-</span> <span class="fu">multcompLetters4</span>(model_1.aov, tukey)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>cld</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>p_cover_mod.lm1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(pland_decimal <span class="sc">~</span> Site, <span class="at">data =</span> p_cover)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(p_cover_mod.lm1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>$Site
-vhu man ana 
-"a" "b" "c" </code></pre>
+<pre><code>
+Call:
+lm(formula = pland_decimal ~ Site, data = p_cover)
+
+Residuals:
+      Min        1Q    Median        3Q       Max 
+-0.267087 -0.030588 -0.003669  0.032792  0.212867 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 0.015845   0.006793   2.333 0.020101 *  
+Siteman     0.036108   0.009312   3.877 0.000121 ***
+Sitevhu     0.274054   0.007979  34.345  &lt; 2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.06621 on 450 degrees of freedom
+Multiple R-squared:  0.7882,    Adjusted R-squared:  0.7873 
+F-statistic: 837.5 on 2 and 450 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>poci_size3 <span class="ot">&lt;-</span> </span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>poci_size2 <span class="sc">%&gt;%</span></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">cld =</span> <span class="fu">c</span>(<span class="st">'a'</span>, <span class="st">'b'</span>, <span class="st">'c'</span>)</span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>          ) <span class="sc">%&gt;%</span></span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate_at</span>(<span class="fu">vars</span>(cld), factor)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(p_cover_mod.lm1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="percent_cover_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>poci_size3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Anova</span>(p_cover_mod.lm1, <span class="at">type =</span> <span class="st">"III"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Anova Table (Type III tests)
+
+Response: pland_decimal
+            Sum Sq  Df  F value Pr(&gt;F)    
+(Intercept) 0.0239   1   5.4417 0.0201 *  
+Site        7.3418   2 837.5053 &lt;2e-16 ***
+Residuals   1.9724 450                    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p><strong>Logit-transformation</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>p_cover_mod.lm2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">logit</span>(pland_decimal) <span class="sc">~</span> Site, <span class="at">data =</span> p_cover)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(p_cover_mod.lm2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = logit(pland_decimal) ~ Site, data = p_cover)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-8.3048 -0.2632  0.1011  0.4540  2.4202 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  -4.6747     0.1099 -42.535  &lt; 2e-16 ***
+Siteman       1.2334     0.1507   8.186 2.81e-15 ***
+Sitevhu       3.7312     0.1291  28.900  &lt; 2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.071 on 450 degrees of freedom
+Multiple R-squared:  0.6875,    Adjusted R-squared:  0.6862 
+F-statistic: 495.1 on 2 and 450 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(p_cover_mod.lm2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="percent_cover_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Anova</span>(p_cover_mod.lm2, <span class="at">type =</span> <span class="st">"III"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Anova Table (Type III tests)
+
+Response: logit(pland_decimal)
+             Sum Sq  Df F value    Pr(&gt;F)    
+(Intercept) 2075.99   1  1809.2 &lt; 2.2e-16 ***
+Site        1136.20   2   495.1 &lt; 2.2e-16 ***
+Residuals    516.35 450                      
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>p_cover_mod.beta1 <span class="ot">&lt;-</span> <span class="fu">betareg</span>(pland_decimal <span class="sc">~</span> Site, <span class="at">data =</span> p_cover, <span class="at">link =</span> <span class="fu">c</span>(<span class="st">"logit"</span>), </span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>                             <span class="at">link.phi =</span> <span class="cn">NULL</span>, <span class="at">type =</span> <span class="fu">c</span>(<span class="st">"ML"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>p_cover_mod.beta2 <span class="ot">&lt;-</span> <span class="fu">betareg</span>(pland_decimal <span class="sc">~</span> Site <span class="sc">|</span> Site, <span class="at">data =</span> p_cover, <span class="at">link =</span> <span class="fu">c</span>(<span class="st">"logit"</span>), <span class="at">link.phi =</span> <span class="cn">NULL</span>, <span class="at">type =</span> <span class="fu">c</span>(<span class="st">"ML"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Generalized-linear model</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>p_cover_mod.glm1 <span class="ot">&lt;-</span> <span class="fu">glm</span>(pland_decimal <span class="sc">~</span> Site, <span class="at">family =</span> binomial, <span class="at">data =</span> p_cover)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in eval(family$initialize): non-integer #successes in a binomial glm!</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(p_cover_mod.glm1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = pland_decimal ~ Site, family = binomial, data = p_cover)
+
+Deviance Residuals: 
+     Min        1Q    Median        3Q       Max  
+-0.71274  -0.11009  -0.02114   0.09634   0.69909  
+
+Coefficients:
+            Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)  -4.1289     0.8216  -5.025 5.02e-07 ***
+Siteman       1.2248     0.9290   1.318 0.187340    
+Sitevhu       3.2330     0.8333   3.880 0.000105 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 74.911  on 452  degrees of freedom
+Residual deviance: 14.405  on 450  degrees of freedom
+AIC: 191.73
+
+Number of Fisher Scoring iterations: 7</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(p_cover_mod.glm1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="percent_cover_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Anova</span>(p_cover_mod.glm1, <span class="at">type =</span> <span class="st">"III"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in eval(family$initialize): non-integer #successes in a binomial glm!</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Deviance Table (Type III tests)
+
+Response: pland_decimal
+     LR Chisq Df Pr(&gt;Chisq)    
+Site   60.506  2  7.266e-14 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+</section>
+<section id="interpreting-results-for-pocilloporid-corals" class="level2">
+<h2 class="anchored" data-anchor-id="interpreting-results-for-pocilloporid-corals">Interpreting results for pocilloporid corals</h2>
+<p>In order to choose between the beta regression model with a common <span class="math inline">\(\phi\)</span> (Table B2) versus different <span class="math inline">\(\phi\)</span> (Table B3), I used AIC but a likelihood ratio or wald test could be used. Using AIC, the model with varying <span class="math inline">\(\phi\)</span> values had a lower AIC (-464 compared to -432) and therefore more support. We consider our simple two year or group case to explain how to interpret the output from beta regression.</p>
+<p>The model we fit assumes <span class="math display">\[logit(\mu_j)=\beta_0+\beta_1 Ind_{grp2},\]</span> where <span class="math inline">\(Ind_{grp2}\)</span> is an indicator for group 2 and <span class="math inline">\(j\)</span> denotes the group membership so <span class="math inline">\(j=1\)</span> or <span class="math inline">\(j=2\)</span>. We have <span class="math inline">\(logit(\mu_2)-logit(\mu_1)=\beta_1\)</span>, which is equivalent to <span class="math display">\[log(\frac{\mu_2}{1-\mu_2})-log(\frac{\mu_1}{1-\mu_1})= \beta_1.\]</span></p>
+<p>The <span class="math inline">\(\frac{\mu_j}{1-\mu_j}\)</span> is interpreted as the odds of proportion cover in group <span class="math inline">\(j\)</span>. Therefore,</p>
+<p><span class="math display">\[log(\frac{\mu_2}{1-\mu_2}/\frac{\mu_1}{1-\mu_1})=\beta_1\]</span> is the log- odds ratio of cover in group 2 compared to group 1, <span class="math display">\[(\frac{\mu_2}{1-\mu_2}/\frac{\mu_1}{1-\mu_1})=exp(\beta_1).\]</span></p>
+<p>Then <span class="math inline">\(exp(\beta_1)\)</span> is the factor increase/decrease in odds of proportion cover for group 2 compared to group 1, where <span class="math inline">\(exp(\beta_1)&gt;1\)</span> is an increase and <span class="math inline">\(exp(\beta_1)&lt;1\)</span> is a decrease, and <span class="math inline">\(exp(\beta_1) \approx 1\)</span> means essentially no change.</p>
+
+<!-- html table generated in R 4.2.2 by xtable 1.8-4 package -->
+<!-- Sun Feb 12 22:50:34 2023 -->
+
+<table border="1">
+<caption align="bottom">
+Results from using betareg package in R by transforming the 0 and 1’s. These are on the logit-scale for <span class="math inline">\(\mu\)</span> with a common <span class="math inline">\(\phi\)</span> parameter
+</caption>
+<tbody><tr>
+<th>
+</th>
+<th>
+Estimate
+</th>
+<th>
+Std. Error
+</th>
+<th>
+z value
+</th>
+<th>
+Pr(&gt;|z|)
+</th>
+</tr>
+<tr>
+<td align="right">
+(Intercept)
+</td>
+<td align="right">
+-3.713
+</td>
+<td align="right">
+0.098
+</td>
+<td align="right">
+-38.011
+</td>
+<td align="right">
+0.000
+</td>
+</tr>
+<tr>
+<td align="right">
+Siteman
+</td>
+<td align="right">
+0.707
+</td>
+<td align="right">
+0.117
+</td>
+<td align="right">
+6.035
+</td>
+<td align="right">
+0.000
+</td>
+</tr>
+<tr>
+<td align="right">
+Sitevhu
+</td>
+<td align="right">
+2.810
+</td>
+<td align="right">
+0.100
+</td>
+<td align="right">
+28.024
+</td>
+<td align="right">
+0.000
+</td>
+</tr>
+<tr>
+<td align="right">
+(phi)
+</td>
+<td align="right">
+26.253
+</td>
+<td align="right">
+1.815
+</td>
+<td align="right">
+14.464
+</td>
+<td align="right">
+0.000
+</td>
+</tr>
+
+</tbody></table>
+<p>The function, <code>Fcn.CreateSummary.betareg</code>, doesn’t work with phi varying, so just fixed labels manually.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>p_cover_mod.glm1 <span class="ot">&lt;-</span> <span class="fu">glm</span>(pland_decimal <span class="sc">~</span> Site, <span class="at">family =</span> binomial, <span class="at">data =</span> p_cover)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in eval(family$initialize): non-integer #successes in a binomial glm!</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">xtable</span>(<span class="fu">summary</span>(p_cover_mod.glm1), <span class="at">digits =</span> <span class="dv">3</span>, <span class="at">caption =</span> <span class="st">" . "</span>), <span class="at">type =</span> <span class="st">"html"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;!-- html table generated in R 4.2.2 by xtable 1.8-4 package --&gt;
+&lt;!-- Sun Feb 12 22:50:34 2023 --&gt;
+&lt;table border=1&gt;
+&lt;caption align="bottom"&gt;  .  &lt;/caption&gt;
+&lt;tr&gt; &lt;th&gt;  &lt;/th&gt; &lt;th&gt; Estimate &lt;/th&gt; &lt;th&gt; Std. Error &lt;/th&gt; &lt;th&gt; z value &lt;/th&gt; &lt;th&gt; Pr(&amp;gt;|z|) &lt;/th&gt;  &lt;/tr&gt;
+  &lt;tr&gt; &lt;td align="right"&gt; (Intercept) &lt;/td&gt; &lt;td align="right"&gt; -4.129 &lt;/td&gt; &lt;td align="right"&gt; 0.822 &lt;/td&gt; &lt;td align="right"&gt; -5.025 &lt;/td&gt; &lt;td align="right"&gt; 0.000 &lt;/td&gt; &lt;/tr&gt;
+  &lt;tr&gt; &lt;td align="right"&gt; Siteman &lt;/td&gt; &lt;td align="right"&gt; 1.225 &lt;/td&gt; &lt;td align="right"&gt; 0.929 &lt;/td&gt; &lt;td align="right"&gt; 1.318 &lt;/td&gt; &lt;td align="right"&gt; 0.187 &lt;/td&gt; &lt;/tr&gt;
+  &lt;tr&gt; &lt;td align="right"&gt; Sitevhu &lt;/td&gt; &lt;td align="right"&gt; 3.233 &lt;/td&gt; &lt;td align="right"&gt; 0.833 &lt;/td&gt; &lt;td align="right"&gt; 3.880 &lt;/td&gt; &lt;td align="right"&gt; 0.000 &lt;/td&gt; &lt;/tr&gt;
+   &lt;/table&gt;</code></pre>
+</div>
+</div>
+
+<!-- html table generated in R 4.2.2 by xtable 1.8-4 package -->
+<!-- Tue Jan 24 15:48:36 2023 -->
+
+<table border="1">
+<caption align="bottom">
+.
+</caption>
+<tbody><tr>
+<th>
+</th>
+<th>
+Estimate
+</th>
+<th>
+Std. Error
+</th>
+<th>
+z value
+</th>
+<th>
+Pr(&gt;|z|)
+</th>
+</tr>
+<tr>
+<td align="right">
+(Intercept)
+</td>
+<td align="right">
+-4.129
+</td>
+<td align="right">
+0.822
+</td>
+<td align="right">
+-5.025
+</td>
+<td align="right">
+0.000
+</td>
+</tr>
+<tr>
+<td align="right">
+Siteman
+</td>
+<td align="right">
+1.225
+</td>
+<td align="right">
+0.929
+</td>
+<td align="right">
+1.318
+</td>
+<td align="right">
+0.187
+</td>
+</tr>
+<tr>
+<td align="right">
+Sitevhu
+</td>
+<td align="right">
+3.233
+</td>
+<td align="right">
+0.833
+</td>
+<td align="right">
+3.880
+</td>
+<td align="right">
+0.000
+</td>
+</tr>
+
+</tbody></table>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="percent_cover_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
+<p></p><figcaption class="figure-caption">Example diagnostic plots for beta regression)</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="percent_cover_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+<p></p><figcaption class="figure-caption">Example diagnostic plots for beta regression, variable phi)</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Built-in diagnostic plots for linear regression models</p>
+<p><strong>Logit-transformed</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">2</span>), <span class="at">pty =</span> <span class="st">'m'</span>)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(p_cover_mod.lm2)</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">cooks.distance</span>(p_cover_mod.lm2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="percent_cover_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p><strong>Untransformed</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">2</span>), <span class="at">pty =</span> <span class="st">'m'</span>)</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(p_cover_mod.lm1)</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">cooks.distance</span>(p_cover_mod.lm1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="percent_cover_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="percent_cover_files/figure-html/fig.height-1.png" class="img-fluid figure-img" width="672"></p>
+<p></p><figcaption class="figure-caption">Comparison of default qqplots for beta and linear models. Beta models use weighted residuals 2 recommended in and linear model are the response residuals.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>), <span class="at">pty =</span> <span class="st">'m'</span>, <span class="at">cex =</span> <span class="dv">1</span>)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(p_cover_mod.beta2, <span class="at">which =</span> <span class="dv">5</span>, <span class="at">type =</span> <span class="st">"sweighted2"</span>, <span class="at">main =</span> <span class="st">""</span>)</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(p_cover_mod.lm2, <span class="at">which =</span> <span class="dv">2</span>, <span class="at">main =</span> <span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="percent_cover_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<section id="classical-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="classical-analysis">Classical Analysis</h3>
+<p><em>From</em> Douma &amp; Weedon (2019)</p>
+<div class="fold o">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>p_cover.aov1 <span class="ot">&lt;-</span> <span class="fu">aov</span>(pland_decimal <span class="sc">~</span> Site, <span class="at">data =</span> p_cover)</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(p_cover.aov1)</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="do">##              Df Sum Sq Mean Sq F value Pr(&gt;F)    </span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Site          2  7.342   3.671   837.5 &lt;2e-16 ***</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Residuals   450  1.972   0.004                   </span></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="do">## ---</span></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="fold o">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>p_cover.aov2 <span class="ot">&lt;-</span> <span class="fu">aov</span>(pland_decimal <span class="sc">~</span> Site <span class="sc">+</span> <span class="fu">Error</span>(plot_id), <span class="at">data =</span> p_cover)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(p_cover.aov2)</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Error: plot_id</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="do">##            Df Sum Sq Mean Sq F value Pr(&gt;F)    </span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a><span class="do">## Site        2  1.679  0.8395   157.7 &lt;2e-16 ***</span></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Residuals 247  1.315  0.0053                   </span></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a><span class="do">## ---</span></span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a><span class="do">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a><span class="do">## Error: Within</span></span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a><span class="do">##            Df Sum Sq Mean Sq F value Pr(&gt;F)    </span></span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a><span class="do">## Site        2  5.663  2.8317   866.2 &lt;2e-16 ***</span></span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a><span class="do">## Residuals 201  0.657  0.0033                   </span></span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a><span class="do">## ---</span></span>
+<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a><span class="do">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<p>A very similar analysis can be conducted using the library <code>nlme</code> for mixed effects modeling.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>p_cover.lme1 <span class="ot">&lt;-</span> <span class="fu">lme</span>(pland_decimal <span class="sc">~</span> Site, <span class="at">random =</span> <span class="sc">~</span> <span class="dv">1</span> <span class="sc">|</span> plot_id, <span class="at">data =</span> p_cover)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(p_cover.lme1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            numDF denDF   F-value p-value
+(Intercept)     1   249 2952.9126  &lt;.0001
+Site            2   201  920.5271  &lt;.0001</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>p_cover.lme_null <span class="ot">&lt;-</span> <span class="fu">lme</span>(pland_decimal <span class="sc">~</span> <span class="dv">1</span>, <span class="at">random =</span> <span class="sc">~</span> <span class="dv">1</span> <span class="sc">|</span> plot_id, <span class="at">data =</span> p_cover)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>lmtest<span class="sc">::</span><span class="fu">lrtest</span>(p_cover.lme1, p_cover.lme_null)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Likelihood ratio test
+
+Model 1: pland_decimal ~ Site
+Model 2: pland_decimal ~ 1
+  #Df LogLik Df  Chisq Pr(&gt;Chisq)    
+1   5 577.06                         
+2   3 232.95 -2 688.22  &lt; 2.2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+</section>
+<section id="beta-regression-with-no-variable-precision-phi" class="level3">
+<h3 class="anchored" data-anchor-id="beta-regression-with-no-variable-precision-phi">Beta regression with no variable precision <span class="math inline">\(\phi\)</span></h3>
+<p>We now turn to the beta regression model, that models the response variable as being generated from a beta distribution (i.e.&nbsp;that is bounded at 0 and 1).</p>
+<p>The observations of percent cover are based on replicate quadrats replicated within three experimental plots.</p>
+<p>We begin by attempting to fit a beta regression model, with <code>pland_decimal</code> as the response, and <code>Site</code> as the categorical predictor.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>p_cover.bm1 <span class="ot">&lt;-</span> <span class="fu">betareg</span>(pland_decimal <span class="sc">~</span> Site, <span class="at">data =</span> p_cover)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>betareg</code> will not accept values of 0 and 1 in the response variable.</p>
+<p>There are two possible solutions here, rescaling the data to remove 0s and 1s, or fitting zero-inflated models. We start here with the rescaling solution. A suggested rescaling equation is:</p>
+<p><span class="math display">\[ x^*_{i} = \frac{x_i(n-1)+0.5}{n} \]</span></p>
+<p>Where <span class="math inline">\(x^*_i\)</span> is the transformation of <span class="math inline">\(x_i\)</span> and <span class="math inline">\(n\)</span> is the total number of observations in the dataset.</p>
+<p>For convenience we define this as a custom function <code>tranform01</code> and apply it to the dataset:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>transform01 <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  (x <span class="sc">*</span> (<span class="fu">length</span>(x) <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">+</span> <span class="fl">0.5</span>) <span class="sc">/</span> (<span class="fu">length</span>(x))</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>With this scaled data we can now successfully fit the model. And test its significance relative to a null model that assumes no effect of wave power on percent cover of pocilloporid corals. For reference we also fit a classical ANOVA model assuming normally distributed errors using <code>lm</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>p_cover.bmnull <span class="ot">&lt;-</span> <span class="fu">betareg</span>(pland_decimal <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data =</span> p_cover)</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(p_cover.bmnull)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+betareg(formula = pland_decimal ~ 1, data = p_cover)
+
+Standardized weighted residuals 2:
+    Min      1Q  Median      3Q     Max 
+-5.6692 -0.7474  0.4788  0.8374  1.2399 
+
+Coefficients (mean model with logit link):
+            Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)  -1.6059     0.0546  -29.41   &lt;2e-16 ***
+
+Phi coefficients (precision model with identity link):
+      Estimate Std. Error z value Pr(&gt;|z|)    
+(phi)   4.1759     0.2831   14.75   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+
+Type of estimator: ML (maximum likelihood)
+Log-likelihood:   373 on 2 Df
+Number of iterations: 11 (BFGS) + 2 (Fisher scoring) </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>p_cover.lm1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(pland_decimal <span class="sc">~</span> Site, <span class="at">data =</span> p_cover)</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(p_cover.lm1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = pland_decimal ~ Site, data = p_cover)
+
+Residuals:
+      Min        1Q    Median        3Q       Max 
+-0.267087 -0.030588 -0.003669  0.032792  0.212867 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 0.015845   0.006793   2.333 0.020101 *  
+Siteman     0.036108   0.009312   3.877 0.000121 ***
+Sitevhu     0.274054   0.007979  34.345  &lt; 2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.06621 on 450 degrees of freedom
+Multiple R-squared:  0.7882,    Adjusted R-squared:  0.7873 
+F-statistic: 837.5 on 2 and 450 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>lmtest<span class="sc">::</span><span class="fu">lrtest</span>(p_cover.bm1, p_cover.bmnull)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Likelihood ratio test
+
+Model 1: pland_decimal ~ Site
+Model 2: pland_decimal ~ 1
+  #Df LogLik Df  Chisq Pr(&gt;Chisq)    
+1   4 751.26                         
+2   2 372.96 -2 756.59  &lt; 2.2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">AIC</span>(p_cover.bm1, p_cover.lm1, p_cover.bmnull)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>               df        AIC
+p_cover.bm1     4 -1494.5243
+p_cover.lm1     4 -1169.2387
+p_cover.bmnull  2  -741.9293</code></pre>
+</div>
+</div>
+<p>According to the likelihood-ratio test there is a significant difference betwen the null model and the treatment model. The AIC analysis supports this conclusion, but also highlights the improved model fit with beta regression relative to normal ANOVA (<code>lm1</code>). From this initial analysis we would tentatively conclude that using beta regresson improves our ability to model the algal cover, but that there is no effect of grazer manipulation treatment.</p>
+<p>It is useful to plot the predictions derived from the model and compare them to the observed data. First we define two new functions to allow us to use the <code>dbeta</code> and <code>rbeta</code> functions with the <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\phi\)</span> parameterization.</p>
+<div class="fold o">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>dbeta2 <span class="ot">&lt;-</span> <span class="cf">function</span>(X, mu, phi, ...) {</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dbeta</span>(X, <span class="at">shape1 =</span> mu <span class="sc">*</span> phi, <span class="at">shape2 =</span> (<span class="dv">1</span> <span class="sc">-</span> mu) <span class="sc">*</span> phi, ...)</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>rbeta2 <span class="ot">&lt;-</span> <span class="cf">function</span>(N, mu, phi, ...) {</span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rbeta</span>(N, <span class="at">shape1 =</span> mu <span class="sc">*</span> phi, <span class="at">shape2 =</span> (<span class="dv">1</span> <span class="sc">-</span> mu) <span class="sc">*</span> phi, ...)</span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<p>With this function we can plot the distributions corresponding to the MLE parameters for each treatment :</p>
+<div class="fold s">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># extract coefficients of beta regression model</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>coefs.bm1 <span class="ot">&lt;-</span> <span class="fu">coef</span>(p_cover.bm1)</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a><span class="co"># create vector spanning the transformed 0-1 interval</span></span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>n.bm2 <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">fitted</span>(p_cover.bm1))</span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>x.range <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="fl">0.5</span><span class="sc">/</span>n.bm2 , <span class="dv">1</span><span class="fl">-0.5</span><span class="sc">/</span>n.bm2 , <span class="at">length.out =</span> <span class="dv">200</span>)</span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>x.range.bt <span class="ot">&lt;-</span> (x.range<span class="sc">*</span>n.bm2 <span class="sc">-</span> <span class="fl">0.5</span>)<span class="sc">/</span>(n.bm2<span class="dv">-1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Anakena</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(x.range.bt, <span class="fu">dbeta2</span>(x.range, <span class="fu">inv.logit</span>(coefs.bm1[<span class="st">"(Intercept)"</span>]), coefs.bm1[<span class="st">"(phi)"</span>]),</span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">lty =</span> <span class="dv">2</span>, <span class="at">lwd =</span> <span class="dv">2</span>,</span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Probability density"</span>, <span class="at">xlab =</span> <span class="st">"Proportion cover"</span>,</span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">10</span>)</span>
+<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Manavai</span></span>
+<span id="cb52-9"><a href="#cb52-9" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(x.range.bt, <span class="fu">dbeta2</span>(x.range, <span class="fu">inv.logit</span>(coefs.bm1[<span class="st">"(Intercept)"</span>] <span class="sc">+</span> coefs.bm1[<span class="dv">2</span>]), coefs.bm1[<span class="st">"(phi)"</span>]),<span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"red"</span>)</span>
+<span id="cb52-10"><a href="#cb52-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-11"><a href="#cb52-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Vaihu</span></span>
+<span id="cb52-12"><a href="#cb52-12" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(x.range.bt, <span class="fu">dbeta2</span>(x.range, <span class="fu">inv.logit</span>(coefs.bm1[<span class="st">"(Intercept)"</span>] <span class="sc">+</span> coefs.bm1[<span class="dv">3</span>]), coefs.bm1[<span class="st">"(phi)"</span>]), <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb52-13"><a href="#cb52-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-14"><a href="#cb52-14" aria-hidden="true" tabindex="-1"></a><span class="fu">rug</span>(p_cover<span class="sc">$</span>pland_decimal[p_cover<span class="sc">$</span>Site <span class="sc">==</span> <span class="st">"ana"</span>], <span class="at">lwd =</span> <span class="fl">1.5</span>, <span class="at">pos =</span> <span class="dv">10</span>)</span>
+<span id="cb52-15"><a href="#cb52-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-16"><a href="#cb52-16" aria-hidden="true" tabindex="-1"></a><span class="fu">rug</span>(p_cover<span class="sc">$</span>pland_decimal[p_cover<span class="sc">$</span>Site <span class="sc">==</span> <span class="st">"man"</span>],<span class="at">col=</span><span class="st">"red"</span>, <span class="at">pos =</span> <span class="fl">9.75</span>, <span class="at">side =</span> <span class="dv">3</span>,<span class="at">lwd=</span><span class="fl">1.5</span>)</span>
+<span id="cb52-17"><a href="#cb52-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-18"><a href="#cb52-18" aria-hidden="true" tabindex="-1"></a><span class="fu">rug</span>(p_cover<span class="sc">$</span>pland_decimal[p_cover<span class="sc">$</span>Site <span class="sc">==</span> <span class="st">"vhu"</span>], <span class="at">col=</span><span class="st">"blue"</span>, <span class="at">pos =</span> <span class="fl">9.5</span>, <span class="at">side =</span> <span class="dv">3</span>, <span class="at">lwd=</span><span class="fl">1.5</span>)</span>
+<span id="cb52-19"><a href="#cb52-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-20"><a href="#cb52-20" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">lty =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>), <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"black"</span>, <span class="st">"red"</span>, <span class="st">"blue"</span>), <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">"Anakena"</span>, <span class="st">"Manavai"</span>, <span class="st">"Vaihu"</span>), <span class="at">bty =</span> <span class="st">"n"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="percent_cover_files/figure-html/unnamed-chunk-39-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+<p>We have added the original observations as ticks of the appropriate colour, and back-transformed the densities to allow fair visual comparisons between the fitted distributions and the original data using:</p>
+<p><span class="math display">\[ x_{i} = \frac{x^*_in-0.5}{(n-1)} \]</span></p>
+<p>Note that the vertical positioning of the dots is merely to prevent overplotting.</p>
+<p>From this plot we can see that the model does a reasonable job of fitting beta distributions to each of the treatment levels… And that likewise, the variance of the groups …. This can be confirmed with a residual plot, using residuals calculated relative to their predicted variance.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">resid</span>(p_cover.bm1) <span class="sc">~</span> <span class="fu">fitted</span>(p_cover.bm1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="percent_cover_files/figure-html/unnamed-chunk-40-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Is this statement accurate?</p>
+<p>The spread of the standardized residuals is strongly related to the fitted values, suggesting that variance is not being adequately modeled. This observation suggests the possible utility of allowing for the precision parameter <span class="math inline">\(\phi\)</span> to vary between treatment groups. The following section will show extension of the beta regression model to allow for this.</p>
+</section>
+<section id="variable-precision-phi" class="level3">
+<h3 class="anchored" data-anchor-id="variable-precision-phi">Variable precision <span class="math inline">\(\phi\)</span></h3>
+<p>We can repeat the above analysis using a model that allows <span class="math inline">\(\phi\)</span> to vary with predictors. This is achieved by adding a second part to the right hand side of the formula, separated with the <code>|</code> symbol. All covariates to the right of this <code>|</code> symbol will be used to model <span class="math inline">\(\phi\)</span>. Note that they do not have to be the same covariates used to model <span class="math inline">\(\mu\)</span> (specified to the left of the <code>|</code>).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>p_cover.bm2 <span class="ot">&lt;-</span> <span class="fu">betareg</span>(pland_decimal <span class="sc">~</span> Site <span class="sc">|</span> Site, <span class="at">data =</span> p_cover)</span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(p_cover.bm2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+betareg(formula = pland_decimal ~ Site | Site, data = p_cover)
+
+Standardized weighted residuals 2:
+    Min      1Q  Median      3Q     Max 
+-6.4696 -0.3937  0.1444  0.6941  1.8854 
+
+Coefficients (mean model with logit link):
+            Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)  -4.1313     0.1005 -41.097   &lt;2e-16 ***
+Siteman       1.2299     0.1387   8.867   &lt;2e-16 ***
+Sitevhu       3.2299     0.1041  31.012   &lt;2e-16 ***
+
+Phi coefficients (precision model with log link):
+            Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)   4.1888     0.1612  25.987  &lt; 2e-16 ***
+Siteman      -1.2182     0.2188  -5.568 2.58e-08 ***
+Sitevhu      -0.9607     0.1837  -5.231 1.69e-07 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+
+Type of estimator: ML (maximum likelihood)
+Log-likelihood: 765.3 on 6 Df
+Pseudo R-squared: 0.686
+Number of iterations: 15 (BFGS) + 2 (Fisher scoring) </code></pre>
+</div>
+</div>
+<p>From the <code>Coefficients</code> table we see that the estimate for <span class="math inline">\(\mu\)</span> in the Control treatment is <code>inv.logit(-4.1313)</code> = <code>X</code> = X% coral cover. Moreover, the estimates of <span class="math inline">\(\mu\)</span> for the other two <code>Sites</code> (treatments) are each significantly higher.</p>
+<p>From the <code>Phi coefficients</code> table we can see that the maximum likelihood estimate of the precision is highest in the Control treatment and is reduced significantly relative to this baseline in each of other treatment groups. In other words, the model fit confirms our impression from the previous two graphs that a fixed <span class="math inline">\(\phi\)</span> model overestimates variance in the Control treatment, and underestimates it in the other three treatments.</p>
+<p>We can use likelihood-ratio tests to compare the new model to the fixed-<span class="math inline">\(\phi\)</span> and null models.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>lmtest<span class="sc">::</span><span class="fu">lrtest</span>(p_cover.bm1, p_cover.bm2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Likelihood ratio test
+
+Model 1: pland_decimal ~ Site
+Model 2: pland_decimal ~ Site | Site
+  #Df LogLik Df  Chisq Pr(&gt;Chisq)    
+1   4 751.26                         
+2   6 765.28  2 28.044  8.136e-07 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>lmtest<span class="sc">::</span><span class="fu">lrtest</span>(p_cover.bmnull, p_cover.bm1, p_cover.bm2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Likelihood ratio test
+
+Model 1: pland_decimal ~ 1
+Model 2: pland_decimal ~ Site
+Model 3: pland_decimal ~ Site | Site
+  #Df LogLik Df   Chisq Pr(&gt;Chisq)    
+1   2 372.96                          
+2   4 751.26  2 756.595  &lt; 2.2e-16 ***
+3   6 765.28  2  28.044  8.136e-07 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>The likelihood ratio tests indicate that the model with varying <span class="math inline">\(\phi\)</span> is significantly better than both the previous fixed <span class="math inline">\(\phi\)</span> model, and the null model. In this case the conclusion is that including the model for <span class="math inline">\(\phi\)</span> led to a better fitting model than both the fixed <span class="math inline">\(\phi\)</span> model and the null model.</p>
+<p>It is possible to apply post-hoc tests to identify which pariwise contrasts of treatments levels are significant.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">test</span>(<span class="fu">pairs</span>(<span class="fu">emmeans</span>(p_cover.bm2, <span class="sc">~</span> Site, <span class="at">mode =</span> <span class="st">"link"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> contrast  estimate     SE  df z.ratio p.value
+ ana - man    -1.23 0.1387 Inf  -8.867  &lt;.0001
+ ana - vhu    -3.23 0.1041 Inf -31.012  &lt;.0001
+ man - vhu    -2.00 0.0994 Inf -20.127  &lt;.0001
+
+Results are given on the log odds ratio (not the response) scale. 
+P value adjustment: tukey method for comparing a family of 3 estimates </code></pre>
+</div>
+</div>
+<p>We conclude from this analysis that each <code>Site</code> treatment is significantly different to each other. This is an important point: <strong>correct modeling of <span class="math inline">\(\phi\)</span> can often be important for accurate inference on <span class="math inline">\(\mu\)</span>.</strong></p>
+<p>Residual plots confirm our conclusion that <code>p_cover.bm2</code> provides a better fit to the observed data than <code>p_cover.bm1</code>. This is seen by the more even spread of residuals in the second plot below.</p>
+<div class="fold s">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">1</span>), <span class="at">oma =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>), <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">4</span>, <span class="fl">0.2</span>, <span class="fl">0.2</span>))</span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">residuals</span>(p_cover.bm1) <span class="sc">~</span> <span class="fu">fitted</span>(p_cover.bm1))</span>
+<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">residuals</span>(p_cover.bm2) <span class="sc">~</span> <span class="fu">fitted</span>(p_cover.bm2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="percent_cover_files/figure-html/unnamed-chunk-44-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+<p>As above we can plot the MLE distributions for each of the treatments, based on the variable <span class="math inline">\(\phi\)</span> model:</p>
+<div class="fold s">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot distributions</span></span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>muphi.bm2 <span class="ot">&lt;-</span> <span class="fu">unique</span>(<span class="fu">data.frame</span>(</span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">mu =</span> <span class="fu">fitted</span>(p_cover.bm2),</span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">phi =</span> <span class="fu">predict</span>(p_cover.bm2, <span class="at">type =</span> <span class="st">"precision"</span>),</span>
+<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">treatment =</span> p_cover<span class="sc">$</span>Site</span>
+<span id="cb63-6"><a href="#cb63-6" aria-hidden="true" tabindex="-1"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="fold s">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(x.range.bt , <span class="fu">dbeta2</span>(x.range, muphi.bm2[<span class="dv">1</span>, <span class="dv">1</span>], muphi.bm2[<span class="dv">1</span>, <span class="dv">2</span>]),</span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">type=</span><span class="st">"l"</span>,</span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Proportion cover"</span>, <span class="at">ylab =</span> <span class="st">"Probability density"</span>,</span>
+<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">lty =</span> <span class="dv">2</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-6"><a href="#cb64-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>) {</span>
+<span id="cb64-7"><a href="#cb64-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lines</span>(x.range.bt, <span class="fu">dbeta2</span>(x.range, muphi.bm2[i, <span class="dv">1</span>], muphi.bm2[i, <span class="dv">2</span>]), <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"black"</span>, <span class="st">"red"</span>, <span class="st">"blue"</span>)[i], <span class="at">lty =</span> <span class="dv">1</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb64-8"><a href="#cb64-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb64-9"><a href="#cb64-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-10"><a href="#cb64-10" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">lty =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>), <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"black"</span>, <span class="st">"red"</span>, <span class="st">"blue"</span>), <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">"Anakena"</span>, <span class="st">"Manavai"</span>, <span class="st">"Vaihu"</span>), <span class="at">bty =</span> <span class="st">"n"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="percent_cover_files/figure-html/unnamed-chunk-46-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+<p>Due to the much narrower variance of the Control treatment group in this model, the probability density plots of the other treatments are rather distorted. The graph below rescales the Y axis for comparison to the fixed <span class="math inline">\(\phi\)</span> model above.</p>
+<div class="fold s">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(x.range.bt , <span class="fu">dbeta2</span>(x.range, muphi.bm2[<span class="dv">1</span>, <span class="st">"mu"</span>], muphi.bm2[<span class="dv">1</span>, <span class="st">"phi"</span>]),</span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">type=</span><span class="st">"l"</span>,</span>
+<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Proportion cover"</span>, <span class="at">ylab =</span> <span class="st">"Probability density"</span>,</span>
+<span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">lty =</span> <span class="dv">2</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">10</span>))</span>
+<span id="cb65-5"><a href="#cb65-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-6"><a href="#cb65-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>) {</span>
+<span id="cb65-7"><a href="#cb65-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lines</span>(x.range.bt, <span class="fu">dbeta2</span>(x.range, muphi.bm2[i, <span class="st">"mu"</span>], muphi.bm2[i, <span class="st">"phi"</span>]), <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"black"</span>, <span class="st">"red"</span>, <span class="st">"blue"</span>)[i], <span class="at">lty =</span> <span class="dv">1</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb65-8"><a href="#cb65-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb65-9"><a href="#cb65-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb65-10"><a href="#cb65-10" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">lty =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>), <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"black"</span>, <span class="st">"red"</span>, <span class="st">"blue"</span>), <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">"Anakena"</span>, <span class="st">"Manavai"</span>, <span class="st">"Vaihu"</span>), <span class="at">bty =</span> <span class="st">"n"</span>)</span>
+<span id="cb65-11"><a href="#cb65-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-12"><a href="#cb65-12" aria-hidden="true" tabindex="-1"></a><span class="fu">rug</span>(p_cover<span class="sc">$</span>pland_decimal[p_cover<span class="sc">$</span>Site <span class="sc">==</span> <span class="st">"ana"</span>], <span class="at">lwd =</span> <span class="fl">1.5</span>, <span class="at">pos =</span> <span class="dv">10</span>)</span>
+<span id="cb65-13"><a href="#cb65-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-14"><a href="#cb65-14" aria-hidden="true" tabindex="-1"></a><span class="fu">rug</span>(p_cover<span class="sc">$</span>pland_decimal[p_cover<span class="sc">$</span>Site <span class="sc">==</span> <span class="st">"man"</span>], <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">pos =</span> <span class="fl">9.75</span>, <span class="at">side =</span> <span class="dv">3</span>,<span class="at">lwd =</span> <span class="fl">1.5</span>)</span>
+<span id="cb65-15"><a href="#cb65-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-16"><a href="#cb65-16" aria-hidden="true" tabindex="-1"></a><span class="fu">rug</span>(p_cover<span class="sc">$</span>pland_decimal[p_cover<span class="sc">$</span>Site <span class="sc">==</span> <span class="st">"vhu"</span>], <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">pos =</span> <span class="fl">9.5</span>, <span class="at">side =</span> <span class="dv">3</span>, <span class="at">lwd =</span> <span class="fl">1.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="percent_cover_files/figure-html/unnamed-chunk-47-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+<p>These plots support the conclusion from the likelihood ratio tests above. The best-fit distributions from the variable <span class="math inline">\(\phi\)</span> model better match the observed differences in dispersion between the different groups.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>poci_cover <span class="ot">&lt;-</span></span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>p_cover <span class="sc">%&gt;%</span></span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a><span class="co">#  mutate(size_cm = area*10000) %&gt;%</span></span>
+<span id="cb66-5"><a href="#cb66-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Site) <span class="sc">%&gt;%</span></span>
+<span id="cb66-6"><a href="#cb66-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">mean =</span> <span class="fu">mean</span>(pland_decimal), </span>
+<span id="cb66-7"><a href="#cb66-7" aria-hidden="true" tabindex="-1"></a>                   <span class="at">sd =</span> <span class="fu">sd</span>(pland_decimal), </span>
+<span id="cb66-8"><a href="#cb66-8" aria-hidden="true" tabindex="-1"></a>                   <span class="at">n =</span> <span class="fu">n</span>(),</span>
+<span id="cb66-9"><a href="#cb66-9" aria-hidden="true" tabindex="-1"></a>                   <span class="at">se =</span> sd<span class="sc">/</span><span class="fu">sqrt</span>(n)</span>
+<span id="cb66-10"><a href="#cb66-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb66-11"><a href="#cb66-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">se =</span> sd <span class="sc">/</span> <span class="fu">sqrt</span>(n),</span>
+<span id="cb66-12"><a href="#cb66-12" aria-hidden="true" tabindex="-1"></a>         <span class="at">lower.ci =</span> mean <span class="sc">-</span> <span class="fu">qt</span>(<span class="dv">1</span> <span class="sc">-</span> (<span class="fl">0.05</span> <span class="sc">/</span> <span class="dv">2</span>), n <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> se,</span>
+<span id="cb66-13"><a href="#cb66-13" aria-hidden="true" tabindex="-1"></a>         <span class="at">upper.ci =</span> mean <span class="sc">+</span> <span class="fu">qt</span>(<span class="dv">1</span> <span class="sc">-</span> (<span class="fl">0.05</span> <span class="sc">/</span> <span class="dv">2</span>), n <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> se) <span class="sc">%&gt;%</span></span>
+<span id="cb66-14"><a href="#cb66-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate_at</span>(<span class="fu">vars</span>(Site), factor) <span class="sc">%&gt;%</span></span>
+<span id="cb66-15"><a href="#cb66-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(</span>
+<span id="cb66-16"><a href="#cb66-16" aria-hidden="true" tabindex="-1"></a>          <span class="at">location =</span> <span class="fu">c</span>(<span class="st">'Anakena'</span>, <span class="st">'Manavai'</span>, <span class="st">'Southeast'</span>)</span>
+<span id="cb66-17"><a href="#cb66-17" aria-hidden="true" tabindex="-1"></a>          ) <span class="sc">%&gt;%</span></span>
+<span id="cb66-18"><a href="#cb66-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate_at</span>(<span class="fu">vars</span>(location), factor)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>poci_cover2 <span class="ot">&lt;-</span> </span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>poci_cover <span class="sc">%&gt;%</span></span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(</span>
+<span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">cld =</span> <span class="fu">c</span>(<span class="st">'a'</span>, <span class="st">'b'</span>, <span class="st">'c'</span>)</span>
+<span id="cb67-5"><a href="#cb67-5" aria-hidden="true" tabindex="-1"></a>          ) <span class="sc">%&gt;%</span></span>
+<span id="cb67-6"><a href="#cb67-6" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate_at</span>(<span class="fu">vars</span>(cld), factor)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>poci_cover2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3 × 9
-  Site   mean    sd     n    se lower.ci upper.ci location  cld  
-  &lt;fct&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;fct&gt;     &lt;fct&gt;
-1 ana    111.  73.8   136  6.33     98.2     123. Anakena   a    
-2 man    151.  82.7   372  4.29    142.      159. Manavai   b    
-3 vhu    231. 137.   3131  2.44    227.      236. Southeast c    </code></pre>
+  Site    mean     sd     n      se lower.ci upper.ci location  cld  
+  &lt;fct&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;fct&gt;     &lt;fct&gt;
+1 ana   0.0158 0.0128    95 0.00131   0.0132   0.0184 Anakena   a    
+2 man   0.0520 0.0512   108 0.00493   0.0422   0.0617 Manavai   b    
+3 vhu   0.290  0.0821   250 0.00519   0.280    0.300  Southeast c    </code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>x_labels <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"Anakena"</span>, <span class="st">"Manavai"</span>, <span class="st">"Vaihu"</span>)</span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="co"># label_names = c("8 m" = "8 m", "15 m" = "15 m", "25 m" = "25 m")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>x_labels <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"Anakena"</span>, <span class="st">"Manavai"</span>, <span class="st">"Vaihu"</span>)</span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a><span class="co"># label_names = c("8 m" = "8 m", "15 m" = "15 m", "25 m" = "25 m")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>poci_size.gg.barplot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(poci_size3, <span class="fu">aes</span>(<span class="at">x =</span> location, <span class="at">y =</span> mean)) <span class="sc">+</span>   </span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">width =</span> <span class="fl">0.75</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">fill =</span> <span class="st">"#333399"</span>, <span class="at">size =</span> <span class="fl">0.50</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_linerange</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> lower.ci, <span class="at">ymax =</span> upper.ci), <span class="at">size =</span> <span class="fl">0.75</span>) <span class="sc">+</span></span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">"Mean Colony Size ("</span>,<span class="st">" "</span>, cm<span class="sc">^</span><span class="dv">2</span>, <span class="st">")"</span>)), <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">300</span>)) <span class="sc">+</span> </span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">labels =</span> x_labels) <span class="sc">+</span> </span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="co">#  scale_fill_manual(breaks = c("North", "West",</span></span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="co">#                               "Southeast"),</span></span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a><span class="co">#                    values = c("red", "blue", </span></span>
-<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a><span class="co">#                                    "green"), </span></span>
-<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a><span class="co">#                                    labels = c("North", "West",</span></span>
-<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a><span class="co">#                                               "Southeast")) +</span></span>
-<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a><span class="co">#  facet_wrap( ~ depth2, labeller = as_labeller(label_names), dir = "v", ncol = 1) + </span></span>
-<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="fu">expression</span>(<span class="fu">paste</span>(<span class="fu">italic</span>(<span class="st">" Pocillopora "</span>), <span class="st">"spp."</span>))) <span class="sc">+</span></span>
-<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> cld, <span class="at">y =</span> upper.ci), <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>  <span class="co">#scale_y_log10(expression(paste("Colony Size (", cm^2, ")"), limits = c(0, 100000))) +</span></span>
-<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
-<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">hjust =</span> <span class="fl">0.50</span>),</span>
-<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">strip.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"#FFFFFF"</span>, <span class="at">color =</span> <span class="cn">NA</span>),    </span>
-<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"#FFFFFF"</span>, <span class="at">color =</span> <span class="cn">NA</span>),</span>
-<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.major.x =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.minor.x =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.minor.y =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.major.y =</span> <span class="fu">element_line</span>(<span class="at">color =</span> <span class="st">"#b2b2b2"</span>),</span>
-<span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.spacing.x =</span> <span class="fu">unit</span>(<span class="dv">1</span>, <span class="st">"cm"</span>),</span>
-<span id="cb26-25"><a href="#cb26-25" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.spacing.y =</span> <span class="fu">unit</span>(<span class="fl">0.5</span>, <span class="st">"cm"</span>),</span>
-<span id="cb26-26"><a href="#cb26-26" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.spacing =</span> <span class="fu">unit</span>(<span class="dv">1</span>, <span class="st">"lines"</span>),</span>
-<span id="cb26-27"><a href="#cb26-27" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.ticks =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb26-28"><a href="#cb26-28" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">"top"</span>,</span>
-<span id="cb26-29"><a href="#cb26-29" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>),</span>
-<span id="cb26-30"><a href="#cb26-30" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>),</span>
-<span id="cb26-31"><a href="#cb26-31" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.title =</span> <span class="fu">element_blank</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>poci_cover.ggbarplot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(poci_cover2, <span class="fu">aes</span>(<span class="at">x =</span> location, <span class="at">y =</span> mean)) <span class="sc">+</span>   </span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">width =</span> <span class="fl">0.75</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">fill =</span> <span class="st">"#333399"</span>, <span class="at">size =</span> <span class="fl">0.50</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_linerange</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> lower.ci, <span class="at">ymax =</span> upper.ci), <span class="at">size =</span> <span class="fl">0.75</span>) <span class="sc">+</span></span>
+<span id="cb71-4"><a href="#cb71-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">"Mean Percent Cover (%)"</span>)), <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>)) <span class="sc">+</span> </span>
+<span id="cb71-5"><a href="#cb71-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">labels =</span> x_labels) <span class="sc">+</span> </span>
+<span id="cb71-6"><a href="#cb71-6" aria-hidden="true" tabindex="-1"></a><span class="co">#  scale_fill_manual(breaks = c("North", "West",</span></span>
+<span id="cb71-7"><a href="#cb71-7" aria-hidden="true" tabindex="-1"></a><span class="co">#                               "Southeast"),</span></span>
+<span id="cb71-8"><a href="#cb71-8" aria-hidden="true" tabindex="-1"></a><span class="co">#                    values = c("red", "blue", </span></span>
+<span id="cb71-9"><a href="#cb71-9" aria-hidden="true" tabindex="-1"></a><span class="co">#                                    "green"), </span></span>
+<span id="cb71-10"><a href="#cb71-10" aria-hidden="true" tabindex="-1"></a><span class="co">#                                    labels = c("North", "West",</span></span>
+<span id="cb71-11"><a href="#cb71-11" aria-hidden="true" tabindex="-1"></a><span class="co">#                                               "Southeast")) +</span></span>
+<span id="cb71-12"><a href="#cb71-12" aria-hidden="true" tabindex="-1"></a><span class="co">#  facet_wrap( ~ depth2, labeller = as_labeller(label_names), dir = "v", ncol = 1) + </span></span>
+<span id="cb71-13"><a href="#cb71-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="fu">expression</span>(<span class="fu">paste</span>(<span class="fu">italic</span>(<span class="st">" Pocillopora "</span>), <span class="st">"spp."</span>))) <span class="sc">+</span></span>
+<span id="cb71-14"><a href="#cb71-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> cld, <span class="at">y =</span> upper.ci), <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb71-15"><a href="#cb71-15" aria-hidden="true" tabindex="-1"></a>  <span class="co">#scale_y_log10(expression(paste("Colony Size (", cm^2, ")"), limits = c(0, 100000))) +</span></span>
+<span id="cb71-16"><a href="#cb71-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb71-17"><a href="#cb71-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">hjust =</span> <span class="fl">0.50</span>),</span>
+<span id="cb71-18"><a href="#cb71-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">strip.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"#FFFFFF"</span>, <span class="at">color =</span> <span class="cn">NA</span>),    </span>
+<span id="cb71-19"><a href="#cb71-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"#FFFFFF"</span>, <span class="at">color =</span> <span class="cn">NA</span>),</span>
+<span id="cb71-20"><a href="#cb71-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.major.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb71-21"><a href="#cb71-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.minor.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb71-22"><a href="#cb71-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.minor.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb71-23"><a href="#cb71-23" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.major.y =</span> <span class="fu">element_line</span>(<span class="at">color =</span> <span class="st">"#b2b2b2"</span>),</span>
+<span id="cb71-24"><a href="#cb71-24" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.spacing.x =</span> <span class="fu">unit</span>(<span class="dv">1</span>, <span class="st">"cm"</span>),</span>
+<span id="cb71-25"><a href="#cb71-25" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.spacing.y =</span> <span class="fu">unit</span>(<span class="fl">0.5</span>, <span class="st">"cm"</span>),</span>
+<span id="cb71-26"><a href="#cb71-26" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.spacing =</span> <span class="fu">unit</span>(<span class="dv">1</span>, <span class="st">"lines"</span>),</span>
+<span id="cb71-27"><a href="#cb71-27" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.ticks =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb71-28"><a href="#cb71-28" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">"top"</span>,</span>
+<span id="cb71-29"><a href="#cb71-29" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>),</span>
+<span id="cb71-30"><a href="#cb71-30" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>),</span>
+<span id="cb71-31"><a href="#cb71-31" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.title =</span> <span class="fu">element_blank</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
 ℹ Please use `linewidth` instead.</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>poci_size.gg.barplot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>poci_cover.ggbarplot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="percent_cover_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="672"></p>
+<p><img src="percent_cover_files/figure-html/unnamed-chunk-53-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 
 
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
