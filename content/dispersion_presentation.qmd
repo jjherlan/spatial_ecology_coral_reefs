@@ -4,7 +4,3 @@ author: "jjh"
 format: revealjs
 editor: visual
 ---
-
-## Slide 1
-
-## Slide 2
