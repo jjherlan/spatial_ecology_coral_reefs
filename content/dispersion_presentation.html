@@ -339,34 +339,36 @@ jjh
 <section id="different-patterns-of-dispersion" class="slide level2 smaller incremental">
 <h2>Different patterns of dispersion</h2>
 <ul>
-<li>Environmental heterogeneity</li>
+<li class="fragment">Environmental heterogeneity</li>
 </ul>
 </section>
 <section class="slide level2">
 
-
-<img data-src="rpn_wave_fig_c.png" class="r-stretch"></section>
-<section class="slide level2">
-
-
-<img data-src="rpn_wave_power_fig2.png" class="r-stretch"></section>
+<div class="columns">
+<div class="column" style="width:40%;">
+<p>Left column</p>
+</div><div class="column" style="width:60%;">
+<p>Right column</p>
+</div>
+</div>
+</section>
 <section class="slide level2">
 
 <div class="columns">
-<div class="column" style="width:60%;">
-<p>Left column</p>
-<div class="cell">
-<div class="cell-output-display">
-<p><img data-src="rpn_wave_fig_c.png"></p>
+<div class="column" style="width:40%;">
+<p>Left2 column</p>
+</div><div class="column" style="width:60%;">
+<p>Right2 column</p>
 </div>
 </div>
-</div><div class="column" style="width:40%;">
-<p>Right column</p>
-<div class="cell">
-<div class="cell-output-display">
-<p><img data-src="rpn_wave_power_fig2.png"></p>
-</div>
-</div>
+</section>
+<section class="slide level2">
+
+<div class="columns">
+<div class="column" style="width:40%;">
+<p>Left3 column</p>
+</div><div class="column" style="width:60%;">
+<p>Right3 column</p>
 </div>
 </div>
 
@@ -585,44 +587,6 @@ jjh
         ]
       });
     </script>
-    
-    <script>
-      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
-      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
-      // slide changes (different for each slide format).
-      (function () {
-        // dispatch for htmlwidgets
-        function fireSlideEnter() {
-          const event = window.document.createEvent("Event");
-          event.initEvent("slideenter", true, true);
-          window.document.dispatchEvent(event);
-        }
-
-        function fireSlideChanged(previousSlide, currentSlide) {
-          fireSlideEnter();
-
-          // dispatch for shiny
-          if (window.jQuery) {
-            if (previousSlide) {
-              window.jQuery(previousSlide).trigger("hidden");
-            }
-            if (currentSlide) {
-              window.jQuery(currentSlide).trigger("shown");
-            }
-          }
-        }
-
-        // hookup for slidy
-        if (window.w3c_slidy) {
-          window.w3c_slidy.add_observer(function (slide_num) {
-            // slide_num starts at position 1
-            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
-          });
-        }
-
-      })();
-    </script>
-
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
       const toggleBodyColorMode = (bsSheetEl) => {
