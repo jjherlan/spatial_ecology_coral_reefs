@@ -7,15 +7,15 @@ format:
 editor: visual
 ---
 
-::: {.incremental}
+::: incremental
 ## Different patterns of dispersion {.smaller}
 
 -   Environmental heterogeneity
 :::
 
-----
+------------------------------------------------------------------------
 
-:::: {.columns}
+::: columns
 ::: {.column width="40%"}
 Left column
 :::
@@ -23,11 +23,11 @@ Left column
 ::: {.column width="60%"}
 Right column
 :::
-::::
+:::
 
-----
+------------------------------------------------------------------------
 
-:::: {.columns}
+::: columns
 ::: {.column width="100%"}
 ![](rpn_ortho_trace_centroids.png){.absolute top="0" left="0" width="350" height="750"}
 :::
@@ -35,12 +35,11 @@ Right column
 ::: {.column width="100%"}
 ![](rpn_quadrat_count.png){.absolute top="0" right="0" width="600" height="400"}
 :::
-::::
+:::
 
-----
+------------------------------------------------------------------------
 
-::: {#tbl-panel layout-ncol=1}
-  
+::: {#tbl-panel layout-ncol="1"}
 | Site              | $X^{2}$ | $df$ | $p$-value | $n$ points | Avg. intensity |
 |-------------------|:--------|:-----|:----------|:-----------|:---------------|
 | North (Anakena)   | 397.09  | 249  | \<0.001   | 136        | 0.544          |
@@ -51,13 +50,12 @@ Right column
 
 Main Caption
 :::
-            
+
 See @tbl-panel for details, especially @tbl-first.
 
-:::
-----
+## :::
 
-:::: {.columns}
+::: columns
 ::: {.column width="40%"}
 ![](poci_size_hist.png){.absolute top="0" left="0" width="375" height="350"}
 :::
@@ -65,4 +63,4 @@ See @tbl-panel for details, especially @tbl-first.
 ::: {.column width="60%"}
 ![](rpn_poci_size_LAI.png){.absolute top="10" right="10" width="400" height="300"}
 :::
-::::
+:::
