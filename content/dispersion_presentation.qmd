@@ -38,27 +38,28 @@ Right column
 :::
 
 ------------------------------------------------------------------------
-
-::: {#tbl-panel layout-ncol=2}
+::: {#tbl-panel layout-ncol=2 }
+    
 | Site              | $X^{2}$ | $df$ | $p$-value | $n$ points | Avg. intensity |
 |-------------------|:--------|:-----|:----------|:-----------|:---------------|
 | North (Anakena)   | 397.09  | 249  | \<0.001   | 136        | 0.544          |
 | West (Manavai)    | 1394.1  | 249  | \<0.001   | 372        | 1.488          |
 | Southeast (Vaihu) | 308.8   | 249  | \<0.001   | 3131       | 12.524         |
-
+      
+      
 : First Table {#tbl-first}
-
+        
 | Col1 | Col2 | Col3 |
 |------|------|------|
 | A    | B    | C    |
 | E    | F    | G    |
 | A    | G    | G    |
-
+          
 : Second Table {#tbl-second}
-
+            
 Main Caption
 :::
-
+              
 See @tbl-panel for details, especially @tbl-second.
 
 ------------------------------------------------------------------------
