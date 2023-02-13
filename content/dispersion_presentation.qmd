@@ -39,7 +39,7 @@ Right column
 
 ------------------------------------------------------------------------
 
-::: {#tbl-panel layout-ncol=1}
+::: {#tbl-panel layout-ncol=2}
 | Site              | $X^{2}$ | $df$ | $p$-value | $n$ points | Avg. intensity |
 |-------------------|:--------|:-----|:----------|:-----------|:---------------|
 | North (Anakena)   | 397.09  | 249  | \<0.001   | 136        | 0.544          |
@@ -47,6 +47,14 @@ Right column
 | Southeast (Vaihu) | 308.8   | 249  | \<0.001   | 3131       | 12.524         |
 
 : First Table {#tbl-first}
+
+| Col1 | Col2 | Col3 |
+|------|------|------|
+| A    | B    | C    |
+| E    | F    | G    |
+| A    | G    | G    |
+
+: Second Table {#tbl-second}
 
 Main Caption
 :::
