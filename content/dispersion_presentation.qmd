@@ -33,13 +33,14 @@ Right column
 
 :::: {.columns}
 
-::: {.column width="40%"}
+::: {.column width = "25%"}
 Left2 column
-![](rpn_ortho_trace_centroids.png){.fragment width = "350" height = "750"}
+![](rpn_ortho_trace_centroids.png)
 :::
 
-::: {.column width="60%"}
+::: {.column width = "50%"}
 Right2 column
+![](rpn_quadrat_count.png)
 :::
 
 ::::
