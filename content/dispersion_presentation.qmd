@@ -52,7 +52,7 @@ Right column
 Main Caption
 :::
             
-See @tbl-panel for details, especially @tbl-second.
+See @tbl-panel for details, especially @tbl-first.
 
 :::
 ----
