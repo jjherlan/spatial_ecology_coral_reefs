@@ -52,7 +52,6 @@ knitr::include_graphics("rpn_wave_power_fig2.png")
 ::::
 
 ----
-----
 :::: {.columns}
 
 ::: {.column width="60%"}
