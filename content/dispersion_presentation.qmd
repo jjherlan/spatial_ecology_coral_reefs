@@ -1,15 +1,13 @@
 ---
 title: "Pocilloporid Dispersion at Rapa Nui"
 author: "jjh"
-format: revealjs
+format: 
+  revealjs:
+    incremental: true
 editor: visual
 ---
 
-```{r, include = FALSE}
-require(knitr)
-```
-
-::: incremental
+::: {.incremental}
 
 ## Different patterns of dispersion {.smaller}
 
@@ -18,75 +16,43 @@ require(knitr)
 :::
 
 ----
-```{r dpi = 72}
-knitr::include_graphics("rpn_wave_fig_c.png")
-```
 
-----
-```{r dpi = 72}
-knitr::include_graphics("rpn_wave_power_fig2.png")
-```
-
-----
 :::: {.columns}
 
-::: {.column width="60%"}
+::: {.column width="40%"}
 Left column
-
-```{r dpi = 72}
-knitr::include_graphics("rpn_wave_fig_c.png")
-```
-
 :::
 
-::: {.column width="40%"}
-
+::: {.column width="60%"}
 Right column
-
-```{r dpi = 72}
-knitr::include_graphics("rpn_wave_power_fig2.png")
-```
-
 :::
 
 ::::
 
 ----
+
 :::: {.columns}
 
-::: {.column width="60%"}
-Left column
-
-```{r dpi = 72}
-knitr::include_graphics("rpn_ortho_trace_centroids.png")
-```
-
+::: {.column width="40%"}
+Left2 column
 :::
 
-::: {.column width="40%"}
-
-Right column
-
-```{r dpi = 72}
-knitr::include_graphics("rpn_ortho_trace_centroids.png")
-```
-
+::: {.column width="60%"}
+Right2 column
 :::
 
 ::::
 
+----
 
+:::: {.columns}
 
+::: {.column width="40%"}
+Left3 column
+:::
 
+::: {.column width="60%"}
+Right3 column
+:::
 
-
-
-
-
-
-
-
-
-
-
-
+::::
