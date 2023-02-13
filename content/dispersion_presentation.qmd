@@ -51,7 +51,30 @@ knitr::include_graphics("rpn_wave_power_fig2.png")
 
 ::::
 
+----
+----
+:::: {.columns}
 
+::: {.column width="60%"}
+Left column
+
+```{r dpi = 72}
+knitr::include_graphics("rpn_ortho_trace_centroids.png")
+```
+
+:::
+
+::: {.column width="40%"}
+
+Right column
+
+```{r dpi = 72}
+knitr::include_graphics("rpn_ortho_trace_centroids.png")
+```
+
+:::
+
+::::
 
 
 
