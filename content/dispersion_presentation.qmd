@@ -48,11 +48,11 @@ Right column
 :::: {.columns}
 
 ::: {.column width="40%"}
-Left3 column
+![](poci_size_hist.png){.absolute top=0 left=0 width="375" height="350"}
 :::
 
 ::: {.column width="60%"}
-Right3 column
+![](rpn_poci_size_LAI.png){.absolute top=10 right=10 width="400" height="300"}
 :::
 
 ::::
