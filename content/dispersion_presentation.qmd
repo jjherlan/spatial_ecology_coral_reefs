@@ -35,6 +35,7 @@ Right column
 
 ::: {.column width="40%"}
 Left2 column
+![](rpn_ortho_trace_centroids.png){.fragment width = "350" height = "750"}
 :::
 
 ::: {.column width="60%"}
