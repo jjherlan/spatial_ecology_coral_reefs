@@ -58,24 +58,23 @@ p_cover = read_csv('LSMclassGrid.csv') %>%
   mutate_at(vars(Site, cover, plot_id), factor)
 ```
 
-<div class="fold s">
+::: {.fold .s}
 ```{r}
 plot(pland_decimal ~ Site, data = p_cover)
 ```
-</div>
+:::
 
 ## Methods for analyzing percent cover of pocilloporid coral
 
-One option for dealing with the 0 and 1 values is to transform them to be slightly less than one or more than zero. This approach assumes that the data are consistent with a common beta distribution. We fit five models to the data: three variations on the beta model and two linear model approaches. 
+One option for dealing with the 0 and 1 values is to transform them to be slightly less than one or more than zero. This approach assumes that the data are consistent with a common beta distribution. We fit five models to the data: three variations on the beta model and two linear model approaches.
 
-A beta regression assuming a common spatial aggregation $\delta$ or precision parameter ($\phi$) (object named: mod.beta1). Notice that $\delta= \frac{1}{1+\phi}$ and $\phi=\frac{(1-\delta)}{\delta}$. A beta regression assuming each year had a different $\phi$ parameter (object named: mod.beta2). 
+A beta regression assuming a common spatial aggregation $\delta$ or precision parameter ($\phi$) (object named: mod.beta1). Notice that $\delta= \frac{1}{1+\phi}$ and $\phi=\frac{(1-\delta)}{\delta}$. A beta regression assuming each year had a different $\phi$ parameter (object named: mod.beta2).
 
 Another option for modeling the data is to use a zero-one augmented beta model. Currently, the betareg package does not implement this model directly. Therefore, we follow the theoretical results shown in Ospina and Ferrari (2010) that suggest a three-part model can be fit to the data. Basically, we use logistic regression with response an indicator variable for whether or not the plot had zero recorded cover, another logistic regression with response an indicator for whether or not the plot had 100$\%$ recorded percent cover, and then the beta regression is used to model the continuous percent cover observations ranging from greater than 0 and less than 1.
 
 Other options based on assuming that the residuals are normally distributed is to use a linear model with a logit-transformed response (object named: mod.lmlogit) or a linear model with response untransformed proportions (object named: mod.lmraw).
 
-For comparison this applies a logit-transformation to the empirical proportions and
-then uses a standard linear regression model.
+For comparison this applies a logit-transformation to the empirical proportions and then uses a standard linear regression model.
 
 ```{r}
 p_cover_mod.aov1 <- aov(pland_decimal ~ Site, data = p_cover)
@@ -139,15 +138,13 @@ Anova(p_cover_mod.glm1, type = "III")
 
 ## Interpreting results for pocilloporid corals
 
-In order to choose between the beta regression model with a common $\phi$ (Table B2) versus different $\phi$ (Table B3), I used AIC but a likelihood ratio or wald test could be used. Using AIC, the model with varying $\phi$ values had a lower AIC (-464 compared to -432) and therefore more support. We consider our simple two year or group case to explain how to interpret the output from beta regression. 
+In order to choose between the beta regression model with a common $\phi$ (Table B2) versus different $\phi$ (Table B3), I used AIC but a likelihood ratio or wald test could be used. Using AIC, the model with varying $\phi$ values had a lower AIC (-464 compared to -432) and therefore more support. We consider our simple two year or group case to explain how to interpret the output from beta regression.
 
 The model we fit assumes $$logit(\mu_j)=\beta_0+\beta_1 Ind_{grp2},$$ where $Ind_{grp2}$ is an indicator for group 2 and $j$ denotes the group membership so $j=1$ or $j=2$. We have $logit(\mu_2)-logit(\mu_1)=\beta_1$, which is equivalent to $$log(\frac{\mu_2}{1-\mu_2})-log(\frac{\mu_1}{1-\mu_1})= \beta_1.$$
 
-The $\frac{\mu_j}{1-\mu_j}$ is interpreted as the odds of proportion cover in group $j$. Therefore, 
+The $\frac{\mu_j}{1-\mu_j}$ is interpreted as the odds of proportion cover in group $j$. Therefore,
 
-$$log(\frac{\mu_2}{1-\mu_2}/\frac{\mu_1}{1-\mu_1})=\beta_1$$
-is the log- odds ratio of cover in group 2 compared to group 1, 
-$$(\frac{\mu_2}{1-\mu_2}/\frac{\mu_1}{1-\mu_1})=exp(\beta_1).$$
+$$log(\frac{\mu_2}{1-\mu_2}/\frac{\mu_1}{1-\mu_1})=\beta_1$$ is the log- odds ratio of cover in group 2 compared to group 1, $$(\frac{\mu_2}{1-\mu_2}/\frac{\mu_1}{1-\mu_1})=exp(\beta_1).$$
 
 Then $exp(\beta_1)$ is the factor increase/decrease in odds of proportion cover for group 2 compared to group 1, where $exp(\beta_1)>1$ is an increase and $exp(\beta_1)<1$ is a decrease, and $exp(\beta_1) \approx 1$ means essentially no change.
 
@@ -188,14 +185,16 @@ print(xtable(summary(p_cover_mod.glm1), digits = 3, caption = " . "), type = "ht
 ```
 
 <!-- html table generated in R 4.2.2 by xtable 1.8-4 package -->
+
 <!-- Tue Jan 24 15:48:36 2023 -->
-<table border=1>
-<caption align="bottom">  .  </caption>
-<tr> <th>  </th> <th> Estimate </th> <th> Std. Error </th> <th> z value </th> <th> Pr(&gt;|z|) </th>  </tr>
-  <tr> <td align="right"> (Intercept) </td> <td align="right"> -4.129 </td> <td align="right"> 0.822 </td> <td align="right"> -5.025 </td> <td align="right"> 0.000 </td> </tr>
-  <tr> <td align="right"> Siteman </td> <td align="right"> 1.225 </td> <td align="right"> 0.929 </td> <td align="right"> 1.318 </td> <td align="right"> 0.187 </td> </tr>
-  <tr> <td align="right"> Sitevhu </td> <td align="right"> 3.233 </td> <td align="right"> 0.833 </td> <td align="right"> 3.880 </td> <td align="right"> 0.000 </td> </tr>
-  </table>
+
+|             | Estimate | Std. Error | z value | Pr(\>\|z\|) |
+|-------------|----------|------------|---------|-------------|
+| (Intercept) | -4.129   | 0.822      | -5.025  | 0.000       |
+| Siteman     | 1.225    | 0.929      | 1.318   | 0.187       |
+| Sitevhu     | 3.233    | 0.833      | 3.880   | 0.000       |
+
+: .
 
 ```{r, eval = TRUE, echo=FALSE, fig.cap='Example diagnostic plots for beta regression)', fig.width = 7, fig.height = 7}
 
@@ -246,7 +245,6 @@ qqtest(residuals(p_cover_mod.beta2, type = "sweighted2"), dist = 'normal',main= 
 qqtest(residuals(p_cover_mod.lm1, type = "response"),dist = 'normal',main= "Linear Model with Raw Proportions")
 ```
 
-
 ```{r, eval = TRUE, echo = FALSE, fig.cap = "Comparison of default qqplots for beta and linear models. Beta models use weighted residuals 2 recommended in \\cite{Espinheira} and linear model are the response residuals.", fig.width=7,fig.height}
 
 par(mfrow = c(2,2), pty = 'm')
@@ -264,24 +262,23 @@ plot(p_cover_mod.beta2, which = 5, type = "sweighted2", main = "")
 plot(p_cover_mod.lm2, which = 2, main = "")
 ```
 
-
 ### Classical Analysis
+
 *From* Douma & Weedon (2019)
 
-<div class="fold o">
+::: {.fold .o}
 ```{r, eval = T, collapse = T, message = FALSE}
 p_cover.aov1 <- aov(pland_decimal ~ Site, data = p_cover)
 summary(p_cover.aov1)
 ```
-</div>
+:::
 
-
-<div class="fold o">
+::: {.fold .o}
 ```{r, eval = T, collapse = T, message = FALSE}
 p_cover.aov2 <- aov(pland_decimal ~ Site + Error(plot_id), data = p_cover)
 summary(p_cover.aov2)
 ```
-</div>
+:::
 
 A very similar analysis can be conducted using the library `nlme` for mixed effects modeling.
 
@@ -353,7 +350,7 @@ According to the likelihood-ratio test there is a significant difference betwen 
 
 It is useful to plot the predictions derived from the model and compare them to the observed data. First we define two new functions to allow us to use the `dbeta` and `rbeta` functions with the $\mu$ and $\phi$ parameterization.
 
-<div class="fold o">
+::: {.fold .o}
 ```{r}
 
 dbeta2 <- function(X, mu, phi, ...) {
@@ -364,11 +361,11 @@ rbeta2 <- function(N, mu, phi, ...) {
   rbeta(N, shape1 = mu * phi, shape2 = (1 - mu) * phi, ...)
 }
 ```
-</div>
+:::
 
 With this function we can plot the distributions corresponding to the MLE parameters for each treatment :
 
-<div class="fold s">
+::: {.fold .s}
 ```{r}
 # extract coefficients of beta regression model
 coefs.bm1 <- coef(p_cover.bm1)
@@ -402,8 +399,7 @@ rug(p_cover$pland_decimal[p_cover$Site == "vhu"], col="blue", pos = 9.5, side = 
 
 legend("topright", lwd = 2, lty = c(2, 1, 1, 1), col = c("black", "red", "blue"), legend = c("Anakena", "Manavai", "Vaihu"), bty = "n")
 ```
-
-</div>
+:::
 
 We have added the original observations as ticks of the appropriate colour, and back-transformed the densities to allow fair visual comparisons between the fitted distributions and the original data using:
 
@@ -425,14 +421,13 @@ The spread of the standardized residuals is strongly related to the fitted value
 
 We can repeat the above analysis using a model that allows $\phi$ to vary with predictors. This is achieved by adding a second part to the right hand side of the formula, separated with the `|` symbol. All covariates to the right of this `|` symbol will be used to model $\phi$. Note that they do not have to be the same covariates used to model $\mu$ (specified to the left of the `|`).
 
-
 ```{r}
 p_cover.bm2 <- betareg(pland_decimal ~ Site | Site, data = p_cover)
 
 summary(p_cover.bm2)
 ```
 
-From the `Coefficients` table we see that the estimate for $\mu$ in the Control treatment is `inv.logit(-4.1313)` = `X` = X\% coral cover. Moreover, the estimates of $\mu$ for the other two `Sites` (treatments) are each significantly higher.
+From the `Coefficients` table we see that the estimate for $\mu$ in the Control treatment is `inv.logit(-4.1313)` = `X` = X% coral cover. Moreover, the estimates of $\mu$ for the other two `Sites` (treatments) are each significantly higher.
 
 From the `Phi coefficients` table we can see that the maximum likelihood estimate of the precision is highest in the Control treatment and is reduced significantly relative to this baseline in each of other treatment groups. In other words, the model fit confirms our impression from the previous two graphs that a fixed $\phi$ model overestimates variance in the Control treatment, and underestimates it in the other three treatments.
 
@@ -443,33 +438,29 @@ lmtest::lrtest(p_cover.bm1, p_cover.bm2)
 lmtest::lrtest(p_cover.bmnull, p_cover.bm1, p_cover.bm2)
 ```
 
-The likelihood ratio tests indicate that the model with varying $\phi$  is significantly better than both the previous fixed $\phi$ model, and the null model. In this case the conclusion is that including the model for $\phi$ led to a better fitting model than both the fixed $\phi$ model and the null model.
-
+The likelihood ratio tests indicate that the model with varying $\phi$ is significantly better than both the previous fixed $\phi$ model, and the null model. In this case the conclusion is that including the model for $\phi$ led to a better fitting model than both the fixed $\phi$ model and the null model.
 
 It is possible to apply post-hoc tests to identify which pariwise contrasts of treatments levels are significant.
-
 
 ```{r}
 test(pairs(emmeans(p_cover.bm2, ~ Site, mode = "link")))
 ```
 
-
-We conclude from this analysis that each `Site` treatment is significantly different to each other. This is an important point: **correct modeling of $\phi$ can often be important for accurate inference on $\mu$.**
+We conclude from this analysis that each `Site` treatment is significantly different to each other. This is an important point: **correct modeling of** $\phi$ can often be important for accurate inference on $\mu$.
 
 Residual plots confirm our conclusion that `p_cover.bm2` provides a better fit to the observed data than `p_cover.bm1`. This is seen by the more even spread of residuals in the second plot below.
 
-
-<div class="fold s">
+::: {.fold .s}
 ```{r fig.height=10}
 par(mfrow = c(2, 1), oma = c(0, 0, 0, 0), mar = c(4, 4, 0.2, 0.2))
 plot(residuals(p_cover.bm1) ~ fitted(p_cover.bm1))
 plot(residuals(p_cover.bm2) ~ fitted(p_cover.bm2))
 ```
-</div>
+:::
 
 As above we can plot the MLE distributions for each of the treatments, based on the variable $\phi$ model:
 
-<div class="fold s">
+::: {.fold .s}
 ```{r}
 # plot distributions
 muphi.bm2 <- unique(data.frame(
@@ -478,9 +469,9 @@ muphi.bm2 <- unique(data.frame(
   treatment = p_cover$Site
 ))
 ```
-</div>
+:::
 
-<div class="fold s">
+::: {.fold .s}
 ```{r}
 plot(x.range.bt , dbeta2(x.range, muphi.bm2[1, 1], muphi.bm2[1, 2]),
      type="l",
@@ -493,11 +484,11 @@ for (i in 2:3) {
 
 legend("topright", lwd = 2, lty = c(2, 1, 1, 1), col = c("black", "red", "blue"), legend = c("Anakena", "Manavai", "Vaihu"), bty = "n")
 ```
-</div>
+:::
 
 Due to the much narrower variance of the Control treatment group in this model, the probability density plots of the other treatments are rather distorted. The graph below rescales the Y axis for comparison to the fixed $\phi$ model above.
 
-<div class="fold s">
+::: {.fold .s}
 ```{r}
 plot(x.range.bt , dbeta2(x.range, muphi.bm2[1, "mu"], muphi.bm2[1, "phi"]),
      type="l",
@@ -516,7 +507,7 @@ rug(p_cover$pland_decimal[p_cover$Site == "man"], col = "red", pos = 9.75, side 
 
 rug(p_cover$pland_decimal[p_cover$Site == "vhu"], col = "blue", pos = 9.5, side = 3, lwd = 1.5)
 ```
-</div>
+:::
 
 These plots support the conclusion from the likelihood ratio tests above. The best-fit distributions from the variable $\phi$ model better match the observed differences in dispersion between the different groups.
 
@@ -596,5 +587,3 @@ poci_cover.ggbarplot <- ggplot(poci_cover2, aes(x = location, y = mean)) +
 ```{r}
 poci_cover.ggbarplot
 ```
-
-

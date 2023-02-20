@@ -64,3 +64,41 @@ See @tbl-panel for details, especially @tbl-first.
 ![](rpn_poci_size_LAI.png){.absolute top="10" right="10" width="400" height="300"}
 :::
 :::
+
+----
+
+::: incremental
+## Percent cover {.smaller}
+
+-   Environmental heterogeneity
+:::
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
