@@ -420,10 +420,73 @@ jjh
 </div>
 </div>
 </div>
-<p>See <a href="#/tbl-panel">Table&nbsp;1</a> for details, especially <a href="#/tbl-first">Table&nbsp;1 (a)</a>.</p>
+<p>See <a href="#/tbl-panel">Table&nbsp;1</a> for details, especially <a href="#/tbl-first">Table&nbsp;2</a>.</p>
 </section>
-<section id="section" class="slide level2">
-<h2>:::</h2>
+<section class="slide level2">
+
+<div class="panel-tabset">
+<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Tab A</a></li><li><a href="#tabset-1-2">Tab B</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1">
+<p><img data-src="rpn_quadrat_count.png" class="absolute" style="top: 0px; right: 0px; width: 600px; height: 400px; "></p>
+</div>
+<div id="tabset-1-2">
+<div id="tbl-first">
+<table>
+<caption>Table&nbsp;2: First Table</caption>
+<colgroup>
+<col style="width: 26%">
+<col style="width: 12%">
+<col style="width: 8%">
+<col style="width: 15%">
+<col style="width: 16%">
+<col style="width: 21%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Site</th>
+<th style="text-align: left;"><span class="math inline">\(X^{2}\)</span></th>
+<th style="text-align: left;"><span class="math inline">\(df\)</span></th>
+<th style="text-align: left;"><span class="math inline">\(p\)</span>-value</th>
+<th style="text-align: left;"><span class="math inline">\(n\)</span> points</th>
+<th style="text-align: left;">Avg. intensity</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>North (Anakena)</td>
+<td style="text-align: left;">397.09</td>
+<td style="text-align: left;">249</td>
+<td style="text-align: left;">&lt;0.001</td>
+<td style="text-align: left;">136</td>
+<td style="text-align: left;">0.544</td>
+</tr>
+<tr class="even">
+<td>West (Manavai)</td>
+<td style="text-align: left;">1394.1</td>
+<td style="text-align: left;">249</td>
+<td style="text-align: left;">&lt;0.001</td>
+<td style="text-align: left;">372</td>
+<td style="text-align: left;">1.488</td>
+</tr>
+<tr class="odd">
+<td>Southeast (Vaihu)</td>
+<td style="text-align: left;">308.8</td>
+<td style="text-align: left;">249</td>
+<td style="text-align: left;">&lt;0.001</td>
+<td style="text-align: left;">3131</td>
+<td style="text-align: left;">12.524</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Main Caption</p>
+</div>
+</div>
+</div>
+</section>
+<section class="slide level2">
+
 <div class="columns">
 <div class="column" style="width:40%;">
 <p><img data-src="poci_size_hist.png" class="absolute" style="top: 0px; left: 0px; width: 375px; height: 350px; "></p>
@@ -434,17 +497,120 @@ jjh
 </section>
 <section class="slide level2">
 
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Raw data (not transformed)</strong></p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = pland_decimal ~ Site, data = p_cover)
+
+Residuals:
+      Min        1Q    Median        3Q       Max 
+-0.267087 -0.030588 -0.003669  0.032792  0.212867 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 0.015845   0.006793   2.333 0.020101 *  
+Siteman     0.036108   0.009312   3.877 0.000121 ***
+Sitevhu     0.274054   0.007979  34.345  &lt; 2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.06621 on 450 degrees of freedom
+Multiple R-squared:  0.7882,    Adjusted R-squared:  0.7873 
+F-statistic: 837.5 on 2 and 450 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell">
+<div class="cell-output-display">
+<p><img data-src="dispersion_presentation_files/figure-revealjs/unnamed-chunk-5-1.png" width="960"></p>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Anova Table (Type III tests)
+
+Response: pland_decimal
+            Sum Sq  Df  F value Pr(&gt;F)    
+(Intercept) 0.0239   1   5.4417 0.0201 *  
+Site        7.3418   2 837.5053 &lt;2e-16 ***
+Residuals   1.9724 450                    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+</div>
+</div>
 </section>
-<section id="percent-cover" class="slide level2 smaller incremental">
-<h2>Percent cover</h2>
-<ul>
-<li class="fragment">Environmental heterogeneity</li>
-</ul>
+<section class="slide level2">
+
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>Left column</p>
+</div><div class="column" style="width:50%;">
+<p>Right column</p>
+</div>
+</div>
 </section>
+<section class="slide level2">
+
+<p>::: columns</p>
+<p>::: {.column width=“50%”}</p>
+<p style="font-size:80%;">
+</p><p><strong>Logit-transformation</strong></p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = logit(pland_decimal) ~ Site, data = p_cover)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-8.3048 -0.2632  0.1011  0.4540  2.4202 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  -4.6747     0.1099 -42.535  &lt; 2e-16 ***
+Siteman       1.2334     0.1507   8.186 2.81e-15 ***
+Sitevhu       3.7312     0.1291  28.900  &lt; 2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.071 on 450 degrees of freedom
+Multiple R-squared:  0.6875,    Adjusted R-squared:  0.6862 
+F-statistic: 495.1 on 2 and 450 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<p>:::</p>
+<div class="column" style="width:50%;">
+<div class="cell">
+<div class="cell-output-display">
+<p><img data-src="dispersion_presentation_files/figure-revealjs/unnamed-chunk-8-1.png" width="960"></p>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Anova Table (Type III tests)
+
+Response: logit(pland_decimal)
+             Sum Sq  Df F value    Pr(&gt;F)    
+(Intercept) 2075.99   1  1809.2 &lt; 2.2e-16 ***
+Site        1136.20   2   495.1 &lt; 2.2e-16 ***
+Residuals    516.35 450                      
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+</div>
+<p>:::</p>
 
 <div class="footer footer-default">
 
 </div>
+</section>
     </div>
   </div>
 
@@ -656,6 +822,44 @@ jjh
         ]
       });
     </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
       const toggleBodyColorMode = (bsSheetEl) => {

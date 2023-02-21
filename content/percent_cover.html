@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="jjh">
-<meta name="dcterms.date" content="2023-02-20">
+<meta name="dcterms.date" content="2023-02-21">
 
 <title>NOAA quarto simple - Percent Cover</title>
 <style>
@@ -257,7 +257,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">February 20, 2023</p>
+      <p class="date">February 21, 2023</p>
     </div>
   </div>
   
@@ -394,6 +394,7 @@ Residuals    516.35 450
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
+<p><strong>Beta Regression I</strong></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>p_cover_mod.beta1 <span class="ot">&lt;-</span> <span class="fu">betareg</span>(pland_decimal <span class="sc">~</span> Site, <span class="at">data =</span> p_cover, <span class="at">link =</span> <span class="fu">c</span>(<span class="st">"logit"</span>), </span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>                             <span class="at">link.phi =</span> <span class="cn">NULL</span>, <span class="at">type =</span> <span class="fu">c</span>(<span class="st">"ML"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -459,14 +460,14 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </section>
 <section id="interpreting-results-for-pocilloporid-corals" class="level2">
 <h2 class="anchored" data-anchor-id="interpreting-results-for-pocilloporid-corals">Interpreting results for pocilloporid corals</h2>
-<p>In order to choose between the beta regression model with a common <span class="math inline">\(\phi\)</span> (Table B2) versus different <span class="math inline">\(\phi\)</span> (Table B3), I used AIC but a likelihood ratio or wald test could be used. Using AIC, the model with varying <span class="math inline">\(\phi\)</span> values had a lower AIC (-464 compared to -432) and therefore more support. We consider our simple two year or group case to explain how to interpret the output from beta regression.</p>
+<p>In order to choose between the beta regression model with a common <span class="math inline">\(\phi\)</span> versus different <span class="math inline">\(\phi\)</span>, I used AIC but a likelihood ratio or wald test could be used. Using AIC, the model with varying <span class="math inline">\(\phi\)</span> values had a lower AIC (-464 compared to -432) and therefore more support. We consider our simple two year or group case to explain how to interpret the output from beta regression.</p>
 <p>The model we fit assumes <span class="math display">\[logit(\mu_j)=\beta_0+\beta_1 Ind_{grp2},\]</span> where <span class="math inline">\(Ind_{grp2}\)</span> is an indicator for group 2 and <span class="math inline">\(j\)</span> denotes the group membership so <span class="math inline">\(j=1\)</span> or <span class="math inline">\(j=2\)</span>. We have <span class="math inline">\(logit(\mu_2)-logit(\mu_1)=\beta_1\)</span>, which is equivalent to <span class="math display">\[log(\frac{\mu_2}{1-\mu_2})-log(\frac{\mu_1}{1-\mu_1})= \beta_1.\]</span></p>
 <p>The <span class="math inline">\(\frac{\mu_j}{1-\mu_j}\)</span> is interpreted as the odds of proportion cover in group <span class="math inline">\(j\)</span>. Therefore,</p>
 <p><span class="math display">\[log(\frac{\mu_2}{1-\mu_2}/\frac{\mu_1}{1-\mu_1})=\beta_1\]</span> is the log- odds ratio of cover in group 2 compared to group 1, <span class="math display">\[(\frac{\mu_2}{1-\mu_2}/\frac{\mu_1}{1-\mu_1})=exp(\beta_1).\]</span></p>
 <p>Then <span class="math inline">\(exp(\beta_1)\)</span> is the factor increase/decrease in odds of proportion cover for group 2 compared to group 1, where <span class="math inline">\(exp(\beta_1)&gt;1\)</span> is an increase and <span class="math inline">\(exp(\beta_1)&lt;1\)</span> is a decrease, and <span class="math inline">\(exp(\beta_1) \approx 1\)</span> means essentially no change.</p>
 
 <!-- html table generated in R 4.2.2 by xtable 1.8-4 package -->
-<!-- Mon Feb 20 23:51:03 2023 -->
+<!-- Tue Feb 21 01:29:57 2023 -->
 
 <table border="1">
 <caption align="bottom">
@@ -567,7 +568,7 @@ Sitevhu
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">xtable</span>(<span class="fu">summary</span>(p_cover_mod.glm1), <span class="at">digits =</span> <span class="dv">3</span>, <span class="at">caption =</span> <span class="st">" . "</span>), <span class="at">type =</span> <span class="st">"html"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>&lt;!-- html table generated in R 4.2.2 by xtable 1.8-4 package --&gt;
-&lt;!-- Mon Feb 20 23:51:03 2023 --&gt;
+&lt;!-- Tue Feb 21 01:29:57 2023 --&gt;
 &lt;table border=1&gt;
 &lt;caption align="bottom"&gt;  .  &lt;/caption&gt;
 &lt;tr&gt; &lt;th&gt;  &lt;/th&gt; &lt;th&gt; Estimate &lt;/th&gt; &lt;th&gt; Std. Error &lt;/th&gt; &lt;th&gt; z value &lt;/th&gt; &lt;th&gt; Pr(&amp;gt;|z|) &lt;/th&gt;  &lt;/tr&gt;
