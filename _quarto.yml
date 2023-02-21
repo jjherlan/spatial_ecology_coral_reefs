@@ -53,6 +53,8 @@ website:
         text: Colony Size
       - href: content/rpn_sppa.qmd
         text: Coral Dispersion
+      - href: content/fuck_this.Rmd
+        text: Fuck This
 
 format:
   html:

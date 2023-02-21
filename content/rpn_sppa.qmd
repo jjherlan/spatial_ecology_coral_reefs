@@ -14,6 +14,14 @@ require(stars)
 require(terra)
 require(unmarked)
 require(AHMbook)
+require(png) #bring png images into R platform
+require(raster)
+require(landscapemetrics)
+require(gapminder)
+require(wesanderson)
+require(ggridges)
+require(psych)
+require(DHARMa)
 ```
 
 ```{r}
@@ -21,16 +29,21 @@ vhu_csv <- read.csv("vhu_centroids.csv")
 ```
 
 ```{r}
-vhu_csv2 <-as_tibble(vhu_csv)
+vhu_csv2 <- as_tibble(vhu_csv)
 ```
 
-```{r, include = FALSE}
-#vhu_csv2 %>%
-#  select(x, y)
+```{r, include = TRUE}
+vhu_csv2 
+```
+
+**Define window for spatial pattern analyses based on the extent defined above**
+
+```{r}
+vhu_window <- owin(c(0, 10), c(0, 25))
 ```
 
 ```{r}
-vhu_window <- owin(c(0, 10), c(0, 25), unitname = 'metre', 'metres')
+attach(vhu_window)
 ```
 
 ```{r}
@@ -69,9 +82,7 @@ contour(
 )
 ```
 
-We can also make tallies of counts of point locations based on quadrats overlaid
-on the plot. To determine whether these quadrat counts conform to CSR
-(i.e., a homogeneous Poisson process), use a simple Chi-Square test statistic.
+We can also make tallies of counts of point locations based on quadrats overlaid on the plot. To determine whether these quadrat counts conform to CSR (i.e., a homogeneous Poisson process), use a simple Chi-Square test statistic.
 
 **Quadrat counts**
 
@@ -94,5 +105,4 @@ plot(vhu_Q, add = TRUE, cex = 1)
 quadrat.test(vhu_corals, nx = 10, ny = 25, method = "Chisq")
 ```
 
-The test statistic suggests highly a non-random point pattern at the
-scale of the quadrat defined. Note that this test is more akin to a first-order point pattern analysis because it is based on the dispersion of points among sampling quadrats.
+The test statistic suggests highly a non-random point pattern at the scale of the quadrat defined. Note that this test is more akin to a first-order point pattern analysis because it is based on the dispersion of points among sampling quadrats.

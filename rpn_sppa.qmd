@@ -30,6 +30,14 @@ vhu_csv2 %>%
 ```
 
 ```{r}
+vhu_window <- owin(c(0, 10), c(0, 25))
+```
+
+```{r}
+attach(vhu_window)
+```
+
+```{r}
 vhu_corals <- ppp(vhu_csv2$x, vhu_csv2$y, window = vhu_window)
 ```
 
@@ -43,15 +51,21 @@ This summary shows there are 3131 points (pocilloporid coral colony) and provide
 
 # density plots
 
+```{r}
 plot(
   density(vhu_corals)
 )
+```
+
 
 #alter smoothing parameter
 
+```{r}
 plot(
   density(vhu_corals, 1)
 )  
+```
+
 
 #contour plot
 
