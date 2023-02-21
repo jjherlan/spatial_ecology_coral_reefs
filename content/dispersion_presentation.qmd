@@ -7,6 +7,11 @@ format:
 editor: visual
 ---
 
+```{r, include = FALSE}
+require(tidyverse)
+require(car)
+```
+
 ::: incremental
 ## Different patterns of dispersion {.smaller}
 
@@ -53,7 +58,29 @@ Main Caption
 
 See @tbl-panel for details, especially @tbl-first.
 
-## :::
+------------------------------------------------------------------------
+
+::: {.panel-tabset}
+
+### Tab A
+
+![](rpn_quadrat_count.png){.absolute top="0" right="0" width="600" height="400"}
+
+### Tab B
+
+| Site              | $X^{2}$ | $df$ | $p$-value | $n$ points | Avg. intensity |
+|-------------------|:--------|:-----|:----------|:-----------|:---------------|
+| North (Anakena)   | 397.09  | 249  | \<0.001   | 136        | 0.544          |
+| West (Manavai)    | 1394.1  | 249  | \<0.001   | 372        | 1.488          |
+| Southeast (Vaihu) | 308.8   | 249  | \<0.001   | 3131       | 12.524         |
+
+: First Table {#tbl-first}
+
+Main Caption
+
+:::
+
+----
 
 ::: columns
 ::: {.column width="40%"}
@@ -65,40 +92,85 @@ See @tbl-panel for details, especially @tbl-first.
 :::
 :::
 
-----
+------------------------------------------------------------------------
 
-::: incremental
-## Percent cover {.smaller}
+::: columns
 
--   Environmental heterogeneity
+::: {.column width="50%"}
+**Raw data (not transformed)**
+
+```{r, include = FALSE}
+p_cover = read_csv('LSMclassGrid.csv') %>% 
+  group_by(Site) %>%
+  mutate(
+    pland_decimal = pland*0.01
+  ) %>%
+  mutate_at(vars(Site, cover, plot_id), factor)
+```
+
+```{r, include = FALSE}
+plot(pland_decimal ~ Site, data = p_cover)
+```
+
+```{r}
+p_cover_mod.lm1 <- lm(pland_decimal ~ Site, data = p_cover)
+summary(p_cover_mod.lm1)
+```
 :::
 
+::: {.column width="50%"}
+```{r}
+par(mfrow = c(2, 2))
+plot(p_cover_mod.lm1)
+```
 
+```{r}
+Anova(p_cover_mod.lm1, type = "III")
+```
+:::
 
+:::
 
+------------------------------------------------------------------------
 
+::: columns
+::: {.column width="50%"}
+Left column
+:::
 
+::: {.column width="50%"}
+Right column
+:::
+:::
 
+----
 
+::: columns
 
+::: {.column width="50%"}
 
+<p style="font-size:80%;">
 
+**Logit-transformation**
 
+```{r}
+p_cover_mod.lm2 <- lm(logit(pland_decimal) ~ Site, data = p_cover)
+summary(p_cover_mod.lm2)
+```
 
+:::
 
+::: {.column width="50%"}
 
+```{r}
+par(mfrow = c(2, 2))
+plot(p_cover_mod.lm2)
+```
 
+```{r}
+Anova(p_cover_mod.lm2, type = "III")
+```
 
+:::
 
-
-
-
-
-
-
-
-
-
-
-
-
+:::

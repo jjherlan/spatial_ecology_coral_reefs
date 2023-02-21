@@ -111,6 +111,8 @@ plot(p_cover_mod.lm2)
 Anova(p_cover_mod.lm2, type = "III")
 ```
 
+**Beta Regression I**
+
 ```{r}
 p_cover_mod.beta1 <- betareg(pland_decimal ~ Site, data = p_cover, link = c("logit"), 
                              link.phi = NULL, type = c("ML"))
@@ -138,7 +140,7 @@ Anova(p_cover_mod.glm1, type = "III")
 
 ## Interpreting results for pocilloporid corals
 
-In order to choose between the beta regression model with a common $\phi$ (Table B2) versus different $\phi$ (Table B3), I used AIC but a likelihood ratio or wald test could be used. Using AIC, the model with varying $\phi$ values had a lower AIC (-464 compared to -432) and therefore more support. We consider our simple two year or group case to explain how to interpret the output from beta regression.
+In order to choose between the beta regression model with a common $\phi$ versus different $\phi$, I used AIC but a likelihood ratio or wald test could be used. Using AIC, the model with varying $\phi$ values had a lower AIC (-464 compared to -432) and therefore more support. We consider our simple two year or group case to explain how to interpret the output from beta regression.
 
 The model we fit assumes $$logit(\mu_j)=\beta_0+\beta_1 Ind_{grp2},$$ where $Ind_{grp2}$ is an indicator for group 2 and $j$ denotes the group membership so $j=1$ or $j=2$. We have $logit(\mu_2)-logit(\mu_1)=\beta_1$, which is equivalent to $$log(\frac{\mu_2}{1-\mu_2})-log(\frac{\mu_1}{1-\mu_1})= \beta_1.$$
 
