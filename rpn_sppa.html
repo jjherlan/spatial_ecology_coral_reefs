@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="jjh">
+<meta name="dcterms.date" content="2023-02-21">
 
-<title>NOAA quarto simple - NOAA quarto simple with R</title>
+<title>NOAA quarto simple - SPPA</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +22,69 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1.6em;
   vertical-align: middle;
 }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -29,7 +94,6 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./content/add-content.html" rel="next">
 <link href="./images/favicon.ico" rel="icon">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -71,7 +135,7 @@ ul.task-list li input[type="checkbox"] {
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">NOAA quarto simple with R</h1>
+      <h1 class="quarto-secondary-nav-title">SPPA</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -79,7 +143,7 @@ ul.task-list li input[type="checkbox"] {
   </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation docked overflow-auto">
     <div class="pt-lg-2 mt-2 text-center sidebar-header">
@@ -101,7 +165,7 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">Home</a>
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Home</a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -168,24 +232,43 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#github-set-up" id="toc-github-set-up" class="nav-link active" data-scroll-target="#github-set-up">GitHub Set-up</a></li>
+  <li><a href="#density-plots" id="toc-density-plots" class="nav-link active" data-scroll-target="#density-plots">density plots</a></li>
+  <li><a href="#we-can-also-make-tallies-of-counts-of-point-locations-based-on-quadrats-overlaid" id="toc-we-can-also-make-tallies-of-counts-of-point-locations-based-on-quadrats-overlaid" class="nav-link" data-scroll-target="#we-can-also-make-tallies-of-counts-of-point-locations-based-on-quadrats-overlaid">We can also make tallies of counts of point locations based on quadrats overlaid</a></li>
+  <li><a href="#on-the-plot.-to-determine-whether-these-quadrat-counts-conform-to-csr" id="toc-on-the-plot.-to-determine-whether-these-quadrat-counts-conform-to-csr" class="nav-link" data-scroll-target="#on-the-plot.-to-determine-whether-these-quadrat-counts-conform-to-csr">on the plot. To determine whether these quadrat counts conform to CSR</a></li>
+  <li><a href="#i.e.-a-homogeneous-poisson-process-use-a-simple-chi-square-test-statistic." id="toc-i.e.-a-homogeneous-poisson-process-use-a-simple-chi-square-test-statistic." class="nav-link" data-scroll-target="#i.e.-a-homogeneous-poisson-process-use-a-simple-chi-square-test-statistic.">(i.e., a homogeneous Poisson process), use a simple Chi-Square test statistic.</a></li>
+  <li><a href="#quadrat-counts" id="toc-quadrat-counts" class="nav-link" data-scroll-target="#quadrat-counts">quadrat counts</a></li>
+  <li><a href="#the-test-statistic-suggests-highly-a-non-random-point-pattern-at-the" id="toc-the-test-statistic-suggests-highly-a-non-random-point-pattern-at-the" class="nav-link" data-scroll-target="#the-test-statistic-suggests-highly-a-non-random-point-pattern-at-the">The test statistic suggests highly a non-random point pattern at the</a></li>
+  <li><a href="#scale-of-the-quadrat-defined.-note-that-this-test-is-more-akin-to-a-first-order" id="toc-scale-of-the-quadrat-defined.-note-that-this-test-is-more-akin-to-a-first-order" class="nav-link" data-scroll-target="#scale-of-the-quadrat-defined.-note-that-this-test-is-more-akin-to-a-first-order">scale of the quadrat defined. Note that this test is more akin to a first-order</a></li>
+  <li><a href="#point-pattern-analysis-because-it-is-based-on-the-dispersion-of-points-among" id="toc-point-pattern-analysis-because-it-is-based-on-the-dispersion-of-points-among" class="nav-link" data-scroll-target="#point-pattern-analysis-because-it-is-based-on-the-dispersion-of-points-among">point pattern analysis because it is based on the dispersion of points among</a></li>
+  <li><a href="#sampling-quadrats." id="toc-sampling-quadrats." class="nav-link" data-scroll-target="#sampling-quadrats.">sampling quadrats.</a></li>
   </ul>
-<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/nmfs-opensci/NOAA-quarto-simple/edit/main/index.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/nmfs-opensci/NOAA-quarto-simple/blob/main/index.qmd" class="toc-action">View source</a></p><p><a href="https://github.com/nmfs-opensci/NOAA-quarto-simple/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/nmfs-opensci/NOAA-quarto-simple/edit/main/rpn_sppa.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/nmfs-opensci/NOAA-quarto-simple/blob/main/rpn_sppa.qmd" class="toc-action">View source</a></p><p><a href="https://github.com/nmfs-opensci/NOAA-quarto-simple/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
-<main class="content column-body" id="quarto-document-content">
+<main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">NOAA quarto simple with R</h1>
-<p class="subtitle lead">A simple Quarto webpage with a book layout</p>
+<h1 class="title d-none d-lg-block">SPPA</h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>jjh </p>
+          </div>
+  </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">February 21, 2023</p>
+    </div>
+  </div>
   
     
   </div>
@@ -193,16 +276,106 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<p>This is a template for a simple Quarto website that looks like a “book”. This is a common format for documentation. It includes a GitHub Action that will build the website automatically when you make changes to the files. The NOAA palette and fonts has been added to <code>theme.scss</code>. The webpage will be on the <code>gh-pages</code> branch. Serving the website files from this branch is a common way to keep all the website files from cluttering your main branch.</p>
-<p>The GitHub Action installs R so you can have R code in your qmd or Rmd files. Note, you do not need to make changes to your Rmd files unless your need Quarto features like cross-references.</p>
-<section id="github-set-up" class="level2">
-<h2 class="anchored" data-anchor-id="github-set-up">GitHub Set-up</h2>
-<ul>
-<li><p>Click the green “use template” button to make a repository with this content. Make sure to make your repo public (since GitHub Pages doesn’t work on private repos unless you have a paid account) and check box to include all the branches (so that you get the gh-pages branch). <img width="637" alt="image" src="https://user-images.githubusercontent.com/2545978/197051535-c43c62de-17e8-40bf-a536-3eea8db250c4.png"></p></li>
-<li><p>Turn on GitHub Pages under Settings &gt; Pages . You will set pages to be made from the gh-pages branch and root directory. <img width="540" alt="image" src="https://user-images.githubusercontent.com/2545978/196808262-3d2262be-b9b5-4897-bba5-fc2f056dd335.png"></p></li>
-<li><p>Turn on GitHub Actions under Settings &gt; Actions &gt; General <img width="719" alt="image" src="https://user-images.githubusercontent.com/2545978/196808404-0c075fcf-db03-4516-88dd-3143b9fca475.png"></p></li>
-<li><p>Edit the repo description and Readme to add a link to the webpage. When you edit the description, you will see the link url in the url box or you can click on the Actions tab or the Settings &gt; Pages page to find the url.</p></li>
-</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>vhu_csv <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"vhu_centroids.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>vhu_csv2 <span class="ot">&lt;-</span><span class="fu">as_tibble</span>(vhu_csv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>vhu_csv2 <span class="sc">%&gt;%</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(x, y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3,131 × 2
+         x     y
+     &lt;dbl&gt; &lt;dbl&gt;
+ 1 0.0775   24.7
+ 2 0.0588   24.0
+ 3 0.0368   23.7
+ 4 0.0318   23.4
+ 5 0.0501   23.1
+ 6 0.0125   22.8
+ 7 0.0794   21.7
+ 8 0.00269  21.0
+ 9 0.0485   20.8
+10 0.0824   16.7
+# … with 3,121 more rows</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>vhu_window <span class="ot">&lt;-</span> <span class="fu">owin</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">10</span>), <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">25</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">attach</span>(vhu_window)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>vhu_corals <span class="ot">&lt;-</span> <span class="fu">ppp</span>(vhu_csv2<span class="sc">$</span>x, vhu_csv2<span class="sc">$</span>y, <span class="at">window =</span> vhu_window)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Summary information</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(vhu_corals)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Planar point pattern:  3131 points
+Average intensity 12.524 points per square unit
+
+Coordinates are given to 7 decimal places
+
+Window: rectangle = [0, 10] x [0, 25] units
+Window area = 250 square units</code></pre>
+</div>
+</div>
+<p>This summary shows there are 3131 points (pocilloporid coral colony) and provides the observed, lambda. The density plot can be a helpful visualization of intensity of points across the plot. By plotting the spatial intensity this way, spatial trends in the point occurrences that may violate the assumption of homogeneous point process.</p>
+<section id="density-plots" class="level1">
+<h1>density plots</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">density</span>(vhu_corals)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="rpn_sppa_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>#alter smoothing parameter</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">density</span>(vhu_corals, <span class="dv">1</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="rpn_sppa_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>#contour plot</p>
+<p>contour( density(vhu_corals, 1) )</p>
+</section>
+<section id="we-can-also-make-tallies-of-counts-of-point-locations-based-on-quadrats-overlaid" class="level1">
+<h1>We can also make tallies of counts of point locations based on quadrats overlaid</h1>
+</section>
+<section id="on-the-plot.-to-determine-whether-these-quadrat-counts-conform-to-csr" class="level1">
+<h1>on the plot. To determine whether these quadrat counts conform to CSR</h1>
+</section>
+<section id="i.e.-a-homogeneous-poisson-process-use-a-simple-chi-square-test-statistic." class="level1">
+<h1>(i.e., a homogeneous Poisson process), use a simple Chi-Square test statistic.</h1>
+</section>
+<section id="quadrat-counts" class="level1">
+<h1>quadrat counts</h1>
+<p>vhu_Q &lt;- quadratcount(vhu_corals, nx = 10, ny = 25) #counts in 10 x 25 m quadrats</p>
+<p>#plot</p>
+<p>plot(vhu_corals, cex = 1)</p>
+<p>plot(vhu_Q, add = TRUE, cex = 1)</p>
+<p>#chi-sq test for complete spatial randomness, CSR</p>
+<p>quadrat.test(vhu_corals, nx = 10, ny = 25, method = “Chisq”)</p>
+</section>
+<section id="the-test-statistic-suggests-highly-a-non-random-point-pattern-at-the" class="level1">
+<h1>The test statistic suggests highly a non-random point pattern at the</h1>
+</section>
+<section id="scale-of-the-quadrat-defined.-note-that-this-test-is-more-akin-to-a-first-order" class="level1">
+<h1>scale of the quadrat defined. Note that this test is more akin to a first-order</h1>
+</section>
+<section id="point-pattern-analysis-because-it-is-based-on-the-dispersion-of-points-among" class="level1">
+<h1>point pattern analysis because it is based on the dispersion of points among</h1>
+</section>
+<section id="sampling-quadrats." class="level1">
+<h1>sampling quadrats.</h1>
 
 
 </section>
@@ -456,15 +629,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
-<nav class="page-navigation column-body">
-  <div class="nav-page nav-page-previous">
-  </div>
-  <div class="nav-page nav-page-next">
-      <a href="./content/add-content.html" class="pagination-link">
-        <span class="nav-page-text">Add content</span> <i class="bi bi-arrow-right-short"></i>
-      </a>
-  </div>
-</nav>
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">

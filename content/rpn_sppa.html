@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="jjh">
+<meta name="dcterms.date" content="2023-02-21">
 
-<title>NOAA quarto simple - Rendering</title>
+<title>NOAA quarto simple - SPPA</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +22,69 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1.6em;
   vertical-align: middle;
 }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -29,8 +94,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../content/rmarkdown.html" rel="next">
-<link href="../content/customizing.html" rel="prev">
+<link href="../content/fuck_this.html" rel="next">
+<link href="../content/coral_size.html" rel="prev">
 <link href="../images/favicon.ico" rel="icon">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -72,7 +137,7 @@ ul.task-list li input[type="checkbox"] {
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">Rendering</h1>
+      <h1 class="quarto-secondary-nav-title">SPPA</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -117,7 +182,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../content/rendering.html" class="sidebar-item-text sidebar-link active">Rendering</a>
+  <a href="../content/rendering.html" class="sidebar-item-text sidebar-link">Rendering</a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -152,7 +217,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../content/rpn_sppa.html" class="sidebar-item-text sidebar-link">Coral Dispersion</a>
+  <a href="../content/rpn_sppa.html" class="sidebar-item-text sidebar-link active">Coral Dispersion</a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -165,29 +230,33 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#step-1.-make-sure-you-have-a-recent-rstudio" id="toc-step-1.-make-sure-you-have-a-recent-rstudio" class="nav-link active" data-scroll-target="#step-1.-make-sure-you-have-a-recent-rstudio">Step 1. Make sure you have a recent RStudio</a></li>
-  <li><a href="#step-2.-clone-and-create-rstudio-project" id="toc-step-2.-clone-and-create-rstudio-project" class="nav-link" data-scroll-target="#step-2.-clone-and-create-rstudio-project">Step 2. Clone and create RStudio project</a></li>
-  <li><a href="#step-3.-render-within-rstudio" id="toc-step-3.-render-within-rstudio" class="nav-link" data-scroll-target="#step-3.-render-within-rstudio">Step 3. Render within RStudio</a></li>
-  </ul>
-<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/nmfs-opensci/NOAA-quarto-simple/edit/main/content/rendering.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/nmfs-opensci/NOAA-quarto-simple/blob/main/content/rendering.qmd" class="toc-action">View source</a></p><p><a href="https://github.com/nmfs-opensci/NOAA-quarto-simple/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+        
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">Rendering</h1>
+<h1 class="title d-none d-lg-block">SPPA</h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>jjh </p>
+          </div>
+  </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">February 21, 2023</p>
+    </div>
+  </div>
   
     
   </div>
@@ -195,23 +264,113 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<p>The repo includes a GitHub Action that will render (build) the website automatically when you make changes to the files. It will be pushed to the <code>gh-pages</code> branch.</p>
-<p>But when you are developing your content, you will want to render it locally.</p>
-<section id="step-1.-make-sure-you-have-a-recent-rstudio" class="level2">
-<h2 class="anchored" data-anchor-id="step-1.-make-sure-you-have-a-recent-rstudio">Step 1. Make sure you have a recent RStudio</h2>
-<p>Have you updated RStudio since about August 2022? No? Then update to a newer version of RStudio. In general, you want to keep RStudio updated and it is required to have a recent version to use Quarto.</p>
-</section>
-<section id="step-2.-clone-and-create-rstudio-project" class="level2">
-<h2 class="anchored" data-anchor-id="step-2.-clone-and-create-rstudio-project">Step 2. Clone and create RStudio project</h2>
-<p>First, clone the repo onto your local computer. How? You can click File &gt; New Project and then select “Version Control”. Paste in the url of the repository. That will clone the repo on to your local computer. When you make changes, you will need to push those up.</p>
-</section>
-<section id="step-3.-render-within-rstudio" class="level2">
-<h2 class="anchored" data-anchor-id="step-3.-render-within-rstudio">Step 3. Render within RStudio</h2>
-<p>RStudio will recognize that this is a Quarto project by the presence of the <code>_quarto.yml</code> file and will see the “Build” tab. Click the “Render website” button to render to the <code>_site</code> folder.</p>
-<p><strong>Previewing:</strong> You can either click <code>index.html</code> in the <code>_site</code> folder and specify “preview in browser” or set up RStudio to preview to the viewer panel. To do the latter, go to Tools &gt; Global Options &gt; R Markdown. Then select “Show output preview in: Viewer panel”.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>vhu_csv <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"vhu_centroids.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>vhu_csv2 <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(vhu_csv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>vhu_csv2 </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3,131 × 6
+   layer level class    id       x     y
+   &lt;int&gt; &lt;chr&gt; &lt;int&gt; &lt;int&gt;   &lt;dbl&gt; &lt;dbl&gt;
+ 1     1 patch     0     1 0.0775   24.7
+ 2     1 patch     0     2 0.0588   24.0
+ 3     1 patch     0     3 0.0368   23.7
+ 4     1 patch     0     4 0.0318   23.4
+ 5     1 patch     0     5 0.0501   23.1
+ 6     1 patch     0     6 0.0125   22.8
+ 7     1 patch     0     7 0.0794   21.7
+ 8     1 patch     0     8 0.00269  21.0
+ 9     1 patch     0     9 0.0485   20.8
+10     1 patch     0    10 0.0824   16.7
+# … with 3,121 more rows</code></pre>
+</div>
+</div>
+<p><strong>Define window for spatial pattern analyses based on the extent defined above</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>vhu_window <span class="ot">&lt;-</span> <span class="fu">owin</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">10</span>), <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">25</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">attach</span>(vhu_window)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>vhu_corals <span class="ot">&lt;-</span> <span class="fu">ppp</span>(vhu_csv2<span class="sc">$</span>x, vhu_csv2<span class="sc">$</span>y, <span class="at">window =</span> vhu_window)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Summary information</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(vhu_corals)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Planar point pattern:  3131 points
+Average intensity 12.524 points per square unit
+
+Coordinates are given to 7 decimal places
+
+Window: rectangle = [0, 10] x [0, 25] units
+Window area = 250 square units</code></pre>
+</div>
+</div>
+<p>This summary shows there are 3131 points (pocilloporid coral colony) and provides the observed, lambda. The density plot can be a helpful visualization of intensity of points across the plot. By plotting the spatial intensity this way, spatial trends in the point occurrences that may violate the assumption of homogeneous point process.</p>
+<p><strong>Density plots</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">density</span>(vhu_corals)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="rpn_sppa_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p><strong>Alter smoothing parameter</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">density</span>(vhu_corals, <span class="dv">1</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="rpn_sppa_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p><strong>Contour plot</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">contour</span>(</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">density</span>(vhu_corals, <span class="dv">1</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="rpn_sppa_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>We can also make tallies of counts of point locations based on quadrats overlaid on the plot. To determine whether these quadrat counts conform to CSR (i.e., a homogeneous Poisson process), use a simple Chi-Square test statistic.</p>
+<p><strong>Quadrat counts</strong></p>
+<p>Counts in 10 x 25 m quadrats</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>vhu_Q <span class="ot">&lt;-</span> <span class="fu">quadratcount</span>(vhu_corals, <span class="at">nx =</span> <span class="dv">10</span>, <span class="at">ny =</span> <span class="dv">25</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Plot</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(vhu_corals, <span class="at">cex =</span> <span class="dv">1</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(vhu_Q, <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">cex =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="rpn_sppa_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p><strong>Chi-sq test for complete spatial randomness, CSR</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">quadrat.test</span>(vhu_corals, <span class="at">nx =</span> <span class="dv">10</span>, <span class="at">ny =</span> <span class="dv">25</span>, <span class="at">method =</span> <span class="st">"Chisq"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Chi-squared test of CSR using quadrat counts
+
+data:  vhu_corals
+X2 = 308.08, df = 249, p-value = 0.0127
+alternative hypothesis: two.sided
+
+Quadrats: 10 by 25 grid of tiles</code></pre>
+</div>
+</div>
+<p>The test statistic suggests highly a non-random point pattern at the scale of the quadrat defined. Note that this test is more akin to a first-order point pattern analysis because it is based on the dispersion of points among sampling quadrats.</p>
 
 
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -464,13 +623,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../content/customizing.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Customizing</span>
+      <a href="../content/coral_size.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Colony Size</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../content/rmarkdown.html" class="pagination-link">
-        <span class="nav-page-text">R Markdown files</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../content/fuck_this.html" class="pagination-link">
+        <span class="nav-page-text">Fuck This</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
