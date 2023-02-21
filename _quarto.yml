@@ -51,6 +51,8 @@ website:
         text: Pocilloporid Dispersion
       - href: content/coral_size.qmd
         text: Colony Size
+      - href: content/rpn_sppa.qmd
+        text: Coral Dispersion
 
 format:
   html:

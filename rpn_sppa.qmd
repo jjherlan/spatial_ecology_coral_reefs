@@ -1,0 +1,83 @@
+---
+title: "SPPA"
+author: "jjh"
+date: "Last compiled on `r format(Sys.time(), '%d %B, %Y %H:%M')`"
+editor: visual
+---
+
+```{r, include = FALSE}
+require(tidyverse)
+require(spatstat)
+require(rgdal)
+require(sf)
+require(stars)
+require(terra)
+require(unmarked)
+require(AHMbook)
+```
+
+```{r}
+vhu_csv <- read.csv("vhu_centroids.csv")
+```
+
+```{r}
+vhu_csv2 <-as_tibble(vhu_csv)
+```
+
+```{r}
+vhu_csv2 %>%
+  select(x, y)
+```
+
+```{r}
+vhu_corals <- ppp(vhu_csv2$x, vhu_csv2$y, window = vhu_window)
+```
+
+**Summary information**
+
+```{r}
+summary(vhu_corals)
+```
+
+This summary shows there are 3131 points (pocilloporid coral colony) and provides the observed, lambda. The density plot can be a helpful visualization of intensity of points across the plot. By plotting the spatial intensity this way, spatial trends in the point occurrences that may violate the assumption of homogeneous point process.
+
+# density plots
+
+plot(
+  density(vhu_corals)
+)
+
+#alter smoothing parameter
+
+plot(
+  density(vhu_corals, 1)
+)  
+
+#contour plot
+
+contour(
+  density(vhu_corals, 1)
+)
+
+# We can also make tallies of counts of point locations based on quadrats overlaid
+# on the plot. To determine whether these quadrat counts conform to CSR
+# (i.e., a homogeneous Poisson process), use a simple Chi-Square test statistic.
+
+# quadrat counts
+
+vhu_Q <- quadratcount(vhu_corals, nx = 10, ny = 25) #counts in 10 x 25 m quadrats
+
+#plot
+
+plot(vhu_corals, cex = 1)
+
+plot(vhu_Q, add = TRUE, cex = 1)
+
+#chi-sq test for complete spatial randomness, CSR
+
+quadrat.test(vhu_corals, nx = 10, ny = 25, method = "Chisq")
+
+# The test statistic suggests highly a non-random point pattern at the
+# scale of the quadrat defined. Note that this test is more akin to a first-order
+# point pattern analysis because it is based on the dispersion of points among 
+# sampling quadrats.
