@@ -61,6 +61,11 @@ p_cover = read_csv('LSMclassGrid.csv') %>%
 ```
 
 ```{r}
+p_cover
+```
+
+
+```{r}
 head(p_cover)
 ```
 
