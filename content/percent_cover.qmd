@@ -52,7 +52,16 @@ Fcn.CreateSummary.betareg<-function(object.betareg){
 ```
 
 ```{r, include = FALSE}
-p_cover = read_csv('LSMclassGrid.csv') %>% 
+#p_cover = read_csv('LSMclassGrid.csv') %>% 
+#  group_by(Site) %>%
+#  mutate(
+#    pland_decimal = pland*0.01
+#  ) %>%
+#  mutate_at(vars(Site, cover, plot_id), factor)
+```
+
+```{r, include = TRUE}
+p_cover = read_csv('rpn_percent_cover.csv') %>% 
   group_by(Site) %>%
   mutate(
     pland_decimal = pland*0.01
@@ -63,7 +72,6 @@ p_cover = read_csv('LSMclassGrid.csv') %>%
 ```{r}
 p_cover
 ```
-
 
 ```{r}
 head(p_cover)
@@ -102,6 +110,10 @@ ggplot(p_cover, aes(x = pland_decimal)) +
 plot(pland_decimal ~ Site, data = p_cover)
 ```
 :::
+
+
+
+
 
 ## Methods for analyzing percent cover of pocilloporid coral
 
