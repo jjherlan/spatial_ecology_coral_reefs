@@ -5,7 +5,6 @@ date: "Last compiled on `r format(Sys.time(), '%d %B, %Y %H:%M')`"
 editor: visual
 ---
 
-
 ```{r, include = FALSE}
 require(tidyverse)
 require(plyr)
@@ -191,35 +190,3 @@ poci_size.gg.barplot <- ggplot(poci_size3, aes(x = location, y = mean)) +
 ```{r}
 poci_size.gg.barplot
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
