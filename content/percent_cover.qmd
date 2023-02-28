@@ -111,10 +111,6 @@ plot(pland_decimal ~ Site, data = p_cover)
 ```
 :::
 
-
-
-
-
 ## Methods for analyzing percent cover of pocilloporid coral
 
 One option for dealing with the 0 and 1 values is to transform them to be slightly less than one or more than zero. This approach assumes that the data are consistent with a common beta distribution. We fit five models to the data: three variations on the beta model and two linear model approaches.
@@ -147,11 +143,30 @@ plot(p_cover_mod.lm1)
 ```{r}
 Anova(p_cover_mod.lm1, type = "III")
 ```
+One option to deal with 0 and 100 percent cover is to add and subtract a small amount to those values 
+
+```{r}
+transform01 <- function(x) {
+  (x * (length(x) - 1) + 0.5) / (length(x))
+}
+```
+
+
+```{r}
+p_cover$pland_decimal_scaled <- transform01(p_cover$pland_decimal)
+```
 
 **Logit-transformation**
 
+```{r, include = FALSE}
+#p_cover[is.na(p_cover) | p_cover=="Inf"] = NA
+```
+
 ```{r}
-p_cover_mod.lm2 <- lm(logit(pland_decimal) ~ Site, data = p_cover)
+p_cover_mod.lm2 <- lm(logit(pland_decimal_scaled) ~ Site, data = p_cover) 
+```
+
+```{r}
 summary(p_cover_mod.lm2)
 ```
 
@@ -180,16 +195,18 @@ plot(p_cover_mod.glm1)
 Anova(p_cover_mod.glm1, type = "III")
 ```
 
+
+
 **Beta Regression I:** $\phi$ does not vary
 
 ```{r}
-p_cover_mod.beta1 <- betareg(pland_decimal ~ Site, data = p_cover, link = c("logit"), link.phi = NULL, type = c("ML"))
+p_cover_mod.beta1 <- betareg(pland_decimal_scaled ~ Site, data = p_cover, link = c("logit"), link.phi = NULL, type = c("ML"))
 ```
 
 **Beta Regression II:** $\phi$ does vary (by **Site**)
 
 ```{r}
-p_cover_mod.beta2 <- betareg(pland_decimal ~ Site | Site, data = p_cover, link = c("logit"), link.phi = NULL, type = c("ML"))
+p_cover_mod.beta2 <- betareg(pland_decimal_scaled ~ Site | Site, data = p_cover, link = c("logit"), link.phi = NULL, type = c("ML"))
 ```
 
 **Extract AIC from beta regression models**
@@ -219,7 +236,7 @@ Then $exp(\beta_1)$ is the factor increase/decrease in odds of proportion cover 
 **Beta Regression I:** $\phi$ does not vary
 
 ```{r, tab-betareg, echo=FALSE, eval=T, results = 'asis'}
-p_cover_mod.beta1 <- betareg(pland_decimal ~ Site, data = p_cover, link = c("logit"), link.phi = NULL, type = c("ML"))
+p_cover_mod.beta1 <- betareg(pland_decimal_scaled ~ Site, data = p_cover, link = c("logit"), link.phi = NULL, type = c("ML"))
 
 tab.mod <- Fcn.CreateSummary.betareg(p_cover_mod.beta1)
 
@@ -229,7 +246,7 @@ print(xtable(tab.mod, digits = 3, caption = "Results from using betareg package 
 **Beta Regression II:** $\phi$ does vary (by **Site**)
 
 ```{r}
-p_cover_mod.beta2 <- betareg(pland_decimal ~ Site | Site, data = p_cover, link = c("logit"), link.phi = NULL, type = c("ML"))
+p_cover_mod.beta2 <- betareg(pland_decimal_scaled ~ Site | Site, data = p_cover, link = c("logit"), link.phi = NULL, type = c("ML"))
 ```
 
 ```{r}
@@ -384,7 +401,7 @@ The observations of percent cover are based on replicate quadrats replicated wit
 We begin by attempting to fit a beta regression model, with `pland_decimal` as the response, and `Site` as the categorical predictor.
 
 ```{r error = TRUE}
-p_cover.bm1 <- betareg(pland_decimal ~ Site, data = p_cover)
+p_cover.bm1 <- betareg(pland_decimal_scaled ~ Site, data = p_cover)
 ```
 
 `betareg` will not accept values of 0 and 1 in the response variable.
@@ -406,12 +423,12 @@ transform01 <- function(x) {
 With this scaled data we can now successfully fit the model. And test its significance relative to a null model that assumes no effect of wave power on percent cover of pocilloporid corals. For reference we also fit a classical ANOVA model assuming normally distributed errors using `lm`.
 
 ```{r}
-p_cover.bmnull <- betareg(pland_decimal ~ 1, data = p_cover)
+p_cover.bmnull <- betareg(pland_decimal_scaled ~ 1, data = p_cover)
 summary(p_cover.bmnull)
 ```
 
 ```{r}
-p_cover.lm1 <- lm(pland_decimal ~ Site, data = p_cover)
+p_cover.lm1 <- lm(pland_decimal_scaled ~ Site, data = p_cover)
 summary(p_cover.lm1)
 ```
 
@@ -499,7 +516,7 @@ The spread of the standardized residuals is strongly related to the fitted value
 We can repeat the above analysis using a model that allows $\phi$ to vary with predictors. This is achieved by adding a second part to the right hand side of the formula, separated with the `|` symbol. All covariates to the right of this `|` symbol will be used to model $\phi$. Note that they do not have to be the same covariates used to model $\mu$ (specified to the left of the `|`).
 
 ```{r}
-p_cover.bm2 <- betareg(pland_decimal ~ Site | Site, data = p_cover)
+p_cover.bm2 <- betareg(pland_decimal_scaled ~ Site | Site, data = p_cover)
 
 summary(p_cover.bm2)
 ```
