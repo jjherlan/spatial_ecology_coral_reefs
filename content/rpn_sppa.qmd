@@ -297,6 +297,29 @@ K_none_vhu <- Kest(vhu_corals, rmax = 5.0, correction = "none")
 plot(K_none_vhu, legend = F, main = "Southeast: Ripley's K")
 ```
 
+ - Plot L with 1:1 expectation
+
+```{r}
+L_none_vhu <- Lest(vhu_corals, rmax = 5.0, correction = "none")
+```
+
+```{r}
+plot(L_none_vhu, legend = F, main = "Vaihu: standardized L function (standardized 1:1)")
+```
+
+ - Plot L with 0 expectation
+ 
+```{r}
+plot(L_none_vhu, . - r ~ r, legend = F, main = "Vaihu: standardized L function (standardized 0)")
+```
+
+
+For the functions above, two lines are drawn. The $L_{pois}$ line
+is a dashed line that represents the expected (theoretical) 
+value based on a Poisson process (CSR). The way that `spatstat` calculates **L** is to 
+linearize **K** such that the expected value is **r** (or the radius). The other solid line
+represents the estimated **L** (linearized **K**), when the edges are ignored.
+
 ### West - Manavai
 
 ```{r}
