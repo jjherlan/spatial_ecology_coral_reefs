@@ -24,6 +24,8 @@ require(psych)
 require(DHARMa)
 ```
 
+##Vaihu
+
 ```{r}
 vhu_csv <- read.csv("vhu_centroids.csv")
 ```
@@ -103,6 +105,91 @@ plot(vhu_Q, add = TRUE, cex = 1)
 
 ```{r}
 quadrat.test(vhu_corals, nx = 10, ny = 25, method = "Chisq")
+```
+
+The test statistic suggests highly a non-random point pattern at the scale of the quadrat defined. Note that this test is more akin to a first-order point pattern analysis because it is based on the dispersion of points among sampling quadrats.
+
+##Manavai
+
+```{r}
+man_csv <- read.csv("man_centroids.csv")
+```
+
+```{r}
+man_csv2 <- as_tibble(man_csv)
+```
+
+```{r, include = TRUE}
+man_csv2 
+```
+
+**Define window for spatial pattern analyses based on the extent defined above**
+
+```{r}
+man_window <- owin(c(0, 10), c(0, 25))
+```
+
+```{r}
+attach(man_window)
+```
+
+```{r}
+man_corals <- ppp(man_csv2$x, man_csv2$y, window = man_window)
+```
+
+**Summary information**
+
+```{r}
+summary(man_corals)
+```
+
+This summary shows there are 3131 points (pocilloporid coral colony) and provides the observed, lambda. The density plot can be a helpful visualization of intensity of points across the plot. By plotting the spatial intensity this way, spatial trends in the point occurrences that may violate the assumption of homogeneous point process.
+
+**Density plots**
+
+```{r}
+plot(
+  density(man_corals)
+)
+```
+
+**Alter smoothing parameter**
+
+```{r}
+plot(
+  density(man_corals, 1)
+)  
+```
+
+**Contour plot**
+
+```{r}
+contour(
+  density(man_corals, 1)
+)
+```
+
+We can also make tallies of counts of point locations based on quadrats overlaid on the plot. To determine whether these quadrat counts conform to CSR (i.e., a homogeneous Poisson process), use a simple Chi-Square test statistic.
+
+**Quadrat counts**
+
+Counts in 10 x 25 m quadrats
+
+```{r}
+man_Q <- quadratcount(man_corals, nx = 10, ny = 25)
+```
+
+**Plot**
+
+```{r}
+plot(man_corals, cex = 1)
+plot(man_Q, add = TRUE, cex = 1)
+```
+
+**Chi-sq test for complete spatial randomness, CSR**
+
+```{r}
+quadrat.test(man_corals, nx = 10, ny = 25, method = "Chisq")
 ```
 
 The test statistic suggests highly a non-random point pattern at the scale of the quadrat defined. Note that this test is more akin to a first-order point pattern analysis because it is based on the dispersion of points among sampling quadrats.
