@@ -288,15 +288,53 @@ The test statistic suggests highly a non-random point pattern at the scale of th
 ### Southeast - Vaihu
 
 ```{r}
-K_none_vhu <- Kest(vhu_corals, correction = "none")
+K_none_vhu <- Kest(vhu_corals, rmax = 5.0, correction = "none")
 ```
 
  - Plot K
 
 ```{r}
-plot(K_none_vhu, legend = F, main = "Vaihu: Ripley's K")
+plot(K_none_vhu, legend = F, main = "Southeast: Ripley's K")
 ```
 
 ### West - Manavai
 
+```{r}
+K_none_man <- Kest(man_corals, rmax = 5.0, correction = "none")
+```
+
+ - Plot K
+
+```{r}
+plot(K_none_man, legend = F, main = "West: Ripley's K")
+```
+
 ### North - Anakena
+
+
+```{r}
+K_none_ana <- Kest(ana_corals, rmax = 5.0, correction = "none")
+```
+
+ - Plot K
+
+```{r}
+plot(K_none_ana, legend = F, main = "North: Ripley's K")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
