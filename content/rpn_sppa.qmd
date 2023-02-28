@@ -304,21 +304,42 @@ L_none_vhu <- Lest(vhu_corals, rmax = 5.0, correction = "none")
 ```
 
 ```{r}
-plot(L_none_vhu, legend = F, main = "Vaihu: standardized L function (standardized 1:1)")
+plot(L_none_vhu, legend = F, main = "Southeast: standardized L function (standardized 1:1)")
 ```
 
  - Plot L with 0 expectation
  
 ```{r}
-plot(L_none_vhu, . - r ~ r, legend = F, main = "Vaihu: standardized L function (standardized 0)")
+plot(L_none_vhu, . - r ~ r, legend = F, main = "Southeast: standardized L function (standardized 0)")
+```
+
+The above analysis ignores the problem of edge effects. `spatstat` provides a variety of
+edge corrections. Contrast an (1) isotropic and (2) translate correction for 
+adjusting for boundary effects. The isotropic correction uses a simple weighting for 
+the area sampled near the plot boundary (Ripley 1988), the translate correction uses 
+a toroidal shift. We adjust for potential boundary effects
+by typing:
+
+ - Isotropic edge correction
+
+```{r}
+L_iso_vhu <- Lest(vhu_corals, rmax = 5.0, correction = "isotropic")
+```
+
+```{r}
+plot(L_iso_vhu, . - r ~ r, legend = F, main = "Southeast: standardzied L (isotropic correction)")
+```
+
+ - Translate (toroidal) edge correction
+
+```{r}
+L_trans_vhu <- Lest(vhu_corals, rmax = 5.0, correction = "trans")
 ```
 
 
-For the functions above, two lines are drawn. The $L_{pois}$ line
-is a dashed line that represents the expected (theoretical) 
-value based on a Poisson process (CSR). The way that `spatstat` calculates **L** is to 
-linearize **K** such that the expected value is **r** (or the radius). The other solid line
-represents the estimated **L** (linearized **K**), when the edges are ignored.
+```{r}
+plot(L_trans_vhu, . - r ~ r, legend = F, main = "Southeast: standardzied L (translate correction)")
+```
 
 ### West - Manavai
 
@@ -332,8 +353,51 @@ K_none_man <- Kest(man_corals, rmax = 5.0, correction = "none")
 plot(K_none_man, legend = F, main = "West: Ripley's K")
 ```
 
-### North - Anakena
+ - Plot L with 1:1 expectation
 
+```{r}
+L_none_man <- Lest(man_corals, rmax = 5.0, correction = "none")
+```
+
+```{r}
+plot(L_none_man, legend = F, main = "West: standardized L function (standardized 1:1)")
+```
+
+ - Plot L with 0 expectation
+ 
+```{r}
+plot(L_none_man, . - r ~ r, legend = F, main = "West: standardized L function (standardized 0)")
+```
+
+The above analysis ignores the problem of edge effects. `spatstat` provides a variety of
+edge corrections. Contrast an (1) isotropic and (2) translate correction for 
+adjusting for boundary effects. The isotropic correction uses a simple weighting for 
+the area sampled near the plot boundary (Ripley 1988), the translate correction uses 
+a toroidal shift. We adjust for potential boundary effects
+by typing:
+
+ - Isotropic edge correction
+
+```{r}
+L_iso_man <- Lest(man_corals, rmax = 5.0, correction = "isotropic")
+```
+
+```{r}
+plot(L_iso_man, . - r ~ r, legend = F, main = "West: standardzied L (isotropic correction)")
+```
+
+ - Translate (toroidal) edge correction
+
+```{r}
+L_trans_man <- Lest(man_corals, rmax = 5.0, correction = "trans")
+```
+
+
+```{r}
+plot(L_trans_man, . - r ~ r, legend = F, main = "West: standardzied L (translate correction)")
+```
+
+### North - Anakena
 
 ```{r}
 K_none_ana <- Kest(ana_corals, rmax = 5.0, correction = "none")
@@ -345,8 +409,69 @@ K_none_ana <- Kest(ana_corals, rmax = 5.0, correction = "none")
 plot(K_none_ana, legend = F, main = "North: Ripley's K")
 ```
 
+ - Plot L with 1:1 expectation
 
+```{r}
+L_none_ana <- Lest(ana_corals, rmax = 5.0, correction = "none")
+```
 
+```{r}
+plot(L_none_ana, legend = F, main = "North: standardized L function (standardized 1:1)")
+```
+
+ - Plot L with 0 expectation
+ 
+```{r}
+plot(L_none_ana, . - r ~ r, legend = F, main = "North: standardized L function (standardized 0)")
+```
+
+The above analysis ignores the problem of edge effects. `spatstat` provides a variety of
+edge corrections. Contrast an (1) isotropic and (2) translate correction for 
+adjusting for boundary effects. The isotropic correction uses a simple weighting for 
+the area sampled near the plot boundary (Ripley 1988), the translate correction uses 
+a toroidal shift. We adjust for potential boundary effects
+by typing:
+
+ - Isotropic edge correction
+
+```{r}
+L_iso_ana <- Lest(ana_corals, rmax = 5.0, correction = "isotropic")
+```
+
+```{r}
+plot(L_iso_ana, . - r ~ r, legend = F, main = "North: standardzied L (isotropic correction)")
+```
+
+ - Translate (toroidal) edge correction
+
+```{r}
+L_trans_ana <- Lest(ana_corals, rmax = 5.0, correction = "trans")
+```
+
+```{r}
+plot(L_trans_ana, . - r ~ r, legend = F, main = "North: standardzied L (translate correction)")
+```
+
+For the functions above, two lines are drawn. The $L_{pois}$ line
+is a dashed line that represents the expected (theoretical) 
+value based on a Poisson process (CSR). The way that `spatstat` calculates $L$ is to 
+linearize $K$ such that the expected value is $r$ (or the radius). The other solid line
+represents the estimated $L$ (linearized $K$), when the edges are ignored.
+
+When comparing the $L$ function that ignores boundaries to those above that account
+for boundaries, notice that patterns change at larger distances - we expect that the $L$ 
+function at larger distances should potentially be more biased than at smaller distances 
+because larger radii will naturally overlap more with the boundary of the study area. 
+
+When edge effects are ignored, the effect in the of counting fewer points within the 
+radius $r$ near the boundary, so the observed value for $L$ or $K$ should have an artifact of 
+decreasing as $r$ increases.
+
+The analyses so far are exploratory. While the observed statistics ($K$, $L$) appear different 
+than the expectation, it is unclear if these are substantially (or significantly) different.
+
+To conduct formal inference regarding if the point pattern follows CSR, we can use Monte Carlo
+simulations ro calculate a confidence envelope under CSR with the `envelope` function.
 
 
 
