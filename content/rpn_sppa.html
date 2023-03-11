@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="jjh">
-<meta name="dcterms.date" content="2023-02-28">
+<meta name="dcterms.date" content="2023-03-11">
 
 <title>NOAA quarto simple - SPPA</title>
 <style>
@@ -244,6 +244,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#ripleys-k-function" id="toc-ripleys-k-function" class="nav-link" data-scroll-target="#ripleys-k-function">Ripley’s K function:</a>
   <ul class="collapse">
   <li><a href="#southeast---vaihu" id="toc-southeast---vaihu" class="nav-link" data-scroll-target="#southeast---vaihu">Southeast - Vaihu</a></li>
+  </ul></li>
+  <li><a href="#monte-carlo-simulations-to-calculate-a-global-and-pointwise-confidence-envelope-under-csr" id="toc-monte-carlo-simulations-to-calculate-a-global-and-pointwise-confidence-envelope-under-csr" class="nav-link" data-scroll-target="#monte-carlo-simulations-to-calculate-a-global-and-pointwise-confidence-envelope-under-csr">Monte Carlo simulations to calculate a global and pointwise confidence envelope under CSR</a>
+  <ul class="collapse">
   <li><a href="#west---manavai-1" id="toc-west---manavai-1" class="nav-link" data-scroll-target="#west---manavai-1">West - Manavai</a></li>
   <li><a href="#north---anakena-1" id="toc-north---anakena-1" class="nav-link" data-scroll-target="#north---anakena-1">North - Anakena</a></li>
   </ul></li>
@@ -272,7 +275,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">February 28, 2023</p>
+      <p class="date">March 11, 2023</p>
     </div>
   </div>
   
@@ -697,39 +700,82 @@ Quadrats: 10 by 25 grid of tiles</code></pre>
 </div>
 </div>
 </section>
+</section>
+<section id="monte-carlo-simulations-to-calculate-a-global-and-pointwise-confidence-envelope-under-csr" class="level2">
+<h2 class="anchored" data-anchor-id="monte-carlo-simulations-to-calculate-a-global-and-pointwise-confidence-envelope-under-csr">Monte Carlo simulations to calculate a global and pointwise confidence envelope under CSR</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>L_csr_vhu <span class="ot">&lt;-</span> <span class="fu">envelope</span>(vhu_corals, <span class="at">rmax =</span> <span class="fl">5.0</span>, Lest, <span class="at">nsim =</span> <span class="dv">99</span>, <span class="at">rank =</span> <span class="dv">1</span>, <span class="at">correction =</span> <span class="st">"trans"</span>, <span class="at">global =</span> F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Generating 99 simulations of CSR  ...
+1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
+41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80,
+81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98,  99.
+
+Done.</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>L_csr.g_vhu <span class="ot">&lt;-</span> <span class="fu">envelope</span>(vhu_corals, <span class="at">rmax =</span> <span class="fl">5.0</span>, Lest, <span class="at">nsim =</span> <span class="dv">99</span>, <span class="at">rank =</span> <span class="dv">1</span>, <span class="at">correction =</span> <span class="st">"trans"</span>, <span class="at">global =</span> T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Generating 99 simulations of CSR  ...
+1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
+41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80,
+81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98,  99.
+
+Done.</code></pre>
+</div>
+</div>
+<ul>
+<li>Plot point-wise envelope</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(L_csr_vhu, . <span class="sc">-</span> r <span class="sc">~</span> r, <span class="at">shade =</span> <span class="fu">c</span>(<span class="st">"hi"</span>, <span class="st">"lo"</span>), <span class="at">legend =</span> F, <span class="at">main =</span> <span class="st">"Southeast: stand. L (Monte Carlo, CSR env)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="rpn_sppa_files/figure-html/unnamed-chunk-52-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<ul>
+<li>Plot global envelope</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(L_csr.g_vhu, . <span class="sc">-</span> r <span class="sc">~</span> r, <span class="at">shade =</span> <span class="fu">c</span>(<span class="st">"hi"</span>, <span class="st">"lo"</span>), <span class="at">legend =</span> F, <span class="at">main =</span> <span class="st">"Southeast: stand. L (Monte Carlo, CSR env)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="rpn_sppa_files/figure-html/unnamed-chunk-53-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 <section id="west---manavai-1" class="level3">
 <h3 class="anchored" data-anchor-id="west---manavai-1">West - Manavai</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>K_none_man <span class="ot">&lt;-</span> <span class="fu">Kest</span>(man_corals, <span class="at">rmax =</span> <span class="fl">5.0</span>, <span class="at">correction =</span> <span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>K_none_man <span class="ot">&lt;-</span> <span class="fu">Kest</span>(man_corals, <span class="at">rmax =</span> <span class="fl">5.0</span>, <span class="at">correction =</span> <span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li>Plot K</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(K_none_man, <span class="at">legend =</span> F, <span class="at">main =</span> <span class="st">"West: Ripley's K"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(K_none_man, <span class="at">legend =</span> F, <span class="at">main =</span> <span class="st">"West: Ripley's K"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="rpn_sppa_files/figure-html/unnamed-chunk-51-1.png" class="img-fluid" width="672"></p>
+<p><img src="rpn_sppa_files/figure-html/unnamed-chunk-55-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <ul>
 <li>Plot L with 1:1 expectation</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>L_none_man <span class="ot">&lt;-</span> <span class="fu">Lest</span>(man_corals, <span class="at">rmax =</span> <span class="fl">5.0</span>, <span class="at">correction =</span> <span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>L_none_man <span class="ot">&lt;-</span> <span class="fu">Lest</span>(man_corals, <span class="at">rmax =</span> <span class="fl">5.0</span>, <span class="at">correction =</span> <span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(L_none_man, <span class="at">legend =</span> F, <span class="at">main =</span> <span class="st">"West: standardized L function (standardized 1:1)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(L_none_man, <span class="at">legend =</span> F, <span class="at">main =</span> <span class="st">"West: standardized L function (standardized 1:1)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="rpn_sppa_files/figure-html/unnamed-chunk-53-1.png" class="img-fluid" width="672"></p>
+<p><img src="rpn_sppa_files/figure-html/unnamed-chunk-57-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <ul>
 <li>Plot L with 0 expectation</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(L_none_man, . <span class="sc">-</span> r <span class="sc">~</span> r, <span class="at">legend =</span> F, <span class="at">main =</span> <span class="st">"West: standardized L function (standardized 0)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(L_none_man, . <span class="sc">-</span> r <span class="sc">~</span> r, <span class="at">legend =</span> F, <span class="at">main =</span> <span class="st">"West: standardized L function (standardized 0)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="rpn_sppa_files/figure-html/unnamed-chunk-54-1.png" class="img-fluid" width="672"></p>
+<p><img src="rpn_sppa_files/figure-html/unnamed-chunk-58-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>The above analysis ignores the problem of edge effects. <code>spatstat</code> provides a variety of edge corrections. Contrast an (1) isotropic and (2) translate correction for adjusting for boundary effects. The isotropic correction uses a simple weighting for the area sampled near the plot boundary (Ripley 1988), the translate correction uses a toroidal shift. We adjust for potential boundary effects by typing:</p>
@@ -737,60 +783,60 @@ Quadrats: 10 by 25 grid of tiles</code></pre>
 <li>Isotropic edge correction</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>L_iso_man <span class="ot">&lt;-</span> <span class="fu">Lest</span>(man_corals, <span class="at">rmax =</span> <span class="fl">5.0</span>, <span class="at">correction =</span> <span class="st">"isotropic"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>L_iso_man <span class="ot">&lt;-</span> <span class="fu">Lest</span>(man_corals, <span class="at">rmax =</span> <span class="fl">5.0</span>, <span class="at">correction =</span> <span class="st">"isotropic"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(L_iso_man, . <span class="sc">-</span> r <span class="sc">~</span> r, <span class="at">legend =</span> F, <span class="at">main =</span> <span class="st">"West: standardzied L (isotropic correction)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(L_iso_man, . <span class="sc">-</span> r <span class="sc">~</span> r, <span class="at">legend =</span> F, <span class="at">main =</span> <span class="st">"West: standardzied L (isotropic correction)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="rpn_sppa_files/figure-html/unnamed-chunk-56-1.png" class="img-fluid" width="672"></p>
+<p><img src="rpn_sppa_files/figure-html/unnamed-chunk-60-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <ul>
 <li>Translate (toroidal) edge correction</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>L_trans_man <span class="ot">&lt;-</span> <span class="fu">Lest</span>(man_corals, <span class="at">rmax =</span> <span class="fl">5.0</span>, <span class="at">correction =</span> <span class="st">"trans"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>L_trans_man <span class="ot">&lt;-</span> <span class="fu">Lest</span>(man_corals, <span class="at">rmax =</span> <span class="fl">5.0</span>, <span class="at">correction =</span> <span class="st">"trans"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(L_trans_man, . <span class="sc">-</span> r <span class="sc">~</span> r, <span class="at">legend =</span> F, <span class="at">main =</span> <span class="st">"West: standardzied L (translate correction)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(L_trans_man, . <span class="sc">-</span> r <span class="sc">~</span> r, <span class="at">legend =</span> F, <span class="at">main =</span> <span class="st">"West: standardzied L (translate correction)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="rpn_sppa_files/figure-html/unnamed-chunk-58-1.png" class="img-fluid" width="672"></p>
+<p><img src="rpn_sppa_files/figure-html/unnamed-chunk-62-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section>
 <section id="north---anakena-1" class="level3">
 <h3 class="anchored" data-anchor-id="north---anakena-1">North - Anakena</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>K_none_ana <span class="ot">&lt;-</span> <span class="fu">Kest</span>(ana_corals, <span class="at">rmax =</span> <span class="fl">5.0</span>, <span class="at">correction =</span> <span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a>K_none_ana <span class="ot">&lt;-</span> <span class="fu">Kest</span>(ana_corals, <span class="at">rmax =</span> <span class="fl">5.0</span>, <span class="at">correction =</span> <span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li>Plot K</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(K_none_ana, <span class="at">legend =</span> F, <span class="at">main =</span> <span class="st">"North: Ripley's K"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(K_none_ana, <span class="at">legend =</span> F, <span class="at">main =</span> <span class="st">"North: Ripley's K"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="rpn_sppa_files/figure-html/unnamed-chunk-60-1.png" class="img-fluid" width="672"></p>
+<p><img src="rpn_sppa_files/figure-html/unnamed-chunk-64-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <ul>
 <li>Plot L with 1:1 expectation</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>L_none_ana <span class="ot">&lt;-</span> <span class="fu">Lest</span>(ana_corals, <span class="at">rmax =</span> <span class="fl">5.0</span>, <span class="at">correction =</span> <span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a>L_none_ana <span class="ot">&lt;-</span> <span class="fu">Lest</span>(ana_corals, <span class="at">rmax =</span> <span class="fl">5.0</span>, <span class="at">correction =</span> <span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(L_none_ana, <span class="at">legend =</span> F, <span class="at">main =</span> <span class="st">"North: standardized L function (standardized 1:1)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(L_none_ana, <span class="at">legend =</span> F, <span class="at">main =</span> <span class="st">"North: standardized L function (standardized 1:1)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="rpn_sppa_files/figure-html/unnamed-chunk-62-1.png" class="img-fluid" width="672"></p>
+<p><img src="rpn_sppa_files/figure-html/unnamed-chunk-66-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <ul>
 <li>Plot L with 0 expectation</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(L_none_ana, . <span class="sc">-</span> r <span class="sc">~</span> r, <span class="at">legend =</span> F, <span class="at">main =</span> <span class="st">"North: standardized L function (standardized 0)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(L_none_ana, . <span class="sc">-</span> r <span class="sc">~</span> r, <span class="at">legend =</span> F, <span class="at">main =</span> <span class="st">"North: standardized L function (standardized 0)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="rpn_sppa_files/figure-html/unnamed-chunk-63-1.png" class="img-fluid" width="672"></p>
+<p><img src="rpn_sppa_files/figure-html/unnamed-chunk-67-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>The above analysis ignores the problem of edge effects. <code>spatstat</code> provides a variety of edge corrections. Contrast an (1) isotropic and (2) translate correction for adjusting for boundary effects. The isotropic correction uses a simple weighting for the area sampled near the plot boundary (Ripley 1988), the translate correction uses a toroidal shift. We adjust for potential boundary effects by typing:</p>
@@ -798,24 +844,24 @@ Quadrats: 10 by 25 grid of tiles</code></pre>
 <li>Isotropic edge correction</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a>L_iso_ana <span class="ot">&lt;-</span> <span class="fu">Lest</span>(ana_corals, <span class="at">rmax =</span> <span class="fl">5.0</span>, <span class="at">correction =</span> <span class="st">"isotropic"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a>L_iso_ana <span class="ot">&lt;-</span> <span class="fu">Lest</span>(ana_corals, <span class="at">rmax =</span> <span class="fl">5.0</span>, <span class="at">correction =</span> <span class="st">"isotropic"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(L_iso_ana, . <span class="sc">-</span> r <span class="sc">~</span> r, <span class="at">legend =</span> F, <span class="at">main =</span> <span class="st">"North: standardzied L (isotropic correction)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(L_iso_ana, . <span class="sc">-</span> r <span class="sc">~</span> r, <span class="at">legend =</span> F, <span class="at">main =</span> <span class="st">"North: standardzied L (isotropic correction)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="rpn_sppa_files/figure-html/unnamed-chunk-65-1.png" class="img-fluid" width="672"></p>
+<p><img src="rpn_sppa_files/figure-html/unnamed-chunk-69-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <ul>
 <li>Translate (toroidal) edge correction</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a>L_trans_ana <span class="ot">&lt;-</span> <span class="fu">Lest</span>(ana_corals, <span class="at">rmax =</span> <span class="fl">5.0</span>, <span class="at">correction =</span> <span class="st">"trans"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a>L_trans_ana <span class="ot">&lt;-</span> <span class="fu">Lest</span>(ana_corals, <span class="at">rmax =</span> <span class="fl">5.0</span>, <span class="at">correction =</span> <span class="st">"trans"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(L_trans_ana, . <span class="sc">-</span> r <span class="sc">~</span> r, <span class="at">legend =</span> F, <span class="at">main =</span> <span class="st">"North: standardzied L (translate correction)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(L_trans_ana, . <span class="sc">-</span> r <span class="sc">~</span> r, <span class="at">legend =</span> F, <span class="at">main =</span> <span class="st">"North: standardzied L (translate correction)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="rpn_sppa_files/figure-html/unnamed-chunk-67-1.png" class="img-fluid" width="672"></p>
+<p><img src="rpn_sppa_files/figure-html/unnamed-chunk-71-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>For the functions above, two lines are drawn. The <span class="math inline">\(L_{pois}\)</span> line is a dashed line that represents the expected (theoretical) value based on a Poisson process (CSR). The way that <code>spatstat</code> calculates <span class="math inline">\(L\)</span> is to linearize <span class="math inline">\(K\)</span> such that the expected value is <span class="math inline">\(r\)</span> (or the radius). The other solid line represents the estimated <span class="math inline">\(L\)</span> (linearized <span class="math inline">\(K\)</span>), when the edges are ignored.</p>
@@ -823,6 +869,12 @@ Quadrats: 10 by 25 grid of tiles</code></pre>
 <p>When edge effects are ignored, the effect in the of counting fewer points within the radius <span class="math inline">\(r\)</span> near the boundary, so the observed value for <span class="math inline">\(L\)</span> or <span class="math inline">\(K\)</span> should have an artifact of decreasing as <span class="math inline">\(r\)</span> increases.</p>
 <p>The analyses so far are exploratory. While the observed statistics (<span class="math inline">\(K\)</span>, <span class="math inline">\(L\)</span>) appear different than the expectation, it is unclear if these are substantially (or significantly) different.</p>
 <p>To conduct formal inference regarding if the point pattern follows CSR, we can use Monte Carlo simulations ro calculate a confidence envelope under CSR with the <code>envelope</code> function.</p>
+<p>In the <code>envelope</code> function, rank specifies the alpha for the simulations. For a <em>rank = 1</em>, the max an min are used as the envelopes, such that for <strong>99 simulations, alpha = 0.01</strong> while for <strong>19 simulations, alpha = 0.05</strong>.</p>
+<p>Also not that we used <code>global = FALSE</code>. This means that these are <em>pointwise envelopes</em>.</p>
+<p>These envelopes work better for <span class="math inline">\(L\)</span> than <span class="math inline">\(K\)</span> because of variance stabilizing properties.</p>
+<p>Plots of pointwise envelopes show the stated upper and lower quantiles of simulated patterns for any distance r. Because such analyses are calculating envelopes for vhuy distances, pointwise envelopes with a specified alpha should not be used to reject a null model at that level (because of the multiple tests). Consequently, there are alternative global tests that can be used in this way. While global tests are under active development (Baddeley et al.&nbsp;2014; Wiegand et al.&nbsp;2016), <code>spatstat</code> does provide one option for a global test (using global = T).</p>
+<p>This approach estimates the maximum deviation from the Poisson point process across all r (i.e., <span class="math inline">\(D = max|K_{(r)} - K_{pois(r)}|)\)</span>. This approach is referred to as a simultaneous envelope (or critical band) rather than a pointwise envelope.</p>
+<p>If the observed line falls outside the simultaneous envelope at any point on <span class="math inline">\(r\)</span>, we would reject the null hypothesis.</p>
 
 
 </section>
