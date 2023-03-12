@@ -1,0 +1,10 @@
+location,depth,transect,total_count
+north,dp,one,5
+north,dp,two,49
+north,sh,one,40
+north,sh,two,31
+se,dp,two,2
+west,dp,one,70
+west,dp,two,55
+west,sh,one,64
+west,sh,two,46

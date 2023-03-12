@@ -50,14 +50,85 @@ summary(plob.glm2)
 # `Anova` function from the *car* package
 Anova(plob.glm2, type = "III") # Type III because...
 
+# Bleaching, Porites lobata
 
-plob.glm1_qu <- glm(cbind(successes, failures) ~ bov, 
-                      family = quasibinomial(link = "logit"), rpn_2016_main.plob)
+rpn_PLOB <- rpn_bleach %>%  
+  filter(group == "PLOB") %>%
+  group_by(location, depth, transect) %>%
+  dplyr::summarise(total_count = n()
+  )
 
-summary(plob.glm1_qu)
+rpn_plob_bleach <- rpn_bleach %>%  
+  filter(group == 'PLOB' & status == 'BL') %>%
+  group_by(location, depth, transect) %>%
+  dplyr::summarise(total_count = n())
+
+rpn_plob_pb <- rpn_bleach %>%  
+  filter(group == 'PLOB' & status == 'PB') %>%
+  group_by(location, depth, transect) %>%
+  dplyr::summarise(total_count = n())
+
+rpn_plob_pale <- rpn_bleach %>%  
+  filter(group == 'PLOB' & status == 'P') %>%
+  group_by(location, depth, transect) %>%
+  dplyr::summarise(total_count = n())
+
+rpn_plob_healthy <- rpn_bleach %>%  
+  filter(group == 'PLOB' & status == 'H') %>%
+  group_by(location, depth, transect) %>%
+  
+
+rpn_plob_bleach
+rpn_plob_pb
+rpn_plob_pale
+rpn_plob_healthy
+
+write.csv(rpn_PLOB, "rpn_plob.csv")
+write.csv(rpn_PLOB_bleach, "rpn_plob_bleach.csv")     
+write.csv(rpn_PLOB_bleach, "rpn_plob_bleach.csv")  
+write.csv(rpn_PLOB_bleach, "rpn_plob_bleach.csv")  
+
+rpn_bleached <- read.csv("rpn_plob_bleached_2015.csv") %>%
+  select(location, depth, transect, total_count, pb_count) %>%
+    mutate(prop = pb_count/total_count,
+           failures = total_count - pb_count)
+
+
+# Generalized linear model
+
+plob_pb.glm1 <- glm(cbind(pb_count, failures) ~ location + depth, 
+                 family = binomial(link = "logit"), 
+                 data = rpn_bleached)
+
+par(mfrow = c(2, 2))
+plot(plob_pb.glm1)
+
+summary(plob_pb.glm2)
+
+plob_pb.glm2 <- glm(cbind(pb_count, failures) ~ location * depth, 
+                    family = binomial(link = "logit"), 
+                    data = rpn_bleached)
+
+par(mfrow = c(2, 2))
+plot(plob_pb.glm2)
+
+summary(plob_pb.glm2)
 
 # `Anova` function from the *car* package
-Anova(plob.glm1_qu, type = "III") # Type III because...
+Anova(plob_pb.glm2, type = "III") # Type III because...
+
+
+
+plob.glm2_qu <- glm(cbind(successes, failures) ~ location * depth, 
+                      family = quasibinomial(link = "logit"), rpn_PLOB)
+
+par(mfrow = c(2, 2))
+plot(plob.glm2_qu)
+
+summary(plob.glm2_qu)
+
+# `Anova` function from the *car* package
+Anova(plob.glm2_qu, type = "III") # Type III because...
 
 plob.nlme <- lme(cover ~ bov, random = ~1|photo,
                    data = rpn_2016_main.plob,
