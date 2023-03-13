@@ -302,6 +302,7 @@ Anova(turf.glm, type = "III") # Type III because...
 
 
 
+
 plob.nlme <- lme(cover ~ bov, random = ~1|photo,
                    data = rpn_2016_main.plob,
                    method = "REML")
