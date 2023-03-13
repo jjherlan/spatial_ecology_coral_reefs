@@ -12,18 +12,28 @@ require(rstan)
 require(VGAM)
 require(Rmisc)
 require(car)
+require(multcomp)
 
 rpn_bleach <- read.csv('rpn_bleach_2015.csv') %>%
   as_tibble() %>%
   mutate_at(vars(location, depth, transect, group, status), factor)
 
+write.csv(rpn_bleach, "rpn_bleach.csv")
+
+rpn_summary <- rpn_bleach %>%  
+  group_by(location, depth, transect, group) %>%
+  dplyr::summarise(total_count = n())
+
+write.csv(rpn_summary, "rpn_summary.csv")
+
 rpn_PLOB <- rpn_bleach %>%  
   filter(group == "PLOB") %>%
   group_by(location, depth, transect) %>%
-  dplyr::summarise(total_count = n(),
-                   cover = total_count/252,
-                   successes = n(),
-                   failures = 252 - successes)
+  dplyr::summarise(total_count = n())
+                   
+#cover = total_count/252,
+#successes = n(),
+#failures = 252 - successes)
 
 # Generalized linear model
 
@@ -103,7 +113,13 @@ plob_pb.glm1 <- glm(cbind(pb_count, failures) ~ location + depth,
 par(mfrow = c(2, 2))
 plot(plob_pb.glm1)
 
-summary(plob_pb.glm2)
+summary(plob_pb.glm1)
+
+summary(glht(plob_pb.glm1, mcp(location = "Tukey")))
+
+
+
+
 
 plob_pb.glm2 <- glm(cbind(pb_count, failures) ~ location * depth, 
                     family = binomial(link = "logit"), 
@@ -116,6 +132,11 @@ summary(plob_pb.glm2)
 
 # `Anova` function from the *car* package
 Anova(plob_pb.glm2, type = "III") # Type III because...
+
+summary(glht(plob_pb.glm2, mcp(depth = "Tukey")))
+
+
+
 
 
 
