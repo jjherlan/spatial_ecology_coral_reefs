@@ -117,10 +117,6 @@ summary(plob_pb.glm1)
 
 summary(glht(plob_pb.glm1, mcp(location = "Tukey")))
 
-
-
-
-
 plob_pb.glm2 <- glm(cbind(pb_count, failures) ~ location * depth, 
                     family = binomial(link = "logit"), 
                     data = rpn_bleached)
@@ -135,11 +131,6 @@ Anova(plob_pb.glm2, type = "III") # Type III because...
 
 summary(glht(plob_pb.glm2, mcp(depth = "Tukey")))
 
-
-
-
-
-
 plob.glm2_qu <- glm(cbind(successes, failures) ~ location * depth, 
                       family = quasibinomial(link = "logit"), rpn_PLOB)
 
@@ -150,6 +141,166 @@ summary(plob.glm2_qu)
 
 # `Anova` function from the *car* package
 Anova(plob.glm2_qu, type = "III") # Type III because...
+
+rpn_PLOB <- rpn_bleach %>%  
+  filter(group == "PLOB") %>%
+  group_by(location, depth, transect) %>%
+  dplyr::summarise(total_count = n())
+
+rpn_plob <- read.csv('rpn_cover.csv') %>%
+  as_tibble() %>%
+  filter(group == "PLOB") %>%
+  mutate_at(vars(location, depth, transect, group), factor) %>%
+  mutate(
+  cover = total_count/total_points,
+  failures = total_points - total_count
+    )
+
+plob.glm <- glm(cbind(total_count, failures) ~ location * depth, 
+                    family = binomial(link = "logit"), 
+                    data = rpn_plob)
+
+par(mfrow = c(2, 2))
+plot(plob.glm)
+
+summary(plob.glm)
+
+# `Anova` function from the *car* package
+Anova(plob.glm, type = "III") # Type III because...
+
+rpn_poci <- read.csv('rpn_cover.csv') %>%
+  as_tibble() %>%
+  filter(group == "POCI") %>%
+  mutate_at(vars(location, depth, transect, group), factor) %>%
+  mutate(
+    cover = total_count/total_points,
+    failures = total_points - total_count
+  )
+
+poci.glm <- glm(cbind(total_count, failures) ~ location * depth, 
+                family = binomial(link = "logit"), 
+                data = rpn_poci)
+
+par(mfrow = c(2, 2))
+plot(poci.glm)
+
+summary(poci.glm)
+
+# `Anova` function from the *car* package
+Anova(poci.glm, type = "III") # Type III because...
+
+rpn_bare <- read.csv('rpn_cover.csv') %>%
+  as_tibble() %>%
+  filter(group == "BARE") %>%
+  mutate_at(vars(location, depth, transect, group), factor) %>%
+  mutate(
+    cover = total_count/total_points,
+    failures = total_points - total_count
+  )
+
+bare.glm <- glm(cbind(total_count, failures) ~ location * depth, 
+                family = binomial(link = "logit"), 
+                data = rpn_bare)
+
+par(mfrow = c(2, 2))
+plot(bare.glm)
+
+summary(bare.glm)
+
+# `Anova` function from the *car* package
+Anova(bare.glm, type = "III") # Type III because...
+
+rpn_cca <- read.csv('rpn_cover.csv') %>%
+  as_tibble() %>%
+  filter(group == "CCA") %>%
+  mutate_at(vars(location, depth, transect, group), factor) %>%
+  mutate(
+    cover = total_count/total_points,
+    failures = total_points - total_count
+  )
+
+cca.glm <- glm(cbind(total_count, failures) ~ location * depth, 
+                family = binomial(link = "logit"), 
+                data = rpn_cca)
+
+par(mfrow = c(2, 2))
+plot(cca.glm)
+
+summary(cca.glm)
+
+# `Anova` function from the *car* package
+Anova(cca.glm, type = "III") # Type III because...
+
+# Macroalgae
+
+rpn_ma <- read.csv('rpn_cover.csv') %>%
+  as_tibble() %>%
+  filter(group == "MA") %>%
+  mutate_at(vars(location, depth, transect, group), factor) %>%
+  mutate(
+    cover = total_count/total_points,
+    failures = total_points - total_count
+  )
+
+ma.glm <- glm(cbind(total_count, failures) ~ location * depth, 
+               family = binomial(link = "logit"), 
+               data = rpn_ma)
+
+par(mfrow = c(2, 2))
+plot(ma.glm)
+
+summary(ma.glm)
+
+# `Anova` function from the *car* package
+Anova(ma.glm, type = "III") # Type III because...
+
+# Sand
+
+rpn_sand <- read.csv('rpn_cover.csv') %>%
+  as_tibble() %>%
+  filter(group == "SAND") %>%
+  mutate_at(vars(location, depth, transect, group), factor) %>%
+  mutate(
+    cover = total_count/total_points,
+    failures = total_points - total_count
+  )
+
+sand.glm <- glm(cbind(total_count, failures) ~ location * depth, 
+              family = binomial(link = "logit"), 
+              data = rpn_sand)
+
+par(mfrow = c(2, 2))
+plot(sand.glm)
+
+summary(sand.glm)
+
+# `Anova` function from the *car* package
+Anova(sand.glm, type = "III") # Type III because...
+
+# Turf
+
+rpn_turf <- read.csv('rpn_cover.csv') %>%
+  as_tibble() %>%
+  filter(group == "TURF") %>%
+  mutate_at(vars(location, depth, transect, group), factor) %>%
+  mutate(
+    cover = total_count/total_points,
+    failures = total_points - total_count
+  )
+
+turf.glm <- glm(cbind(total_count, failures) ~ location * depth, 
+                family = binomial(link = "logit"), 
+                data = rpn_turf)
+
+par(mfrow = c(2, 2))
+plot(turf.glm)
+
+summary(turf.glm)
+
+# `Anova` function from the *car* package
+Anova(turf.glm, type = "III") # Type III because...
+
+
 
 plob.nlme <- lme(cover ~ bov, random = ~1|photo,
                    data = rpn_2016_main.plob,
