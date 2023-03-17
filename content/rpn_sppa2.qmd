@@ -1,0 +1,496 @@
+---
+title: "SPPA"
+author: "jjh"
+date: "Last compiled on `r format(Sys.time(), '%d %B, %Y %H:%M')`"
+editor: visual
+---
+
+```{r, include = FALSE}
+require(tidyverse)
+require(spatstat)
+require(rgdal)
+require(sf)
+require(stars)
+require(terra)
+require(unmarked)
+require(AHMbook)
+require(png) #bring png images into R platform
+require(raster)
+require(landscapemetrics)
+require(gapminder)
+require(wesanderson)
+require(ggridges)
+require(psych)
+require(DHARMa)
+```
+
+## Quadrat Counts
+
+### Southeast - Vaihu
+
+```{r}
+se_csv <- read.csv("vhu_centroids.csv")
+```
+
+```{r}
+se_csv2 <- as_tibble(se_csv)
+```
+
+```{r, include = TRUE}
+se_csv2 
+```
+
+### West - Manavai
+
+```{r}
+west_csv <- read.csv("man_centroids.csv")
+```
+
+```{r}
+west_csv2 <- as_tibble(west_csv)
+```
+
+```{r, include = TRUE}
+west_csv2 
+```
+
+### North - Anakena
+
+```{r}
+north_csv <- read.csv("ana_centroids.csv")
+```
+
+```{r}
+north_csv2 <- as_tibble(north_csv)
+```
+
+```{r, include = TRUE}
+north_csv2 
+```
+
+**Southeast** *Define window for spatial pattern analyses based on the extent defined above*
+
+```{r}
+se_window <- owin(c(0, 10), c(0, 25))
+```
+
+```{r}
+attach(se_window)
+```
+
+```{r}
+se_corals <- ppp(se_csv2$x, se_csv2$y, window = se_window)
+```
+
+**Summary information**
+
+```{r}
+summary(se_corals)
+```
+
+This summary shows there are 3131 points (pocilloporid coral colony) and provides the observed, lambda. The density plot can be a helpful visualization of intensity of points across the plot. By plotting the spatial intensity this way, spatial trends in the point occurrences that may violate the assumption of homogeneous point process.
+
+**West** *Define window for spatial pattern analyses based on the extent defined above*
+
+```{r}
+west_window <- owin(c(0, 10), c(0, 25))
+```
+
+```{r}
+attach(west_window)
+```
+
+```{r}
+west_corals <- ppp(west_csv2$x, west_csv2$y, window = west_window)
+```
+
+**Summary information**
+
+```{r}
+summary(west_corals)
+```
+
+This summary shows there are XXX points (pocilloporid coral colony) and provides the observed, lambda. The density plot can be a helpful visualization of intensity of points across the plot. By plotting the spatial intensity this way, spatial trends in the point occurrences that may violate the assumption of homogeneous point process.
+
+**North** *Define window for spatial pattern analyses based on the extent defined above*
+
+```{r}
+north_window <- owin(c(0, 10), c(0, 25))
+```
+
+```{r}
+attach(north_window)
+```
+
+```{r}
+north_corals <- ppp(north_csv2$x, north_csv2$y, window = north_window)
+```
+
+**Summary information**
+
+```{r}
+summary(north_corals)
+```
+
+This summary shows there are XXXX points (pocilloporid coral colony) and provides the observed, lambda. The density plot can be a helpful visualization of intensity of points across the plot. By plotting the spatial intensity this way, spatial trends in the point occurrences that may violate the assumption of homogeneous point process.
+
+## Density Plots
+
+```{r}
+plot(
+  density(se_corals)
+)
+```
+
+```{r}
+plot(
+  density(west_corals)
+)
+```
+
+```{r}
+plot(
+  density(north_corals)
+)
+```
+
+**Alter smoothing parameter**
+
+```{r}
+plot(
+  density(se_corals, 1)
+)  
+```
+
+```{r}
+plot(
+  density(west_corals, 1)
+)  
+```
+
+```{r}
+plot(
+  density(north_corals, 1)
+)  
+```
+
+**Contour plot**
+
+```{r}
+contour(
+  density(se_corals, 1)
+)
+```
+
+```{r}
+contour(
+  density(west_corals, 1)
+)
+```
+
+```{r}
+contour(
+  density(north_corals, 1)
+)
+```
+
+We can also make tallies of counts of point locations based on quadrats overlaid on the plot. To determine whether these quadrat counts conform to CSR (i.e., a homogeneous Poisson process), use a simple Chi-Square test statistic.
+
+**Quadrat counts**
+
+Counts in 10 x 25 m quadrats
+
+```{r}
+se_Q <- quadratcount(se_corals, nx = 10, ny = 25)
+```
+
+**Plot**
+
+```{r}
+plot(se_corals, cex = 1)
+plot(se_Q, add = TRUE, cex = 1)
+```
+
+**Chi-sq test for complete spatial randomness, CSR**
+
+```{r}
+quadrat.test(se_corals, nx = 10, ny = 25, method = "Chisq")
+```
+
+**Quadrat counts**
+
+Counts in 10 x 25 m quadrats
+
+```{r}
+west_Q <- quadratcount(west_corals, nx = 10, ny = 25)
+```
+
+**Plot**
+
+```{r}
+plot(west_corals, cex = 1)
+plot(west_Q, add = TRUE, cex = 1)
+```
+
+**Chi-sq test for complete spatial randomness, CSR**
+
+```{r}
+quadrat.test(west_corals, nx = 10, ny = 25, method = "Chisq")
+```
+
+The test statistic suggests highly a non-random point pattern at the scale of the quadrat defined. Note that this test is more akin to a first-order point pattern analysis because it is based on the dispersion of points among sampling quadrats.
+
+**Quadrat counts**
+
+Counts in 10 x 25 m quadrats
+
+```{r}
+north_Q <- quadratcount(north_corals, nx = 10, ny = 25)
+```
+
+**Plot**
+
+```{r}
+plot(north_corals, cex = 1)
+plot(north_Q, add = TRUE, cex = 1)
+```
+
+**Chi-sq test for complete spatial randomness, CSR**
+
+```{r}
+quadrat.test(north_corals, nx = 10, ny = 25, method = "Chisq")
+```
+
+The test statistic suggests highly a non-random point pattern at the scale of the quadrat defined. Note that this test is more akin to a first-order point pattern analysis because it is based on the dispersion of points among sampling quadrats.
+
+## Ripley's K function:
+
+-   Second-order point pattern analyses can readily be implemented in 'spatstat'.
+-   Ripley's K and the standard L functions
+-   Ignore edge effects with '(correction = "none")'
+
+### Southeast - Vaihu
+
+```{r}
+K_none_se <- Kest(se_corals, rmax = 5.0, correction = "none")
+```
+
+-   Plot K
+
+```{r}
+plot(K_none_se, legend = F, main = "Southeast: Ripley's K")
+```
+
+-   Plot L with 1:1 expectation
+
+```{r}
+L_none_se <- Lest(se_corals, rmax = 5.0, correction = "none")
+```
+
+```{r}
+plot(L_none_se, legend = F, main = "Southeast: standardized L function (standardized 1:1)")
+```
+
+-   Plot L with 0 expectation
+
+```{r}
+plot(L_none_se, . - r ~ r, legend = F, main = "Southeast: standardized L function (standardized 0)")
+```
+
+### West - Manavai
+
+```{r}
+K_none_west <- Kest(west_corals, rmax = 5.0, correction = "none")
+```
+
+-   Plot K
+
+```{r}
+plot(K_none_west, legend = F, main = "West: Ripley's K")
+```
+
+-   Plot L with 1:1 expectation
+
+```{r}
+L_none_west <- Lest(west_corals, rmax = 5.0, correction = "none")
+```
+
+```{r}
+plot(L_none_west, legend = F, main = "West: standardized L function (standardized 1:1)")
+```
+
+-   Plot L with 0 expectation
+
+```{r}
+plot(L_none_west, . - r ~ r, legend = F, main = "West: standardized L function (standardized 0)")
+```
+
+### North - Anakena
+
+```{r}
+K_none_north <- Kest(north_corals, rmax = 5.0, correction = "none")
+```
+
+-   Plot K
+
+```{r}
+plot(K_none_north, legend = F, main = "North: Ripley's K")
+```
+
+-   Plot L with 1:1 expectation
+
+```{r}
+L_none_north <- Lest(north_corals, rmax = 5.0, correction = "none")
+```
+
+```{r}
+plot(L_none_north, legend = F, main = "North: standardized L function (standardized 1:1)")
+```
+
+-   Plot L with 0 expectation
+
+```{r}
+plot(L_none_north, . - r ~ r, legend = F, main = "North: standardized L function (standardized 0)")
+```
+
+The above analysis ignores the problem of edge effects. `spatstat` provides a variety of edge corrections. Contrast an (1) isotropic and (2) translate correction for adjusting for boundary effects. The isotropic correction uses a simple weighting for the area sampled near the plot boundary (Ripley 1988), the translate correction uses a toroidal shift. We adjust for potential boundary effects by typing:
+
+The above analysis ignores the problem of edge effects. `spatstat` provides a variety of edge corrections. Contrast an (1) isotropic and (2) translate correction for adjusting for boundary effects. The isotropic correction uses a simple weighting for the area sampled near the plot boundary (Ripley 1988), the translate correction uses a toroidal shift. We adjust for potential boundary effects by typing:
+
+The above analysis ignores the problem of edge effects. `spatstat` provides a variety of edge corrections. Contrast an (1) isotropic and (2) translate correction for adjusting for boundary effects. The isotropic correction uses a simple weighting for the area sampled near the plot boundary (Ripley 1988), the translate correction uses a toroidal shift. We adjust for potential boundary effects by typing:
+
+-   Isotropic edge correction
+
+```{r}
+L_iso_se <- Lest(se_corals, rmax = 5.0, correction = "isotropic")
+```
+
+```{r}
+plot(L_iso_se, . - r ~ r, legend = F, main = "Southeast: standardzied L (isotropic correction)")
+```
+
+-   Translate (toroidal) edge correction
+
+```{r}
+L_trans_se <- Lest(se_corals, rmax = 5.0, correction = "trans")
+```
+
+```{r}
+plot(L_trans_se, . - r ~ r, legend = F, main = "Southeast: standardzied L (translate correction)")
+```
+
+## Monte Carlo simulations to calculate a global and pointwise confidence envelope under CSR
+
+```{r}
+L_csr_se <- envelope(se_corals, rmax = 5.0, Lest, nsim = 99, rank = 1, correction = "trans", global = F)
+```
+
+```{r}
+L_csr.g_se <- envelope(se_corals, rmax = 5.0, Lest, nsim = 99, rank = 1, correction = "trans", global = T)
+```
+
+ - Plot point-wise envelope
+
+```{r}
+plot(L_csr_se, . - r ~ r, shade = c("hi", "lo"), legend = F, main = "Southeast: stand. L (Monte Carlo, CSR env)")
+```
+
+ - Plot global envelope
+
+```{r}
+plot(L_csr.g_se, . - r ~ r, shade = c("hi", "lo"), legend = F, main = "Southeast: stand. L (Monte Carlo, CSR env)")
+```
+
+### West - Manavai
+
+-   Isotropic edge correction
+
+```{r}
+L_iso_west <- Lest(west_corals, rmax = 5.0, correction = "isotropic")
+```
+
+```{r}
+plot(L_iso_west, . - r ~ r, legend = F, main = "West: standardzied L (isotropic correction)")
+```
+
+-   Translate (toroidal) edge correction
+
+```{r}
+L_trans_west <- Lest(west_corals, rmax = 5.0, correction = "trans")
+```
+
+```{r}
+plot(L_trans_west, . - r ~ r, legend = F, main = "West: standardzied L (translate correction)")
+```
+
+-   Isotropic edge correction
+
+```{r}
+L_iso_north <- Lest(north_corals, rmax = 5.0, correction = "isotropic")
+```
+
+```{r}
+plot(L_iso_north, . - r ~ r, legend = F, main = "North: standardzied L (isotropic correction)")
+```
+
+-   Translate (toroidal) edge correction
+
+```{r}
+L_trans_north <- Lest(north_corals, rmax = 5.0, correction = "trans")
+```
+
+```{r}
+plot(L_trans_north, . - r ~ r, legend = F, main = "North: standardzied L (translate correction)")
+```
+
+For the functions above, two lines are drawn. The $L_{pois}$ line is a dashed line that represents the expected (theoretical) value based on a Poisson process (CSR). The way that `spatstat` calculates $L$ is to linearize $K$ such that the expected value is $r$ (or the radius). The other solid line represents the estimated $L$ (linearized $K$), when the edges are ignored.
+
+When comparing the $L$ function that ignores boundaries to those above that account for boundaries, notice that patterns change at larger distances - we expect that the $L$ function at larger distances should potentially be more biased than at smaller distances because larger radii will naturally overlap more with the boundary of the study area.
+
+When edge effects are ignored, the effect in the of counting fewer points within the radius $r$ near the boundary, so the observed value for $L$ or $K$ should have an artifact of decreasing as $r$ increases.
+
+The analyses so far are exploratory. While the observed statistics ($K$, $L$) appear different than the expectation, it is unclear if these are substantially (or significantly) different.
+
+To conduct formal inference regarding if the point pattern follows CSR, we can use Monte Carlo simulations ro calculate a confidence envelope under CSR with the `envelope` function.
+
+In the `envelope` function, rank specifies the alpha for the simulations.
+For a *rank = 1*, the max an min are used as the envelopes, such that for **99 simulations, alpha = 0.01** while for **19 simulations, alpha = 0.05**. 
+
+Also not that we used `global = FALSE`. This means that these are *pointwise envelopes*.
+
+These envelopes work better for $L$ than $K$ because of variance stabilizing properties.
+
+Plots of pointwise envelopes show the stated upper and lower quantiles of simulated patterns for any distance r. Because such analyses are calculating envelopes for vhuy distances, pointwise envelopes with a specified alpha should not be used to reject a null model at that level (because of the multiple tests). Consequently, there are alternative global tests that can be used in this way. While global tests are under active development (Baddeley et al. 2014; Wiegand et al. 2016), `spatstat` does provide one option for a global test (using global = T). 
+
+This approach estimates the maximum deviation from the Poisson point process across all r (i.e., $D = max|K_{(r)} - K_{pois(r)}|)$. This approach is referred to as a simultaneous envelope (or critical band) rather than a pointwise envelope. 
+
+If the observed line falls outside the simultaneous envelope at any point on $r$, we would reject the null hypothesis.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
