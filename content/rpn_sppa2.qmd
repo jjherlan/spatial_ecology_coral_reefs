@@ -478,13 +478,13 @@ L_csr.g_north <- envelope(north_corals, rmax = 5.0, Lest, nsim = 99, rank = 1, c
 -   Plot point-wise envelope
 
 ```{r}
-plot(L_csr_north, rmax = 5.0, . - r ~ r, shade = c("hi", "lo"), legend = F, main = "North: stand. L (Monte Carlo, CSR env)")
+plot(L_csr_north, . - r ~ r, shade = c("hi", "lo"), legend = F, main = "North: stand. L (Monte Carlo, CSR env)")
 ```
 
 -   Plot global envelope
 
 ```{r}
-plot(L_csr.g_north, rmax = 5.0, . - r ~ r, shade = c("hi", "lo"), legend = F, main = "North: stand. L (Monte Carlo, CSR env)")
+plot(L_csr.g_north, . - r ~ r, shade = c("hi", "lo"), legend = F, main = "North: stand. L (Monte Carlo, CSR env)")
 ```
 
 For the functions above, two lines are drawn. The $L_{pois}$ line is a dashed line that represents the expected (theoretical) value based on a Poisson process (CSR). The way that `spatstat` calculates $L$ is to linearize $K$ such that the expected value is $r$ (or the radius). The other solid line represents the estimated $L$ (linearized $K$), when the edges are ignored.
@@ -514,7 +514,7 @@ Ptrans_se <- pcf(se_corals, correction = "translate")
 ```
 
 ```{r}
-plot(Ptrans_se, rmax = 5.0,)
+plot(Ptrans_se)
 ```
 
 ```{r}
@@ -523,32 +523,31 @@ Penv_se <- envelope(se_corals, rmax = 5.0, pcf, nsim = 99, rank = 1, correction 
 ```
 
 ```{r}
-plot(Penv_se, rmax = 5.0, shade = c("hi", "lo"), legend = FALSE, main = "Southeast: pair correlation function, g")
+plot(Penv_se, shade = c("hi", "lo"), legend = FALSE, main = "Southeast: pair correlation function, g")
 ```
 
-The `pcf` function uses a smoothing kernel such that distance bins are not needed. The default bandwidth coefficient (related to sigma in a Gaussian kernel) for the smoothing kernel is set to 0.15 (Stoyan and Stoyan 1994). 
+The `pcf` function uses a smoothing kernel such that distance bins are not needed. The default bandwidth coefficient (related to sigma in a Gaussian kernel) for the smoothing kernel is set to 0.15 (Stoyan and Stoyan 1994).
 
 We can adjust the smoothing on the pair correlation function using the `stoyan` comvhud in the `pcf` function. Increasing the value of the bandwidth coefficient (e.g., stoyan = 0.4) results in a less wiggly *g* function.
 
-Finally, we can use similar arguments for the G-function to estimate the probability of finding a nearest neighbor as a function of distance. `spatstat` uses a similar approach as above with the `Gest` function. 
+Finally, we can use similar arguments for the G-function to estimate the probability of finding a nearest neighbor as a function of distance. `spatstat` uses a similar approach as above with the `Gest` function.
 
 Note that for `Gest`, there are subtly different ways to account for edge effects relative to above. Below we use `rs`, the reduced sample correction. We can check the observed G-function calculated by `spatstat` to the cumulative distribution function of the empirical data (with the `ecdf` function):
 
 ```{r}
-Gtrans_se <- Gest(se_corals, correction = "rs")
+Gtrans_se <- Gest(se_corals, rmax = 5, correction = "rs")
 ```
 
 ```{r}
-plot(Gtrans_se, rmax = 5, legend = F)
+plot(Gtrans_se, legend = F)
 ```
 
 ```{r}
-Genv_se <- envelope(se_corals, Gest, nsim = 99, rank = 1,
-                     correction = "rs", global = FALSE)
+Genv_se <- envelope(se_corals, rmax = 5, Gest, nsim = 99, rank = 1, correction = "rs", global = FALSE)
 ```
 
 ```{r}
-plot(Genv_se, rmax = 5, shade = c("hi", "lo"), legend = FALSE, main = "Southeast: G-function")
+plot(Genv_se, shade = c("hi", "lo"), legend = FALSE, main = "Southeast: G-function")
 ```
 
 ### Alternative Null Models
@@ -559,13 +558,12 @@ While CSR is a useful starting point as a null model, in some situations we may 
 Kthomas_se <- kppm(se_corals, ~ 1, "Thomas")
 ```
 
-To interpret this model, `summary(Kthomas)` provides a wealth of information regarding the fitted model. For example, it provides an estimate of the mean cluster size (4.6 points), as well as the best fit scale for that size (3.7 m). Note that in the above kppm function, we can also account for covariates (the "~ 1" states to not consider covariates and only include an intercept in the model; ~ polynom(x, y, 2) would account for the trend shown above) We can use the envelope function here as well to interpret the point pattern.
+To interpret this model, `summary(Kthomas)` provides a wealth of information regarding the fitted model. For example, it provides an estimate of the mean cluster size (4.6 points), as well as the best fit scale for that size (3.7 m). Note that in the above kppm function, we can also account for covariates (the "\~ 1" states to not consider covariates and only include an intercept in the model; \~ polynom(x, y, 2) would account for the trend shown above) We can use the envelope function here as well to interpret the point pattern.
 
 ```{r}
-Kthomas.env_se <- envelope(Kthomas_se, Lest, nsim = 99, rank = 1, global = F)
+Kthomas.env_se <- envelope(Kthomas_se, rmax = 5, Lest, nsim = 99, rank = 1, global = F)
 ```
 
 ```{r}
-plot(Kthomas.env_se, rmax = 5, . - r ~ r, shade = c("hi", "lo"), legend = F, main = "Vaihu: Thomas Model")
+plot(Kthomas.env_se, . - r ~ r, shade = c("hi", "lo"), legend = F, main = "Vaihu: Thomas Model")
 ```
-
