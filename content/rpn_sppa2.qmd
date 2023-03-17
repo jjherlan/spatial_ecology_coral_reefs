@@ -355,9 +355,7 @@ plot(L_none_north, . - r ~ r, legend = F, main = "North: standardized L function
 
 The above analysis ignores the problem of edge effects. `spatstat` provides a variety of edge corrections. Contrast an (1) isotropic and (2) translate correction for adjusting for boundary effects. The isotropic correction uses a simple weighting for the area sampled near the plot boundary (Ripley 1988), the translate correction uses a toroidal shift. We adjust for potential boundary effects by typing:
 
-The above analysis ignores the problem of edge effects. `spatstat` provides a variety of edge corrections. Contrast an (1) isotropic and (2) translate correction for adjusting for boundary effects. The isotropic correction uses a simple weighting for the area sampled near the plot boundary (Ripley 1988), the translate correction uses a toroidal shift. We adjust for potential boundary effects by typing:
-
-The above analysis ignores the problem of edge effects. `spatstat` provides a variety of edge corrections. Contrast an (1) isotropic and (2) translate correction for adjusting for boundary effects. The isotropic correction uses a simple weighting for the area sampled near the plot boundary (Ripley 1988), the translate correction uses a toroidal shift. We adjust for potential boundary effects by typing:
+### Southeast -- Vaihu
 
 -   Isotropic edge correction
 
@@ -389,13 +387,13 @@ L_csr_se <- envelope(se_corals, rmax = 5.0, Lest, nsim = 99, rank = 1, correctio
 L_csr.g_se <- envelope(se_corals, rmax = 5.0, Lest, nsim = 99, rank = 1, correction = "trans", global = T)
 ```
 
- - Plot point-wise envelope
+-   Plot point-wise envelope
 
 ```{r}
 plot(L_csr_se, . - r ~ r, shade = c("hi", "lo"), legend = F, main = "Southeast: stand. L (Monte Carlo, CSR env)")
 ```
 
- - Plot global envelope
+-   Plot global envelope
 
 ```{r}
 plot(L_csr.g_se, . - r ~ r, shade = c("hi", "lo"), legend = F, main = "Southeast: stand. L (Monte Carlo, CSR env)")
@@ -423,6 +421,30 @@ L_trans_west <- Lest(west_corals, rmax = 5.0, correction = "trans")
 plot(L_trans_west, . - r ~ r, legend = F, main = "West: standardzied L (translate correction)")
 ```
 
+## Monte Carlo simulations to calculate a global and pointwise confidence envelope under CSR
+
+```{r}
+L_csr_se <- envelope(se_corals, rmax = 5.0, Lest, nsim = 99, rank = 1, correction = "trans", global = F)
+```
+
+```{r}
+L_csr.g_se <- envelope(se_corals, rmax = 5.0, Lest, nsim = 99, rank = 1, correction = "trans", global = T)
+```
+
+-   Plot point-wise envelope
+
+```{r}
+plot(L_csr_se, . - r ~ r, shade = c("hi", "lo"), legend = F, main = "Southeast: stand. L (Monte Carlo, CSR env)")
+```
+
+-   Plot global envelope
+
+```{r}
+plot(L_csr.g_se, . - r ~ r, shade = c("hi", "lo"), legend = F, main = "Southeast: stand. L (Monte Carlo, CSR env)")
+```
+
+### North - Anakena
+
 -   Isotropic edge correction
 
 ```{r}
@@ -443,6 +465,28 @@ L_trans_north <- Lest(north_corals, rmax = 5.0, correction = "trans")
 plot(L_trans_north, . - r ~ r, legend = F, main = "North: standardzied L (translate correction)")
 ```
 
+## Monte Carlo simulations to calculate a global and pointwise confidence envelope under CSR
+
+```{r}
+L_csr_north <- envelope(north_corals, rmax = 5.0, Lest, nsim = 99, rank = 1, correction = "trans", global = F)
+```
+
+```{r}
+L_csr.g_north <- envelope(north_corals, rmax = 5.0, Lest, nsim = 99, rank = 1, correction = "trans", global = T)
+```
+
+-   Plot point-wise envelope
+
+```{r}
+plot(L_csr_north, rmax = 5.0, . - r ~ r, shade = c("hi", "lo"), legend = F, main = "North: stand. L (Monte Carlo, CSR env)")
+```
+
+-   Plot global envelope
+
+```{r}
+plot(L_csr.g_north, rmax = 5.0, . - r ~ r, shade = c("hi", "lo"), legend = F, main = "North: stand. L (Monte Carlo, CSR env)")
+```
+
 For the functions above, two lines are drawn. The $L_{pois}$ line is a dashed line that represents the expected (theoretical) value based on a Poisson process (CSR). The way that `spatstat` calculates $L$ is to linearize $K$ such that the expected value is $r$ (or the radius). The other solid line represents the estimated $L$ (linearized $K$), when the edges are ignored.
 
 When comparing the $L$ function that ignores boundaries to those above that account for boundaries, notice that patterns change at larger distances - we expect that the $L$ function at larger distances should potentially be more biased than at smaller distances because larger radii will naturally overlap more with the boundary of the study area.
@@ -453,44 +497,75 @@ The analyses so far are exploratory. While the observed statistics ($K$, $L$) ap
 
 To conduct formal inference regarding if the point pattern follows CSR, we can use Monte Carlo simulations ro calculate a confidence envelope under CSR with the `envelope` function.
 
-In the `envelope` function, rank specifies the alpha for the simulations.
-For a *rank = 1*, the max an min are used as the envelopes, such that for **99 simulations, alpha = 0.01** while for **19 simulations, alpha = 0.05**. 
+In the `envelope` function, rank specifies the alpha for the simulations. For a *rank = 1*, the max an min are used as the envelopes, such that for **99 simulations, alpha = 0.01** while for **19 simulations, alpha = 0.05**.
 
 Also not that we used `global = FALSE`. This means that these are *pointwise envelopes*.
 
 These envelopes work better for $L$ than $K$ because of variance stabilizing properties.
 
-Plots of pointwise envelopes show the stated upper and lower quantiles of simulated patterns for any distance r. Because such analyses are calculating envelopes for vhuy distances, pointwise envelopes with a specified alpha should not be used to reject a null model at that level (because of the multiple tests). Consequently, there are alternative global tests that can be used in this way. While global tests are under active development (Baddeley et al. 2014; Wiegand et al. 2016), `spatstat` does provide one option for a global test (using global = T). 
+Plots of pointwise envelopes show the stated upper and lower quantiles of simulated patterns for any distance r. Because such analyses are calculating envelopes for vhuy distances, pointwise envelopes with a specified alpha should not be used to reject a null model at that level (because of the multiple tests). Consequently, there are alternative global tests that can be used in this way. While global tests are under active development (Baddeley et al. 2014; Wiegand et al. 2016), `spatstat` does provide one option for a global test (using global = T).
 
-This approach estimates the maximum deviation from the Poisson point process across all r (i.e., $D = max|K_{(r)} - K_{pois(r)}|)$. This approach is referred to as a simultaneous envelope (or critical band) rather than a pointwise envelope. 
+This approach estimates the maximum deviation from the Poisson point process across all r (i.e., $D = max|K_{(r)} - K_{pois(r)}|)$. This approach is referred to as a simultaneous envelope (or critical band) rather than a pointwise envelope.
 
 If the observed line falls outside the simultaneous envelope at any point on $r$, we would reject the null hypothesis.
 
+```{r}
+Ptrans_se <- pcf(se_corals, correction = "translate")
+```
 
+```{r}
+plot(Ptrans_se, rmax = 5.0,)
+```
 
+```{r}
+Penv_se <- envelope(se_corals, rmax = 5.0, pcf, nsim = 99, rank = 1, correction =
+                       "translate", global = FALSE)
+```
 
+```{r}
+plot(Penv_se, rmax = 5.0, shade = c("hi", "lo"), legend = FALSE, main = "Southeast: pair correlation function, g")
+```
 
+The `pcf` function uses a smoothing kernel such that distance bins are not needed. The default bandwidth coefficient (related to sigma in a Gaussian kernel) for the smoothing kernel is set to 0.15 (Stoyan and Stoyan 1994). 
 
+We can adjust the smoothing on the pair correlation function using the `stoyan` comvhud in the `pcf` function. Increasing the value of the bandwidth coefficient (e.g., stoyan = 0.4) results in a less wiggly *g* function.
 
+Finally, we can use similar arguments for the G-function to estimate the probability of finding a nearest neighbor as a function of distance. `spatstat` uses a similar approach as above with the `Gest` function. 
 
+Note that for `Gest`, there are subtly different ways to account for edge effects relative to above. Below we use `rs`, the reduced sample correction. We can check the observed G-function calculated by `spatstat` to the cumulative distribution function of the empirical data (with the `ecdf` function):
 
+```{r}
+Gtrans_se <- Gest(se_corals, correction = "rs")
+```
 
+```{r}
+plot(Gtrans_se, rmax = 5, legend = F)
+```
 
+```{r}
+Genv_se <- envelope(se_corals, Gest, nsim = 99, rank = 1,
+                     correction = "rs", global = FALSE)
+```
 
+```{r}
+plot(Genv_se, rmax = 5, shade = c("hi", "lo"), legend = FALSE, main = "Southeast: G-function")
+```
 
+### Alternative Null Models
 
+While CSR is a useful starting point as a null model, in some situations we may be interested in using alternative null models. Some null models can be derived from a Poisson cluster process. Two common Poisson cluster processes considered in ecology are **Matern cluster** processes and **Thomas cluster** processes (Velazquez et al. 2016). In a Matérn cluster process, there are two types of points. The first are *parent* points, which have a Poisson distribution. Second, for each parent point, there are *offspring* points, which are independently and uniformly distributed around the parent points within a radius r. Consequently, these *offspring* points generate an underlying aggregated pattern. Similarly, with a Thomas process, *offspring* points are generated with parents but with an isotropic Gaussian distribution (similar to a Gaussian kernel). Such a process could reflect biological phenomena such as seed dispersal from parent plants. We can use these alternative null models in `spatstat`, with the above functions ($K$, $L$, pair correlation g, etc.). For example, a K function with a Thomas process as a null model can be quantified as:
 
+```{r}
+Kthomas_se <- kppm(se_corals, ~ 1, "Thomas")
+```
 
+To interpret this model, `summary(Kthomas)` provides a wealth of information regarding the fitted model. For example, it provides an estimate of the mean cluster size (4.6 points), as well as the best fit scale for that size (3.7 m). Note that in the above kppm function, we can also account for covariates (the "~ 1" states to not consider covariates and only include an intercept in the model; ~ polynom(x, y, 2) would account for the trend shown above) We can use the envelope function here as well to interpret the point pattern.
 
+```{r}
+Kthomas.env_se <- envelope(Kthomas_se, Lest, nsim = 99, rank = 1, global = F)
+```
 
-
-
-
-
-
-
-
-
-
-
+```{r}
+plot(Kthomas.env_se, rmax = 5, . - r ~ r, shade = c("hi", "lo"), legend = F, main = "Vaihu: Thomas Model")
+```
 
