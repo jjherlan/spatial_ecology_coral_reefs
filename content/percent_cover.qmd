@@ -640,22 +640,17 @@ poci_cover2
 ```
 
 ```{r}
-x_labels = c("Anakena", "Manavai", "Vaihu")
+x_labels = c("North", "West", "Southeast")
 # label_names = c("8 m" = "8 m", "15 m" = "15 m", "25 m" = "25 m")
 ```
 
 ```{r}
-poci_cover.ggbarplot <- ggplot(poci_cover2, aes(x = location, y = mean)) +   
-  geom_bar(stat = "identity", width = 0.75, color = "black", fill = "#333399", size = 0.50, alpha = 0.6) +
+poci_cover.ggbarplot <- ggplot(poci_cover2, aes(x = location, y = mean, fill = x_labels)) +   
+  geom_bar(stat = "identity", width = 0.75, color = "black", linewidth = 0.50, alpha = 0.6) +
   geom_linerange(aes(ymin = lower.ci, ymax = upper.ci), size = 0.75) +
   scale_y_continuous(expression(paste("Mean Percent Cover (%)")), limits = c(0, 1)) + 
   scale_x_discrete(expand = c(0, 1), labels = x_labels) + 
-#  scale_fill_manual(breaks = c("North", "West",
-#                               "Southeast"),
-#                    values = c("red", "blue", 
-#                                    "green"), 
-#                                    labels = c("North", "West",
-#                                               "Southeast")) +
+  scale_fill_manual(values = c("#FFC74E", "#82A5C0", "#ABC178")) +
 #  facet_wrap( ~ depth2, labeller = as_labeller(label_names), dir = "v", ncol = 1) + 
   ggtitle(expression(paste(italic(" Pocillopora "), "spp."))) +
   geom_text(aes(label = cld, y = upper.ci), vjust = -0.5) +
@@ -672,7 +667,7 @@ poci_cover.ggbarplot <- ggplot(poci_cover2, aes(x = location, y = mean)) +
         panel.spacing.y = unit(0.5, "cm"),
         panel.spacing = unit(1, "lines"),
         axis.ticks = element_blank(),
-        legend.position = "top",
+        legend.position = 'none',
         plot.title = element_text(size = 11),
         axis.title.y = element_text(size = 11),
         legend.title = element_blank())
