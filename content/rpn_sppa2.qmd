@@ -509,8 +509,10 @@ This approach estimates the maximum deviation from the Poisson point process acr
 
 If the observed line falls outside the simultaneous envelope at any point on $r$, we would reject the null hypothesis.
 
+### Southeast -- Vaihu
+
 ```{r}
-Ptrans_se <- pcf(se_corals, correction = "translate")
+Ptrans_se <- pcf(se_corals, r = NULL, correction = "translate")
 ```
 
 ```{r}
@@ -518,7 +520,12 @@ plot(Ptrans_se)
 ```
 
 ```{r}
-Penv_se <- envelope(se_corals, rmax = 5.0, pcf, nsim = 99, rank = 1, correction =
+plot(Ptrans_se$r, Ptrans_se$pcf, type = "l", xlab = "r", ylab = "g(r)", main = "pair correlation")
+abline(h=1, lty=1)
+```
+
+```{r}
+Penv_se <- envelope(se_corals, r = NULL, pcf, nsim = 99, rank = 1, correction =
                        "translate", global = FALSE)
 ```
 
@@ -526,16 +533,74 @@ Penv_se <- envelope(se_corals, rmax = 5.0, pcf, nsim = 99, rank = 1, correction 
 plot(Penv_se, shade = c("hi", "lo"), legend = FALSE, main = "Southeast: pair correlation function, g")
 ```
 
-The `pcf` function uses a smoothing kernel such that distance bins are not needed. The default bandwidth coefficient (related to sigma in a Gaussian kernel) for the smoothing kernel is set to 0.15 (Stoyan and Stoyan 1994).
-
-We can adjust the smoothing on the pair correlation function using the `stoyan` comvhud in the `pcf` function. Increasing the value of the bandwidth coefficient (e.g., stoyan = 0.4) results in a less wiggly *g* function.
-
-Finally, we can use similar arguments for the G-function to estimate the probability of finding a nearest neighbor as a function of distance. `spatstat` uses a similar approach as above with the `Gest` function.
-
-Note that for `Gest`, there are subtly different ways to account for edge effects relative to above. Below we use `rs`, the reduced sample correction. We can check the observed G-function calculated by `spatstat` to the cumulative distribution function of the empirical data (with the `ecdf` function):
+### West - Manavai
 
 ```{r}
-Gtrans_se <- Gest(se_corals, rmax = 5, correction = "rs")
+Ptrans_west <- pcf(west_corals, r = NULL, correction = "translate")
+```
+
+```{r}
+plot(Ptrans_west)
+```
+
+```{r}
+plot(Ptrans_west$r, Ptrans_west$pcf, type = "l", xlab = "r", ylab = "g(r)", main = "pair correlation")
+abline(h=1, lty=1)
+```
+
+```{r}
+Penv_west <- envelope(west_corals, r = NULL, pcf, nsim = 99, rank = 1, correction =
+                       "translate", global = FALSE)
+```
+
+```{r}
+plot(Penv_west, shade = c("hi", "lo"), legend = FALSE, main = "Southeast: pair correlation function, g")
+```
+
+### North - Anakena
+
+```{r}
+Ptrans_north <- pcf(north_corals, r = NULL, correction = "translate")
+```
+
+```{r}
+plot(Ptrans_north)
+```
+
+```{r}
+plot(Ptrans_north$r, Ptrans_north$pcf, type = "l", xlab = "r", ylab = "g(r)", main = "pair correlation")
+abline(h = 1, lty = 1)
+```
+
+```{r}
+Penv_north <- envelope(north_corals, r = NULL, pcf, nsim = 99, rank = 1, correction =
+                       "translate", global = FALSE)
+```
+
+```{r}
+plot(Penv_north, shade = c("hi", "lo"), legend = FALSE, main = "North: pair correlation function, g")
+```
+
+The `pcf` function uses a smoothing kernel such that distance bins are not needed. 
+
+The default bandwidth coefficient (related to sigma in a Gaussian kernel) for the smoothing kernel is set to 0.15 (Stoyan and Stoyan 1994).
+
+We can adjust the smoothing on the pair correlation function using the `stoyan` comvhud in the `pcf` function. 
+
+Increasing the value of the bandwidth coefficient (e.g., stoyan = 0.4) results in a less wiggly *g* function.
+
+Finally, we can use similar arguments for the G-function to estimate the probability of finding a nearest neighbor as a function of distance. 
+
+`spatstat` uses a similar approach as above with the `Gest` function.
+
+Note that for `Gest`, there are subtly different ways to account for edge effects relative to above. Below we use `rs`, the reduced sample correction. 
+
+We can check the observed G-function calculated by `spatstat` to the cumulative distribution function of the empirical data (with the `ecdf` function):
+
+### Southeast -- Vaihu
+
+```{r}
+Gtrans_se <- Gest(se_corals, r = NULL, correction = "rs")
 ```
 
 ```{r}
@@ -543,27 +608,115 @@ plot(Gtrans_se, legend = F)
 ```
 
 ```{r}
-Genv_se <- envelope(se_corals, rmax = 5, Gest, nsim = 99, rank = 1, correction = "rs", global = FALSE)
+Genv_se <- envelope(se_corals, r = NULL, Gest, nsim = 99, rank = 1, correction = "rs", global = FALSE)
 ```
 
 ```{r}
 plot(Genv_se, shade = c("hi", "lo"), legend = FALSE, main = "Southeast: G-function")
 ```
 
+### West - Manavai
+
+```{r}
+Gtrans_west <- Gest(west_corals, r = NULL, correction = "rs")
+```
+
+```{r}
+plot(Gtrans_west, legend = F)
+```
+
+```{r}
+Genv_west <- envelope(west_corals, r = NULL, Gest, nsim = 99, rank = 1, correction = "rs", global = FALSE)
+```
+
+```{r}
+plot(Genv_west, shade = c("hi", "lo"), legend = FALSE, main = "West: G-function")
+```
+
+### North - Anakena
+
+```{r}
+Gtrans_north <- Gest(north_corals, r = NULL, correction = "rs")
+```
+
+```{r}
+plot(Gtrans_north, legend = F)
+```
+
+```{r}
+Genv_north <- envelope(north_corals, r = NULL, Gest, nsim = 99, rank = 1, correction = "rs", global = FALSE)
+```
+
+```{r}
+plot(Genv_north, shade = c("hi", "lo"), legend = FALSE, main = "North: G-function")
+```
+
 ### Alternative Null Models
 
-While CSR is a useful starting point as a null model, in some situations we may be interested in using alternative null models. Some null models can be derived from a Poisson cluster process. Two common Poisson cluster processes considered in ecology are **Matern cluster** processes and **Thomas cluster** processes (Velazquez et al. 2016). In a Matérn cluster process, there are two types of points. The first are *parent* points, which have a Poisson distribution. Second, for each parent point, there are *offspring* points, which are independently and uniformly distributed around the parent points within a radius r. Consequently, these *offspring* points generate an underlying aggregated pattern. Similarly, with a Thomas process, *offspring* points are generated with parents but with an isotropic Gaussian distribution (similar to a Gaussian kernel). Such a process could reflect biological phenomena such as seed dispersal from parent plants. We can use these alternative null models in `spatstat`, with the above functions ($K$, $L$, pair correlation g, etc.). For example, a K function with a Thomas process as a null model can be quantified as:
+While CSR is a useful starting point as a null model, in some situations we may be interested in using alternative null models. Some null models can be derived from a Poisson cluster process. Two common Poisson cluster processes considered in ecology are **Matern cluster** processes and **Thomas cluster** processes (Velazquez et al. 2016). In a Matérn cluster process, there are two types of points. The first are *parent* points, which have a Poisson distribution. Second, for each parent point, there are *offspring* points, which are independently and uniformly distributed around the parent points within a radius r. Consequently, these *offspring* points generate an underlying aggregated pattern. Similarly, with a Thomas process, *offspring* points are generated with parents but with an isotropic Gaussian distribution (similar to a Gaussian kernel). Such a process could reflect biological phenomena such as seed dispersal from parent plants. We can use these alternative null models in `spatstat`, with the above functions ($K$, $L$, *pair correlation g*, etc.). For example, a `K` function with a Thomas process as a null model can be quantified as:
+
+### Southeast -- Vaihu
 
 ```{r}
 Kthomas_se <- kppm(se_corals, ~ 1, "Thomas")
 ```
 
-To interpret this model, `summary(Kthomas)` provides a wealth of information regarding the fitted model. For example, it provides an estimate of the mean cluster size (4.6 points), as well as the best fit scale for that size (3.7 m). Note that in the above kppm function, we can also account for covariates (the "\~ 1" states to not consider covariates and only include an intercept in the model; \~ polynom(x, y, 2) would account for the trend shown above) We can use the envelope function here as well to interpret the point pattern.
+```{r}
+Kthomas_se
+```
+
+```{r}
+summary(Kthomas_se)
+```
 
 ```{r}
 Kthomas.env_se <- envelope(Kthomas_se, rmax = 5, Lest, nsim = 99, rank = 1, global = F)
 ```
 
 ```{r}
-plot(Kthomas.env_se, . - r ~ r, shade = c("hi", "lo"), legend = F, main = "Vaihu: Thomas Model")
+plot(Kthomas.env_se, . - r ~ r, shade = c("hi", "lo"), legend = F, main = "Southeast: Thomas Model")
+```
+
+### West - Manavai
+
+```{r}
+Kthomas_west <- kppm(west_corals, ~ 1, "Thomas")
+```
+
+```{r}
+Kthomas_west
+```
+
+```{r}
+summary(Kthomas_west)
+```
+
+```{r}
+Kthomas.env_west <- envelope(Kthomas_west, rmax = 5, Lest, nsim = 99, rank = 1, global = F)
+```
+
+```{r}
+plot(Kthomas.env_west, . - r ~ r, shade = c("hi", "lo"), legend = F, main = "West: Thomas Model")
+```
+
+### North - Anakena
+
+```{r}
+Kthomas_north <- kppm(north_corals, ~ 1, "Thomas")
+```
+
+```{r}
+Kthomas_north
+```
+
+```{r}
+summary(Kthomas_north)
+```
+
+```{r}
+Kthomas.env_north <- envelope(Kthomas_north, rmax = 5, Lest, nsim = 99, rank = 1, global = F)
+```
+
+```{r}
+plot(Kthomas.env_north, . - r ~ r, shade = c("hi", "lo"), legend = F, main = "North: Thomas Model")
 ```
