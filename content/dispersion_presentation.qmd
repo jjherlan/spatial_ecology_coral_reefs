@@ -84,23 +84,23 @@ Main Caption
 
 ::: {.column width="50%"}
 ![](rpn_wave_fig_c.png){.absolute top="10" right="10" width="400" height="300"}
-
-::: {.column width="50%"}
-![](rpn_poci_percent_cover_2016.png){.absolute top="10" left="0" width="375" height="325"}
 :::
 
+::: {.column width="50%"}
+![](rpn_poci_percent_cover_2016.png){.absolute top="10" left="0" width="400" height="300"}
 :::
 :::
 
 ------------------------------------------------------------------------
 
 ::: columns
-::: {.column width="40%"}
-![](poci_size_hist.png){.absolute top="0" left="0" width="375" height="350"}
+
+::: {.column width="50%"}
+![](rpn_wave_fig_c.png){.absolute top="10" right="10" width="400" height="300"}
 :::
 
-::: {.column width="60%"}
-![](rpn_poci_size_LAI.png){.absolute top="10" right="10" width="400" height="300"}
+::: {.column width="50%"}
+![](rpn_poci_coral_size_2023_03_18.png){.absolute top="10" right="10" width="400" height="300"}
 :::
 :::
 
