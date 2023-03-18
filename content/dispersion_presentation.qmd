@@ -100,7 +100,7 @@ Main Caption
 :::
 
 ::: {.column width="50%"}
-![](rpn_poci_coral_size_2023_03_18.png){.absolute top="10" right="10" width="400" height="300"}
+![](rpn_poci_size_2023_03_18.png){.absolute top="10" right="10" width="400" height="300"}
 :::
 :::
 

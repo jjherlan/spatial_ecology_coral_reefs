@@ -34,7 +34,7 @@ x_labels = c("North", "West", "Southeast")
 poci_size.gg.barplot <- ggplot(poci_size3, aes(x = location, y = mean, fill = x_labels)) +   
   geom_bar(stat = "identity", width = 0.75, color = "black", size = 0.50, alpha = 0.6) +
   geom_linerange(aes(ymin = lower.ci, ymax = upper.ci), size = 0.75) +
-  scale_y_continuous(expression(paste("Mean Colony Size ("," ", cm^2, ")")), limits = c(0, 300)) + 
+  scale_y_continuous(expression(paste("Colony Size ("," ", cm^2, ")")), limits = c(0, 300)) + 
   scale_x_discrete(expand = c(0, 1), labels = x_labels) + 
   scale_fill_manual(values = c("#FFC74E", "#82A5C0", "#ABC178")) +
   # facet_wrap( ~ depth2, labeller = as_labeller(label_names), dir = "v", ncol = 1) + 
