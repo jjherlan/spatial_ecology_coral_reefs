@@ -152,11 +152,6 @@ rpn_plob_healthy <- rpn_bleach %>%
 rpn_plob_healthy
 ```
 
-```{r}
-modelsummary()
-```
-
-
 ## Pocillopora
 ### Generalized linear model
 
@@ -272,6 +267,10 @@ rpn_poci_healthy <- rpn_bleach %>%
 ```{r}
 rpn_poci_healthy
 ```
+
+## Examine bleaching response of coral groups
+
+### Porites
 
 ```{r}
 rpn_bleach <- read.csv('rpn_coral_bleach.csv') %>%
@@ -417,66 +416,176 @@ summary(glht(model_plob_pale,
         test = adjusted("holm"))
 ```
 
-```{r}
+#### PLOB healthy 
 
-```
-
-## Bare Substrate
-### Generalized linear model
+Interaction
 
 ```{r}
-rpn_bare <- read.csv('rpn_cover.csv') %>%
-  as_tibble() %>%
-  filter(group == "BARE") %>%
-  mutate_at(vars(location, depth, transect, group), factor) %>%
-  mutate(
-    cover = total_count/total_points,
-    failures = total_points - total_count
-  )
-
-```
-
-```{r}
-rpn_bare
-```
-
-```{r}
-bare.glm <- glm(cbind(total_count, failures) ~ location * depth, 
+plob_h.glm <- glm(cbind(h_count, h) ~ location * depth, 
                 family = binomial(link = "logit"), 
-                data = rpn_bare)
+                data = plob_bleach)
 ```
 
 ```{r}
 par(mfrow = c(2, 2))
-plot(bare.glm)
+plot(plob_h.glm)
 ```
 
 ```{r}
-summary(bare.glm)
+summary(plob_h.glm)
 ```
 
 `Anova` function from the `car` package
 
 ```{r}
-Anova(bare.glm, type = "III") # Type III because...
+Anova(plob_h.glm, type = "III") # Type III because...
 ```
 
-#### https://www.rpubs.com/daharo_calpoly/502695
-
 ```{r}
-rpn_bare$groups <- interaction(rpn_bare$location, rpn_bare$depth)
+plob_pale.aov <- Anova(plob_h.glm, type = "III") # Type III because...
 ```
 
-## Create a post-hoc model
+No interaction
 
 ```{r}
-model_bare <- with(rpn_bare, glm(cbind(total_count, failures) ~ groups, family = binomial))
+plob_h.glm2 <- glm(cbind(h_count, h) ~ location + depth, 
+                family = binomial(link = "logit"), 
+                data = plob_bleach)
+```
+
+```{r}
+par(mfrow = c(2, 2))
+plot(plob_h.glm2)
+```
+
+```{r}
+summary(plob_h.glm2)
+```
+
+`Anova` function from the `car` package
+
+```{r}
+Anova(plob_h.glm2, type = "III") # Type III because...
 ```
 
 ## Determine the post-hoc comparisons of interest
 
 ```{r}
-summary(glht(model_bare, 
+summary(glht(plob_h.glm2, linfct = mcp(location = "Tukey")))
+```
+
+### Pocillopora
+
+```{r}
+poci_bleach <- rpn_bleach %>%
+  filter(species == "poci")
+```
+
+```{r}
+poci_bleach
+```
+
+#### POCI Partially Bleached
+
+**Interaction**
+
+```{r}
+poci_pb.glm <- glm(cbind(pb_count, pb) ~ location * depth, 
+                family = binomial(link = "logit"), 
+                data = poci_bleach)
+```
+
+```{r}
+par(mfrow = c(2, 2))
+plot(poci_pb.glm)
+```
+
+```{r}
+summary(poci_pb.glm)
+```
+
+`Anova` function from the `car` package
+
+```{r}
+Anova(poci_pb.glm, type = "III") # Type III because...
+```
+
+**No interaction**
+
+```{r}
+poci_pb.glm <- glm(cbind(pb_count, pb) ~ location + depth, 
+                family = binomial(link = "logit"), 
+                data = poci_bleach)
+```
+
+```{r}
+par(mfrow = c(2, 2))
+plot(poci_pb.glm)
+```
+
+```{r}
+summary(poci_pb.glm)
+```
+
+`Anova` function from the `car` package
+
+```{r}
+Anova(poci_pb.glm, type = "III") # Type III because...
+```
+
+## Determine the post-hoc comparisons of interest
+
+```{r}
+summary(glht(poci_pb.glm, linfct = mcp(location = "Tukey")))
+```
+
+```{r}
+summary(glht(poci_pb.glm, linfct = mcp(depth = "Tukey")))
+```
+
+#### POCI Pale
+
+```{r}
+poci_pale.glm <- glm(cbind(p_count, p) ~ location * depth, 
+                family = binomial(link = "logit"), 
+                data = poci_bleach)
+```
+
+```{r}
+par(mfrow = c(2, 2))
+plot(poci_pale.glm)
+```
+
+```{r}
+summary(poci_pale.glm)
+```
+
+`Anova` function from the `car` package
+
+```{r}
+Anova(poci_pale.glm, type = "III") # Type III because...
+```
+
+```{r}
+poci_pale.aov <- Anova(poci_pale.glm, type = "III") # Type III because...
+```
+
+#### https://www.rpubs.com/daharo_calpoly/502695
+
+```{r}
+poci_bleach$groups <- interaction(poci_bleach$location, poci_bleach$depth)
+```
+
+## Create a post-hoc model
+
+```{r}
+model_poci_pale <- with(poci_bleach, glm(cbind(p_count, p) ~ groups, family = binomial))
+```
+
+## Determine the post-hoc comparisons of interest
+
+```{r}
+summary(glht(model_poci_pale, 
              linfct = mcp(groups =
                      #Is the difference between these groups different from zero?
                      c("(north.sh) - (west.sh) = 0",
@@ -494,88 +603,64 @@ summary(glht(model_bare,
         test = adjusted("holm"))
 ```
 
-## CCA
-### Generalized linear model
+#### POCI Healthy 
+
+Interaction
 
 ```{r}
-rpn_cca <- read.csv('rpn_cover.csv') %>%
-  as_tibble() %>%
-  filter(group == "CCA") %>%
-  mutate_at(vars(location, depth, transect, group), factor) %>%
-  mutate(
-    cover = total_count/total_points,
-    failures = total_points - total_count
-  )
-```
-
-```{r}
-cca.glm <- glm(cbind(total_count, failures) ~ location * depth, 
+poci_h.glm <- glm(cbind(h_count, h) ~ location * depth, 
                 family = binomial(link = "logit"), 
-                data = rpn_cca)
+                data = poci_bleach)
 ```
 
 ```{r}
 par(mfrow = c(2, 2))
-plot(cca.glm)
+plot(poci_h.glm)
 ```
 
 ```{r}
-summary(cca.glm)
+summary(poci_h.glm)
 ```
 
 `Anova` function from the `car` package
 
 ```{r}
-Anova(cca.glm, type = "III") # Type III because...
+Anova(poci_h.glm, type = "III") # Type III because...
 ```
 
-#### https://www.rpubs.com/daharo_calpoly/502695
-
 ```{r}
-rpn_cca$groups <- interaction(rpn_cca$location, rpn_cca$depth)
+poci_pale.aov <- Anova(poci_h.glm, type = "III") # Type III because...
 ```
 
-## Create a post-hoc model
+**No interaction**
 
 ```{r}
-model_cca <- with(rpn_cca, glm(cbind(total_count, failures) ~ groups, family = binomial))
+poci_h.glm2 <- glm(cbind(h_count, h) ~ location + depth, 
+                family = binomial(link = "logit"), 
+                data = poci_bleach)
+```
+
+```{r}
+par(mfrow = c(2, 2))
+plot(poci_h.glm2)
+```
+
+```{r}
+summary(poci_h.glm2)
+```
+
+`Anova` function from the `car` package
+
+```{r}
+Anova(poci_h.glm2, type = "III") # Type III because...
 ```
 
 ## Determine the post-hoc comparisons of interest
 
 ```{r}
-summary(glht(model_cca, 
-             linfct = mcp(groups =
-                     #Is the difference between these groups different from zero?
-                     c("(north.sh) - (west.sh) = 0",
-                       "(north.sh) - (west.dp) = 0",
-                       "(north.sh) - (se.sh) = 0",
-                       "(north.sh) - (se.dp) = 0",
-                       "(north.dp) - (west.sh) = 0",
-                       "(north.dp) - (west.dp) = 0",
-                       "(north.dp) - (se.sh) = 0",
-                       "(north.dp) - (se.dp) = 0",
-                       "(se.sh) - (west.sh) = 0",
-                       "(se.sh) - (west.dp) = 0",
-                       "(se.dp) - (west.sh) = 0",
-                       "(se.dp) - (west.dp) = 0"))),
-        test = adjusted("holm"))
+summary(glht(poci_h.glm2, linfct = mcp(location = "Tukey")))
 ```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+```{r}
+summary(glht(poci_h.glm2, linfct = mcp(depth = "Tukey")))
+```
