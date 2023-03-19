@@ -72,6 +72,18 @@ summary(plob.glm)
 ```
 
 ```{r}
+summary(glht(plob.glm, linfct = (mcp())))
+```
+
+```{r}
+data$groups<-interaction(data$cat_1, data$cat_2)
+```
+
+
+## Pocillopora
+### Generalized linear model
+
+```{r, include = FALSE}
 rpn_poci <- read.csv('rpn_cover.csv') %>%
   as_tibble() %>%
   filter(group == "POCI") %>%
