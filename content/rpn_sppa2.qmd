@@ -581,19 +581,19 @@ Penv_north <- envelope(north_corals, r = NULL, pcf, nsim = 99, rank = 1, correct
 plot(Penv_north, shade = c("hi", "lo"), legend = FALSE, main = "North: pair correlation function, g")
 ```
 
-The `pcf` function uses a smoothing kernel such that distance bins are not needed. 
+The `pcf` function uses a smoothing kernel such that distance bins are not needed.
 
 The default bandwidth coefficient (related to sigma in a Gaussian kernel) for the smoothing kernel is set to 0.15 (Stoyan and Stoyan 1994).
 
-We can adjust the smoothing on the pair correlation function using the `stoyan` comvhud in the `pcf` function. 
+We can adjust the smoothing on the pair correlation function using the `stoyan` comvhud in the `pcf` function.
 
 Increasing the value of the bandwidth coefficient (e.g., stoyan = 0.4) results in a less wiggly *g* function.
 
-Finally, we can use similar arguments for the G-function to estimate the probability of finding a nearest neighbor as a function of distance. 
+Finally, we can use similar arguments for the G-function to estimate the probability of finding a nearest neighbor as a function of distance.
 
 `spatstat` uses a similar approach as above with the `Gest` function.
 
-Note that for `Gest`, there are subtly different ways to account for edge effects relative to above. Below we use `rs`, the reduced sample correction. 
+Note that for `Gest`, there are subtly different ways to account for edge effects relative to above. Below we use `rs`, the reduced sample correction.
 
 We can check the observed G-function calculated by `spatstat` to the cumulative distribution function of the empirical data (with the `ecdf` function):
 

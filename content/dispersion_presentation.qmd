@@ -12,6 +12,8 @@ require(tidyverse)
 require(car)
 ```
 
+------------------------------------------------------------------------
+
 ::: incremental
 ## Different patterns of dispersion {.smaller}
 
@@ -20,52 +22,13 @@ require(car)
 
 ------------------------------------------------------------------------
 
-::: columns
-::: {.column width="40%"}
-Left column
-:::
+::: {layout="[20,-2,35]" layout-valign="top"}
+![](rpn_ortho_trace_centroids.png)
 
-::: {.column width="60%"}
-Right column
-:::
+![](rpn_quadrat_count.png)
 :::
 
 ------------------------------------------------------------------------
-
-::: columns
-::: {.column width="100%"}
-![](rpn_ortho_trace_centroids.png){.absolute top="0" left="0" width="350" height="750"}
-:::
-
-::: {.column width="100%"}
-![](rpn_quadrat_count.png){.absolute top="0" right="0" width="600" height="400"}
-:::
-:::
-
-------------------------------------------------------------------------
-
-::: {#tbl-panel layout-ncol="1"}
-| Site              | $X^{2}$ | $df$ | $p$-value | $n$ points | Avg. intensity |
-|-------------------|:--------|:-----|:----------|:-----------|:---------------|
-| North (Anakena)   | 397.09  | 249  | \<0.001   | 136        | 0.544          |
-| West (Manavai)    | 1394.1  | 249  | \<0.001   | 372        | 1.488          |
-| Southeast (Vaihu) | 308.8   | 249  | \<0.001   | 3131       | 12.524         |
-
-: First Table {#tbl-first}
-
-Main Caption
-:::
-
-See @tbl-panel for details, especially @tbl-first.
-
-------------------------------------------------------------------------
-
-::: panel-tabset
-### Tab A
-
-![](rpn_quadrat_count.png){.absolute top="0" right="0" width="600" height="400"}
-
-### Tab B
 
 | Site              | $X^{2}$ | $df$ | $p$-value | $n$ points | Avg. intensity |
 |-------------------|:--------|:-----|:----------|:-----------|:---------------|
@@ -73,34 +36,19 @@ See @tbl-panel for details, especially @tbl-first.
 | West (Manavai)    | 1394.1  | 249  | \<0.001   | 372        | 1.488          |
 | Southeast (Vaihu) | 308.8   | 249  | \<0.001   | 3131       | 12.524         |
 
-: First Table {#tbl-first}
+: First Table {tbl-colwidths="[75,25]"}}
 
 Main Caption
-:::
 
 ------------------------------------------------------------------------
 
 ::: columns
-
 ::: {.column width="50%"}
-![](rpn_wave_fig_c.png){.absolute top="10" right="10" width="400" height="300"}
+![](rpn_wave_fig_c.png){.absolute top="10" left="1" width="450" height="375"}
 :::
 
 ::: {.column width="50%"}
-![](rpn_poci_percent_cover_2016.png){.absolute top="10" left="0" width="400" height="300"}
-:::
-:::
-
-------------------------------------------------------------------------
-
-::: columns
-
-::: {.column width="50%"}
-![](rpn_wave_fig_c.png){.absolute top="10" right="10" width="400" height="300"}
-:::
-
-::: {.column width="50%"}
-![](rpn_poci_size_2023_03_18.png){.absolute top="10" right="10" width="400" height="300"}
+![](rpn_poci_percent_cover_2016.png){.absolute top="10" left="1" width="475" height="375"}
 :::
 :::
 
@@ -108,6 +56,18 @@ Main Caption
 
 ::: columns
 ::: {.column width="50%"}
+![](rpn_wave_fig_c.png){.absolute top="10" left="1" width="450" height="375"}
+:::
+
+::: {.column width="50%"}
+![](rpn_poci_size_2023_03_18.png){.absolute top="10" right="1" width="475" height="375"}
+:::
+:::
+
+------------------------------------------------------------------------
+
+::: columns 
+::: {.column width="50%" style="font-size: 27px"}
 **Raw data (not transformed)**
 
 ```{r, include = FALSE}
@@ -129,7 +89,7 @@ summary(p_cover_mod.lm1)
 ```
 :::
 
-::: {.column width="50%"}
+::: {.column width="50%" style="font-size: 27px"}
 ```{r}
 par(mfrow = c(2, 2))
 plot(p_cover_mod.lm1)
@@ -143,67 +103,14 @@ Anova(p_cover_mod.lm1, type = "III")
 
 ------------------------------------------------------------------------
 
-::: columns
-::: {.column width="50%"}
-Left column
-:::
+**Logit-transformation** 
 
-::: {.column width="50%"}
-Right column
-:::
-:::
-
-------------------------------------------------------------------------
-
-::: columns
-::: {.column width="50%"}
-**Logit-transformation**
-
-```{r}
-p_cover_mod.lm2 <- lm(logit(pland_decimal) ~ Site, data = p_cover)
-summary(p_cover_mod.lm2)
-```
-:::
-
-::: {.column width="50%"}
-```{r}
-par(mfrow = c(2, 2))
-plot(p_cover_mod.lm2)
-```
-
-```{r}
-Anova(p_cover_mod.lm2, type = "III")
-```
-:::
-:::
-
-------------------------------------------------------------------------
-
-**Logit-transformation**
-
-```{r}
-p_cover_mod.lm2 <- lm(logit(pland_decimal) ~ Site, data = p_cover)
-summary(p_cover_mod.lm2)
-```
-
-```{r}
-par(mfrow = c(2, 2))
-plot(p_cover_mod.lm2)
-```
-
-```{r}
-Anova(p_cover_mod.lm2, type = "III")
-```
-
-------------------------------------------------------------------------
-
-::: columns
+::: columns 
 ::: {.column width="50%" style="font-size: 27px"}
+
 ```{r}
 p_cover_mod.lm2 <- lm(logit(pland_decimal) ~ Site, data = p_cover)
 summary(p_cover_mod.lm2)
-
-
 ```
 
 ```{r}
@@ -216,5 +123,58 @@ plot(p_cover_mod.lm2)
 ```{r}
 Anova(p_cover_mod.lm2, type = "III")
 ```
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+::: columns 
+::: {.column width="50%" style="font-size: 27px"}
+
+![](rpn_ripleysK_2023_03_18.png){.absolute top="10" left="1" width="400" height="750"}
+:::
+
+::: {.column width="50%" style="font-size: 27px"}
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+::: columns 
+::: {.column width="50%" style="font-size: 27px"}
+
+![](rpn_standL_2023_03_18.png){.absolute top="10" left="1" width="400" height="750"}
+:::
+
+::: {.column width="50%" style="font-size: 27px"}
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+::: columns 
+::: {.column width="50%" style="font-size: 27px"}
+
+![](rpn_pcf_2023_03_18.png){.absolute top="10" left="1" width="400" height="750"}
+:::
+
+::: {.column width="50%" style="font-size: 27px"}
+
+:::
+:::
+
+------------------------------------------------------------------------
+
+::: columns 
+::: {.column width="50%" style="font-size: 27px"}
+
+![](rpn_Gfunction_2023_03_18.png){.absolute top="10" left="1" width="400" height="750"}
+:::
+
+::: {.column width="50%" style="font-size: 27px"}
+
 :::
 :::
