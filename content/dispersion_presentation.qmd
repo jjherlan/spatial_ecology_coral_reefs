@@ -12,33 +12,11 @@ require(tidyverse)
 require(car)
 ```
 
-------------------------------------------------------------------------
-
 ::: incremental
 ## Different patterns of dispersion {.smaller}
 
 -   Environmental heterogeneity
 :::
-
-------------------------------------------------------------------------
-
-::: {layout="[20,-2,35]" layout-valign="top"}
-![](rpn_ortho_trace_centroids.png)
-
-![](rpn_quadrat_count.png)
-:::
-
-------------------------------------------------------------------------
-
-| Site              | $X^{2}$ | $df$ | $p$-value | $n$ points | Avg. intensity |
-|-------------------|:--------|:-----|:----------|:-----------|:---------------|
-| North (Anakena)   | 397.09  | 249  | \<0.001   | 136        | 0.544          |
-| West (Manavai)    | 1394.1  | 249  | \<0.001   | 372        | 1.488          |
-| Southeast (Vaihu) | 308.8   | 249  | \<0.001   | 3131       | 12.524         |
-
-: First Table {tbl-colwidths="[75,25]"}}
-
-Main Caption
 
 ------------------------------------------------------------------------
 
@@ -48,7 +26,7 @@ Main Caption
 :::
 
 ::: {.column width="50%"}
-![](rpn_poci_percent_cover_2016.png){.absolute top="10" left="1" width="475" height="375"}
+![](rpn_poci_percent_cover_2016.png){.absolute top="10" right="1" width="475" height="375"}
 :::
 :::
 
@@ -66,9 +44,10 @@ Main Caption
 
 ------------------------------------------------------------------------
 
-::: columns 
-::: {.column width="50%" style="font-size: 27px"}
 **Raw data (not transformed)**
+
+::: columns
+::: {.column width="50%" style="font-size: 27px"}
 
 ```{r, include = FALSE}
 p_cover = read_csv('LSMclassGrid.csv') %>% 
@@ -103,11 +82,10 @@ Anova(p_cover_mod.lm1, type = "III")
 
 ------------------------------------------------------------------------
 
-**Logit-transformation** 
+**Logit-transformation**
 
-::: columns 
+::: columns
 ::: {.column width="50%" style="font-size: 27px"}
-
 ```{r}
 p_cover_mod.lm2 <- lm(logit(pland_decimal) ~ Site, data = p_cover)
 summary(p_cover_mod.lm2)
@@ -123,58 +101,49 @@ plot(p_cover_mod.lm2)
 ```{r}
 Anova(p_cover_mod.lm2, type = "III")
 ```
-
 :::
 :::
 
 ------------------------------------------------------------------------
 
-::: columns 
+::: columns
 ::: {.column width="50%" style="font-size: 27px"}
-
 ![](rpn_ripleysK_2023_03_18.png){.absolute top="10" left="1" width="400" height="750"}
 :::
 
 ::: {.column width="50%" style="font-size: 27px"}
-
 :::
 :::
 
 ------------------------------------------------------------------------
 
-::: columns 
+::: columns
 ::: {.column width="50%" style="font-size: 27px"}
-
 ![](rpn_standL_2023_03_18.png){.absolute top="10" left="1" width="400" height="750"}
 :::
 
 ::: {.column width="50%" style="font-size: 27px"}
-
 :::
 :::
 
 ------------------------------------------------------------------------
 
-::: columns 
+::: columns
 ::: {.column width="50%" style="font-size: 27px"}
-
 ![](rpn_pcf_2023_03_18.png){.absolute top="10" left="1" width="400" height="750"}
 :::
 
 ::: {.column width="50%" style="font-size: 27px"}
-
 :::
 :::
 
 ------------------------------------------------------------------------
 
-::: columns 
+::: columns
 ::: {.column width="50%" style="font-size: 27px"}
-
 ![](rpn_Gfunction_2023_03_18.png){.absolute top="10" left="1" width="400" height="750"}
 :::
 
 ::: {.column width="50%" style="font-size: 27px"}
-
 :::
 :::
