@@ -208,6 +208,8 @@ summary(bare.glm)
 # `Anova` function from the *car* package
 Anova(bare.glm, type = "III") # Type III because...
 
+# CCA
+
 rpn_cca <- read.csv('rpn_cover.csv') %>%
   as_tibble() %>%
   filter(group == "CCA") %>%

@@ -53,6 +53,10 @@ rpn_plob <- read.csv('rpn_cover.csv') %>%
     )
 ```
 
+```{r, inlcude = FALSE}
+rpn_plob
+```
+
 ## Porites 
 ### Generalized linear model
 
@@ -71,12 +75,85 @@ plot(plob.glm)
 summary(plob.glm)
 ```
 
+#### https://www.rpubs.com/daharo_calpoly/502695
+
 ```{r}
-summary(glht(plob.glm, linfct = (mcp())))
+rpn_plob$groups <- interaction(rpn_plob$location, rpn_plob$depth)
+```
+
+## Create a post-hoc model
+
+```{r}
+model_plob <- with(rpn_plob, glm(cbind(total_count, failures) ~ groups, family = binomial))
+```
+
+## Determine the post-hoc comparisons of interest
+
+```{r}
+summary(glht(model_plob, 
+             linfct = mcp(groups =
+                     #Is the difference between these groups different from zero?
+                     c("(north.sh) - (west.sh) = 0",
+                       "(north.sh) - (west.dp) = 0",
+                       "(north.sh) - (se.sh) = 0",
+                       "(north.sh) - (se.dp) = 0",
+                       "(north.dp) - (west.sh) = 0",
+                       "(north.dp) - (west.dp) = 0",
+                       "(north.dp) - (se.sh) = 0",
+                       "(north.dp) - (se.dp) = 0",
+                       "(se.sh) - (west.sh) = 0",
+                       "(se.sh) - (west.dp) = 0",
+                       "(se.dp) - (west.sh) = 0",
+                       "(se.dp) - (west.dp) = 0"))),
+        test = adjusted("holm"))
 ```
 
 ```{r}
-data$groups<-interaction(data$cat_1, data$cat_2)
+rpn_plob_bleach <- rpn_bleach %>%  
+  filter(group == 'PLOB' & status == 'BL') %>%
+  group_by(location, depth, transect) %>%
+  dplyr::summarise(total_count = n())
+```
+
+```{r}
+rpn_plob_bleach
+```
+
+```{r}
+rpn_plob_pb <- rpn_bleach %>%  
+  filter(group == 'PLOB' & status == 'PB') %>%
+  group_by(location, depth, transect) %>%
+  dplyr::summarise(total_count = n())
+```
+
+```{r}
+rpn_plob_pb
+```
+
+```{r}
+rpn_plob_pale <- rpn_bleach %>%  
+  filter(group == 'PLOB' & status == 'P') %>%
+  group_by(location, depth, transect) %>%
+  dplyr::summarise(total_count = n())
+```
+
+```{r}
+rpn_plob_pale
+```
+
+```{r}
+rpn_plob_healthy <- rpn_bleach %>%  
+  filter(group == 'PLOB' & status == 'H') %>%
+  group_by(location, depth, transect) %>%
+  dplyr::summarise(total_count = n())
+```
+
+```{r}
+rpn_plob_healthy
+```
+
+```{r}
+modelsummary()
 ```
 
 
@@ -92,6 +169,10 @@ rpn_poci <- read.csv('rpn_cover.csv') %>%
     cover = total_count/total_points,
     failures = total_points - total_count
   )
+```
+
+```{r}
+rpn_poci
 ```
 
 ```{r}
@@ -114,6 +195,373 @@ summary(poci.glm)
 ```{r}
 Anova(poci.glm, type = "III") # Type III because...
 ```
+
+#### https://www.rpubs.com/daharo_calpoly/502695
+
+```{r}
+rpn_poci$groups <- interaction(rpn_poci$location, rpn_poci$depth)
+```
+
+## Create a post-hoc model
+
+```{r}
+model_poci <- with(rpn_poci, glm(cbind(total_count, failures) ~ groups, family = binomial))
+```
+
+## Determine the post-hoc comparisons of interest
+
+```{r}
+summary(glht(model_poci, 
+             linfct = mcp(groups =
+                     #Is the difference between these groups different from zero?
+                     c("(north.sh) - (west.sh) = 0",
+                       "(north.sh) - (west.dp) = 0",
+                       "(north.sh) - (se.sh) = 0",
+                       "(north.sh) - (se.dp) = 0",
+                       "(north.dp) - (west.sh) = 0",
+                       "(north.dp) - (west.dp) = 0",
+                       "(north.dp) - (se.sh) = 0",
+                       "(north.dp) - (se.dp) = 0",
+                       "(se.sh) - (west.sh) = 0",
+                       "(se.sh) - (west.dp) = 0",
+                       "(se.dp) - (west.sh) = 0",
+                       "(se.dp) - (west.dp) = 0"))),
+        test = adjusted("holm"))
+```
+
+```{r}
+rpn_poci_bleach <- rpn_bleach %>%  
+  filter(group == 'POCI' & status == 'BL') %>%
+  group_by(location, depth, transect) %>%
+  dplyr::summarise(total_count = n())
+```
+
+```{r}
+rpn_poci_bleach
+```
+
+```{r}
+rpn_poci_pb <- rpn_bleach %>%  
+  filter(group == 'POCI' & status == 'PB') %>%
+  group_by(location, depth, transect) %>%
+  dplyr::summarise(total_count = n())
+```
+
+```{r}
+rpn_poci_pb
+```
+
+```{r}
+rpn_poci_pale <- rpn_bleach %>%  
+  filter(group == 'POCI' & status == 'P') %>%
+  group_by(location, depth, transect) %>%
+  dplyr::summarise(total_count = n())
+```
+
+```{r}
+rpn_poci_pale
+```
+
+```{r}
+rpn_poci_healthy <- rpn_bleach %>%  
+  filter(group == 'POCI' & status == 'H') %>%
+  group_by(location, depth, transect) %>%
+  dplyr::summarise(total_count = n())
+```
+
+```{r}
+rpn_poci_healthy
+```
+
+```{r}
+rpn_bleach <- read.csv('rpn_coral_bleach.csv') %>%
+  as_tibble() %>%
+  #filter(group == "PLOB") %>%
+  mutate_at(vars(location, depth, transect, species), factor) %>%
+  mutate(
+  bl = coral_count - bl_count,
+  pb = coral_count - pb_count,
+  p  = coral_count - p_count,
+  h  = coral_count - h_count,
+    )
+```
+
+```{r}
+rpn_bleach
+```
+
+```{r}
+plob_bleach <- rpn_bleach %>%
+  filter(species == "plob")
+```
+
+```{r}
+plob_bleach
+```
+
+```{r}
+plob_pb.glm <- glm(cbind(pb_count, pb) ~ location * depth, 
+                family = binomial(link = "logit"), 
+                data = plob_bleach)
+```
+
+```{r}
+par(mfrow = c(2, 2))
+plot(plob_pb.glm)
+```
+
+```{r}
+summary(plob_pb.glm)
+```
+
+`Anova` function from the `car` package
+
+```{r}
+Anova(plob_pb.glm, type = "III") # Type III because...
+```
+
+```{r}
+plob_pb.aov <- Anova(plob_pb.glm, type = "III") # Type III because...
+```
+
+#### https://www.rpubs.com/daharo_calpoly/502695
+
+```{r}
+plob_bleach$groups <- interaction(plob_bleach$location, plob_bleach$depth)
+```
+
+## Create a post-hoc model
+
+```{r}
+model_plob_bleach <- with(plob_bleach, glm(cbind(pb_count, pb) ~ groups, family = binomial))
+```
+
+## Determine the post-hoc comparisons of interest
+
+```{r}
+summary(glht(model_plob_bleach, 
+             linfct = mcp(groups =
+                     #Is the difference between these groups different from zero?
+                     c("(north.sh) - (west.sh) = 0",
+                       "(north.sh) - (west.dp) = 0",
+                       "(north.sh) - (se.sh) = 0",
+                       "(north.sh) - (se.dp) = 0",
+                       "(north.dp) - (west.sh) = 0",
+                       "(north.dp) - (west.dp) = 0",
+                       "(north.dp) - (se.sh) = 0",
+                       "(north.dp) - (se.dp) = 0",
+                       "(se.sh) - (west.sh) = 0",
+                       "(se.sh) - (west.dp) = 0",
+                       "(se.dp) - (west.sh) = 0",
+                       "(se.dp) - (west.dp) = 0"))),
+        test = adjusted("holm"))
+```
+
+PLOB pale
+
+```{r}
+plob_pale.glm <- glm(cbind(p_count, p) ~ location * depth, 
+                family = binomial(link = "logit"), 
+                data = plob_bleach)
+```
+
+```{r}
+par(mfrow = c(2, 2))
+plot(plob_pale.glm)
+```
+
+```{r}
+summary(plob_pale.glm)
+```
+
+`Anova` function from the `car` package
+
+```{r}
+Anova(plob_pale.glm, type = "III") # Type III because...
+```
+
+```{r}
+plob_pale.aov <- Anova(plob_pale.glm, type = "III") # Type III because...
+```
+
+#### https://www.rpubs.com/daharo_calpoly/502695
+
+```{r}
+plob_bleach$groups <- interaction(plob_bleach$location, plob_bleach$depth)
+```
+
+## Create a post-hoc model
+
+```{r}
+model_plob_pale <- with(plob_bleach, glm(cbind(p_count, p) ~ groups, family = binomial))
+```
+
+## Determine the post-hoc comparisons of interest
+
+```{r}
+summary(glht(model_plob_pale, 
+             linfct = mcp(groups =
+                     #Is the difference between these groups different from zero?
+                     c("(north.sh) - (west.sh) = 0",
+                       "(north.sh) - (west.dp) = 0",
+                       "(north.sh) - (se.sh) = 0",
+                       "(north.sh) - (se.dp) = 0",
+                       "(north.dp) - (west.sh) = 0",
+                       "(north.dp) - (west.dp) = 0",
+                       "(north.dp) - (se.sh) = 0",
+                       "(north.dp) - (se.dp) = 0",
+                       "(se.sh) - (west.sh) = 0",
+                       "(se.sh) - (west.dp) = 0",
+                       "(se.dp) - (west.sh) = 0",
+                       "(se.dp) - (west.dp) = 0"))),
+        test = adjusted("holm"))
+```
+
+```{r}
+
+```
+
+## Bare Substrate
+### Generalized linear model
+
+```{r}
+rpn_bare <- read.csv('rpn_cover.csv') %>%
+  as_tibble() %>%
+  filter(group == "BARE") %>%
+  mutate_at(vars(location, depth, transect, group), factor) %>%
+  mutate(
+    cover = total_count/total_points,
+    failures = total_points - total_count
+  )
+
+```
+
+```{r}
+rpn_bare
+```
+
+```{r}
+bare.glm <- glm(cbind(total_count, failures) ~ location * depth, 
+                family = binomial(link = "logit"), 
+                data = rpn_bare)
+```
+
+```{r}
+par(mfrow = c(2, 2))
+plot(bare.glm)
+```
+
+```{r}
+summary(bare.glm)
+```
+
+`Anova` function from the `car` package
+
+```{r}
+Anova(bare.glm, type = "III") # Type III because...
+```
+
+#### https://www.rpubs.com/daharo_calpoly/502695
+
+```{r}
+rpn_bare$groups <- interaction(rpn_bare$location, rpn_bare$depth)
+```
+
+## Create a post-hoc model
+
+```{r}
+model_bare <- with(rpn_bare, glm(cbind(total_count, failures) ~ groups, family = binomial))
+```
+
+## Determine the post-hoc comparisons of interest
+
+```{r}
+summary(glht(model_bare, 
+             linfct = mcp(groups =
+                     #Is the difference between these groups different from zero?
+                     c("(north.sh) - (west.sh) = 0",
+                       "(north.sh) - (west.dp) = 0",
+                       "(north.sh) - (se.sh) = 0",
+                       "(north.sh) - (se.dp) = 0",
+                       "(north.dp) - (west.sh) = 0",
+                       "(north.dp) - (west.dp) = 0",
+                       "(north.dp) - (se.sh) = 0",
+                       "(north.dp) - (se.dp) = 0",
+                       "(se.sh) - (west.sh) = 0",
+                       "(se.sh) - (west.dp) = 0",
+                       "(se.dp) - (west.sh) = 0",
+                       "(se.dp) - (west.dp) = 0"))),
+        test = adjusted("holm"))
+```
+
+## CCA
+### Generalized linear model
+
+```{r}
+rpn_cca <- read.csv('rpn_cover.csv') %>%
+  as_tibble() %>%
+  filter(group == "CCA") %>%
+  mutate_at(vars(location, depth, transect, group), factor) %>%
+  mutate(
+    cover = total_count/total_points,
+    failures = total_points - total_count
+  )
+```
+
+```{r}
+cca.glm <- glm(cbind(total_count, failures) ~ location * depth, 
+                family = binomial(link = "logit"), 
+                data = rpn_cca)
+```
+
+```{r}
+par(mfrow = c(2, 2))
+plot(cca.glm)
+```
+
+```{r}
+summary(cca.glm)
+```
+
+`Anova` function from the `car` package
+
+```{r}
+Anova(cca.glm, type = "III") # Type III because...
+```
+
+#### https://www.rpubs.com/daharo_calpoly/502695
+
+```{r}
+rpn_cca$groups <- interaction(rpn_cca$location, rpn_cca$depth)
+```
+
+## Create a post-hoc model
+
+```{r}
+model_cca <- with(rpn_cca, glm(cbind(total_count, failures) ~ groups, family = binomial))
+```
+
+## Determine the post-hoc comparisons of interest
+
+```{r}
+summary(glht(model_cca, 
+             linfct = mcp(groups =
+                     #Is the difference between these groups different from zero?
+                     c("(north.sh) - (west.sh) = 0",
+                       "(north.sh) - (west.dp) = 0",
+                       "(north.sh) - (se.sh) = 0",
+                       "(north.sh) - (se.dp) = 0",
+                       "(north.dp) - (west.sh) = 0",
+                       "(north.dp) - (west.dp) = 0",
+                       "(north.dp) - (se.sh) = 0",
+                       "(north.dp) - (se.dp) = 0",
+                       "(se.sh) - (west.sh) = 0",
+                       "(se.sh) - (west.dp) = 0",
+                       "(se.dp) - (west.sh) = 0",
+                       "(se.dp) - (west.dp) = 0"))),
+        test = adjusted("holm"))
+```
+
 
 
 
