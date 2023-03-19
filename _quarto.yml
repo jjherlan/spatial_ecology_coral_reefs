@@ -46,6 +46,8 @@ website:
       - href: content/acknowledgements.qmd
         text: Acknowledgements
       - href: content/percent_cover.qmd
+        text: Percent Cover & Bleaching
+      - href: content/bleaching.qmd
         text: Percent Cover
       - href: content/dispersion_presentation.qmd
         text: Pocilloporid Dispersion

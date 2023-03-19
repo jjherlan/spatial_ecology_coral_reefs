@@ -1,0 +1,121 @@
+---
+title: "Percent Cover and Bleaching in 2015"
+author: "jjh"
+date: "Last compiled on `r format(Sys.time(), '%d %B, %Y %H:%M')`"
+editor: visual
+---
+
+```{r, include = FALSE}
+require(tidyverse)
+require(plyr)
+require(betareg)
+require(lmtest)
+require(glmmTMB)
+require(boot)
+require(emmeans)
+require(brms)
+require(mvtnorm)
+require(nlme)
+require(rstan)
+require(VGAM)
+require(Rmisc)
+require(car)
+require(multcomp)
+```
+
+```{r, incluse = FALSE}
+rpn_bleach <- read.csv('rpn_bleach_2015.csv') %>%
+  as_tibble() %>%
+  mutate_at(vars(location, depth, transect, group, status), factor)
+```
+
+```{r}
+rpn_summary <- rpn_bleach %>%  
+  group_by(location, depth, transect, group) %>%
+  dplyr::summarise(total_count = n())
+```
+
+```{r}
+rpn_PLOB <- rpn_bleach %>%  
+  filter(group == "PLOB") %>%
+  group_by(location, depth, transect) %>%
+  dplyr::summarise(total_count = n())
+```
+
+```{r}
+rpn_plob <- read.csv('rpn_cover.csv') %>%
+  as_tibble() %>%
+  filter(group == "PLOB") %>%
+  mutate_at(vars(location, depth, transect, group), factor) %>%
+  mutate(
+  cover = total_count/total_points,
+  failures = total_points - total_count
+    )
+```
+
+## Porites 
+### Generalized linear model
+
+```{r}
+plob.glm <- glm(cbind(total_count, failures) ~ location * depth, 
+                    family = binomial(link = "logit"), 
+                    data = rpn_plob)
+```
+
+```{r}
+par(mfrow = c(2, 2))
+plot(plob.glm)
+```
+
+```{r}
+summary(plob.glm)
+```
+
+```{r}
+rpn_poci <- read.csv('rpn_cover.csv') %>%
+  as_tibble() %>%
+  filter(group == "POCI") %>%
+  mutate_at(vars(location, depth, transect, group), factor) %>%
+  mutate(
+    cover = total_count/total_points,
+    failures = total_points - total_count
+  )
+```
+
+```{r}
+poci.glm <- glm(cbind(total_count, failures) ~ location * depth, 
+                family = binomial(link = "logit"), 
+                data = rpn_poci)
+```
+
+```{r}
+par(mfrow = c(2, 2))
+plot(poci.glm)
+```
+
+```{r}
+summary(poci.glm)
+```
+
+`Anova` function from the `car` package
+
+```{r}
+Anova(poci.glm, type = "III") # Type III because...
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

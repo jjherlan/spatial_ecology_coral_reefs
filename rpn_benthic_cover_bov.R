@@ -95,10 +95,8 @@ rpn_plob_healthy
 
 write.csv(rpn_PLOB, "rpn_plob.csv")
 write.csv(rpn_PLOB_bleach, "rpn_plob_bleach.csv")     
-write.csv(rpn_PLOB_bleach, "rpn_plob_bleach.csv")  
-write.csv(rpn_PLOB_bleach, "rpn_plob_bleach.csv")  
 
-rpn_bleached <- read.csv("rpn_plob_bleached_2015.csv") %>%
+rpn_bleached <- read.csv("rpn_plob_bleach.csv") %>%
   select(location, depth, transect, total_count, pb_count) %>%
     mutate(prop = pb_count/total_count,
            failures = total_count - pb_count)
