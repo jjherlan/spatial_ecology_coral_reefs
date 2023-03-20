@@ -1,0 +1,33 @@
+---
+title: "Percent Cover Transects & Photos 2016"
+author: "jjh"
+editor: visual
+---
+
+```{r, include = FALSE}
+require(tidyverse)
+require(plyr)
+require(betareg)
+require(lmtest)
+require(glmmTMB)
+require(boot)
+require(emmeans)
+require(brms)
+require(mvtnorm)
+require(nlme)
+require(rstan)
+require(VGAM)
+require(Rmisc)
+require(car)
+require(multcomp)
+```
+
+```{r, incluse = FALSE}
+rpn_ana_sh <- read.csv('ana_sh.csv') %>%
+  as_tibble()
+```
+
+```{r, incluse = TRUE}
+rpn_ana_sh
+```
+
