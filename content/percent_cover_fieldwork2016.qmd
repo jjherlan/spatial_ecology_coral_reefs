@@ -24,7 +24,8 @@ require(multcomp)
 
 ```{r, incluse = FALSE}
 rpn_ana_sh <- read.csv('ana_sh.csv') %>%
-  as_tibble()
+  as_tibble() %>%
+  mutate_at(vars(location, depth, transect, photo, group), factor)
 ```
 
 ```{r, incluse = TRUE}
@@ -33,42 +34,83 @@ rpn_ana_sh
 
 ```{r, incluse = FALSE}
 rpn_ana_md <- read.csv('ana_md.csv') %>%
-  as_tibble()
+  as_tibble() %>%
+  mutate_at(vars(location, depth, transect, photo, group), factor)
 ```
 
 ```{r, incluse = TRUE}
 rpn_ana_md
 ```
 
-```{r}
-rpn_ana_md %>%
-  complete(group, photo, fill = list(successes = 0, failures = 0))
-```
-
-```{r}
-vec <- c("abiotic", "biotic", "macro", "non-reef", "plob", "poci", "turf")
-```
-
-```{r}
-add_row(group = setdiff(vec, rpn_ana_md$group))
-```
-
-
-
-complete(df, distance, years = full_seq(years, period = 1), fill = list(area = 0))
-
 ```{r, incluse = FALSE}
-rpn_ana_sh <- read.csv('ana_dp.csv') %>%
-  as_tibble()
+rpn_ana_dp <- read.csv('ana_dp.csv') %>%
+  as_tibble() %>%
+  mutate_at(vars(location, depth, transect, photo, group), factor)
 ```
 
 ```{r, incluse = TRUE}
-rpn_dp
+rpn_ana_dp
 ```
 
+```{r}
+rpn_north <- bind_rows(rpn_ana_sh, rpn_ana_md, rpn_ana_dp) %>%
+  as_tibble() %>%
+  mutate_at(vars(location, depth, transect, photo, group), factor)
+```
 
+```{r}
+rpn_north
+```
 
+```{r}
+rpn_north_plob <- rpn_north %>%  
+  filter(group == "plob") %>%
+  group_by(depth, transect, photo)
+```
 
+```{r}
+rpn_north_plob
+```
+
+```{r}
+rpn_north.glm <- glm(cbind(successes, failures) ~ depth, 
+                  family = binomial(link = "logit"), data = rpn_north_plob)
+```
+
+```{r}
+summary(rpn_north.glm)
+```
+
+`Anova` function from the *car* package
+
+```{r}
+Anova(rpn_north.glm, type = "III") # Type III because... 
+```
+
+```{r}
+rpn_north_poci <- rpn_north %>%  
+  filter(group == "poci") %>%
+  group_by(depth, transect, photo)
+```
+
+```{r}
+rpn_north_poci
+```
+
+```{r}
+rpn_north_poci.glm <- glm(cbind(successes, failures) ~ depth, 
+                  family = binomial(link = "logit"), data = rpn_north_poci)
+```
+
+```{r}
+summary(rpn_north_poci.glm)
+```
+
+`Anova` function from the *car* package
+
+```{r}
+Anova(rpn_north_poci.glm, type = "III") # Type III because... 
+```
 
 
 
