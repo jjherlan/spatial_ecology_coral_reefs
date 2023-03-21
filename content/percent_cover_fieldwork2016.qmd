@@ -31,3 +31,59 @@ rpn_ana_sh <- read.csv('ana_sh.csv') %>%
 rpn_ana_sh
 ```
 
+```{r, incluse = FALSE}
+rpn_ana_md <- read.csv('ana_md.csv') %>%
+  as_tibble()
+```
+
+```{r, incluse = TRUE}
+rpn_ana_md
+```
+
+```{r}
+rpn_ana_md %>%
+  complete(group, photo, fill = list(successes = 0, failures = 0))
+```
+
+```{r}
+vec <- c("abiotic", "biotic", "macro", "non-reef", "plob", "poci", "turf")
+```
+
+```{r}
+add_row(group = setdiff(vec, rpn_ana_md$group))
+```
+
+
+
+complete(df, distance, years = full_seq(years, period = 1), fill = list(area = 0))
+
+```{r, incluse = FALSE}
+rpn_ana_sh <- read.csv('ana_dp.csv') %>%
+  as_tibble()
+```
+
+```{r, incluse = TRUE}
+rpn_dp
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
