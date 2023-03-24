@@ -59,8 +59,8 @@ website:
         text: Coral Dispersion II
       - href: content/rpn_sppa.qmd
         text: Coral Dispersion
-      - href: content/fuck_this.Rmd
-        text: Fuck This
+      - href: content/soil.qmd 
+        text: Soil
 
 format:
   html:

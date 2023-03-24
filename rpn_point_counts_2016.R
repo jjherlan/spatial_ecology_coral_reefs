@@ -303,6 +303,43 @@ rpn_mtt_dp <-
 
 write.csv(rpn_mtt_dp, 'rpn_mtt_dp.csv')
 
+write.csv(rpn_mtt_dp, 'rpn_mtt_dp.csv')
+
+rpn_ana_sh <- read.csv('rpn_ana_sh.csv')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
