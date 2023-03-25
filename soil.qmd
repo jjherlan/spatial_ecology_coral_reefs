@@ -6,9 +6,6 @@ editor: visual
 
 ```{r, include = FALSE}
 require(tidyverse)
-require(foreign)
-require(ggplot2)
-require(MASS)
 ```
 
 ```{r}
@@ -103,65 +100,4 @@ ggplot(soil_full, aes(x = depth, y = mbc, color = material)) +
         legend.title = element_text(size = 10, face = "bold"),
         plot.title = element_text(hjust = 0.5, face = "bold", size = 16))
 ```
-
-```{r}
-soil_log.lm <- lm(log(mbc) ~ depth * material, data = soil_full)
-```
-
-```{r}
-par(mfrow = c(2, 2))
-plot(soil_log.lm)
-```
-
-```{r}
-summary(soil_log.lm)
-```
-
-```{r}
-ggplot(soil_full, aes(x = depth, y = log(mbc), color = material)) +
-  geom_point(size = 1.5)+
-  xlab("depth") +
-  ylab("mbc") +
-  ggtitle("Soil") +
-  theme(axis.title.x = element_text(face = "bold", size = 14), 
-        axis.title.y = element_text(face = "bold", size = 14), 
-        axis.text.y  = element_text(size = 10),
-        axis.text.x  = element_text(size = 10), 
-        legend.text = element_text(size = 10),
-        legend.title = element_text(size = 10, face = "bold"),
-        plot.title = element_text(hjust = 0.5, face = "bold", size = 16))
-```
-
-```{r}
-soil_hyp.lm <- lm(log(1/mbc) ~ exp(depth) * material, data = soil_full)
-```
-
-```{r}
-par(mfrow = c(2, 2))
-plot(soil_hyp.lm)
-```
-
-```{r}
-summary(soil_hyp.lm)
-```
-
-```{r}
-ggplot(soil_full, aes(log(mbc), fill = material)) + geom_histogram(binwidth = 1.0) + facet_grid(material ~ ., margins = TRUE, scales = "free")
-```
-
-```{r}
-summary(m1 <- glm.nb(mbc ~ depth + material, data = soil_full))
-```
-
-```{r}
-with(soil_full, tapply(mbc, material, function(x) {
-    sprintf("M (SD) = %1.2f (%1.2f)", mean(x), sd(x))
-}))
-```
-
-
-
-
-
-
 
