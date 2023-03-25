@@ -4,23 +4,24 @@ require(grid)
 require(lattice)
 require(cowplot)
 
-soil <- read.csv('soil.csv') %>%
+soil <- read.csv('soil_full.csv') %>%
   as_tibble() %>%
   #  mutate(size_cm = area*10000) %>%
-  group_by(ParentMaterials, Depth) %>%
-  dplyr::summarize(mean = mean(MBCugCpergDrySoil), 
-                   sd = sd(MBCugCpergDrySoil), 
+  mutate_at(vars(material, range, range_mean), factor) %>%
+  group_by(material, range_mean) %>%
+  dplyr::summarize(mean = mean(mbc), 
+                   sd = sd(mbc), 
                    n = n(),
                    se = sd/sqrt(n)
   ) %>%
   mutate(se = sd / sqrt(n),
          lower.ci = mean - qt(1 - (0.05 / 2), n - 1) * se,
-         upper.ci = mean + qt(1 - (0.05 / 2), n - 1) * se) %>%
+         upper.ci = mean + qt(1 - (0.05 / 2), n - 1) * se)
   #mutate_at(vars(Site), factor) %>%
   #add_column(
   #  location = c('Anakena', 'Manavai', 'Southeast')
   #) %>%
-  mutate_at(vars(ParentMaterials, Depth), factor)
+  
 
 plob_cover.gg <- plob_cover %>%
   mutate(site = factor(site, levels = c('Anakena', 'Motu Tautara', 'Manavai', 'Southeast')),
