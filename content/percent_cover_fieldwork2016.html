@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.335">
+<meta name="generator" content="quarto-1.2.475">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -236,7 +236,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../content/fuck_this.html" class="sidebar-item-text sidebar-link">Fuck This</a>
+  <a href="../content/soil.html" class="sidebar-item-text sidebar-link">Soil</a>
   </div>
 </li>
     </ul>
@@ -274,25 +274,240 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <div class="cell" data-incluse="false">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>rpn_ana_sh <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">'ana_sh.csv'</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate_at</span>(<span class="fu">vars</span>(location, depth, transect, photo, group), factor)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-incluse="true">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>rpn_ana_sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 420 × 6
-   location depth photo group    successes failures
-   &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;        &lt;int&gt;    &lt;int&gt;
- 1 north    sh    t1_1  abiotic          0      100
- 2 north    sh    t1_1  biotic           0      100
- 3 north    sh    t1_1  macro            2       98
- 4 north    sh    t1_1  non-reef        12       88
- 5 north    sh    t1_1  plob            85       15
- 6 north    sh    t1_1  poci             0      100
- 7 north    sh    t1_1  turf             1       99
- 8 north    sh    t1_10 abiotic          0      100
- 9 north    sh    t1_10 biotic           0      100
-10 north    sh    t1_10 macro           13       87
-# … with 410 more rows</code></pre>
+<pre><code># A tibble: 420 × 7
+   location depth transect photo group    successes failures
+   &lt;fct&gt;    &lt;fct&gt; &lt;fct&gt;    &lt;fct&gt; &lt;fct&gt;        &lt;int&gt;    &lt;int&gt;
+ 1 north    sh    t1       t1_1  abiotic          0      100
+ 2 north    sh    t1       t1_1  biotic           0      100
+ 3 north    sh    t1       t1_1  macro            2       98
+ 4 north    sh    t1       t1_1  non-reef        12       88
+ 5 north    sh    t1       t1_1  plob            85       15
+ 6 north    sh    t1       t1_1  poci             0      100
+ 7 north    sh    t1       t1_1  turf             1       99
+ 8 north    sh    t1       t1_10 abiotic          0      100
+ 9 north    sh    t1       t1_10 biotic           0      100
+10 north    sh    t1       t1_10 macro           13       87
+# ℹ 410 more rows</code></pre>
+</div>
+</div>
+<div class="cell" data-incluse="false">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>rpn_ana_md <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">'ana_md.csv'</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate_at</span>(<span class="fu">vars</span>(location, depth, transect, photo, group), factor)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-incluse="true">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>rpn_ana_md</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 420 × 7
+   location depth transect photo group    successes failures
+   &lt;fct&gt;    &lt;fct&gt; &lt;fct&gt;    &lt;fct&gt; &lt;fct&gt;        &lt;int&gt;    &lt;int&gt;
+ 1 north    md    t1       t1_1  abiotic          0      100
+ 2 north    md    t1       t1_1  biotic           0      100
+ 3 north    md    t1       t1_1  macro            8       92
+ 4 north    md    t1       t1_1  non-reef        27       73
+ 5 north    md    t1       t1_1  plob            42       58
+ 6 north    md    t1       t1_1  poci             5       95
+ 7 north    md    t1       t1_1  turf            18       82
+ 8 north    md    t1       t1_10 abiotic          0      100
+ 9 north    md    t1       t1_10 biotic           0      100
+10 north    md    t1       t1_10 macro            8       92
+# ℹ 410 more rows</code></pre>
+</div>
+</div>
+<div class="cell" data-incluse="false">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>rpn_ana_dp <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">'ana_dp.csv'</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate_at</span>(<span class="fu">vars</span>(location, depth, transect, photo, group), factor)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-incluse="true">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>rpn_ana_dp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 420 × 7
+   location depth transect photo group    successes failures
+   &lt;fct&gt;    &lt;fct&gt; &lt;fct&gt;    &lt;fct&gt; &lt;fct&gt;        &lt;int&gt;    &lt;int&gt;
+ 1 north    dp    t1       t1_1  abiotic          1       99
+ 2 north    dp    t1       t1_1  biotic           0      100
+ 3 north    dp    t1       t1_1  macro           17       83
+ 4 north    dp    t1       t1_1  non-reef        15       85
+ 5 north    dp    t1       t1_1  plob            62       38
+ 6 north    dp    t1       t1_1  poci             5       95
+ 7 north    dp    t1       t1_1  turf             0      100
+ 8 north    dp    t1       t1_10 abiotic          0      100
+ 9 north    dp    t1       t1_10 biotic           0      100
+10 north    dp    t1       t1_10 macro           25       75
+# ℹ 410 more rows</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>rpn_north <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(rpn_ana_sh, rpn_ana_md, rpn_ana_dp) <span class="sc">%&gt;%</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate_at</span>(<span class="fu">vars</span>(location, depth, transect, photo, group), factor)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>rpn_north</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1,260 × 7
+   location depth transect photo group    successes failures
+   &lt;fct&gt;    &lt;fct&gt; &lt;fct&gt;    &lt;fct&gt; &lt;fct&gt;        &lt;int&gt;    &lt;int&gt;
+ 1 north    sh    t1       t1_1  abiotic          0      100
+ 2 north    sh    t1       t1_1  biotic           0      100
+ 3 north    sh    t1       t1_1  macro            2       98
+ 4 north    sh    t1       t1_1  non-reef        12       88
+ 5 north    sh    t1       t1_1  plob            85       15
+ 6 north    sh    t1       t1_1  poci             0      100
+ 7 north    sh    t1       t1_1  turf             1       99
+ 8 north    sh    t1       t1_10 abiotic          0      100
+ 9 north    sh    t1       t1_10 biotic           0      100
+10 north    sh    t1       t1_10 macro           13       87
+# ℹ 1,250 more rows</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>rpn_north_plob <span class="ot">&lt;-</span> rpn_north <span class="sc">%&gt;%</span>  </span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(group <span class="sc">==</span> <span class="st">"plob"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(depth, transect, photo)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>rpn_north_plob</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 180 × 7
+# Groups:   depth, transect, photo [179]
+   location depth transect photo group successes failures
+   &lt;fct&gt;    &lt;fct&gt; &lt;fct&gt;    &lt;fct&gt; &lt;fct&gt;     &lt;int&gt;    &lt;int&gt;
+ 1 north    sh    t1       t1_1  plob         85       15
+ 2 north    sh    t1       t1_10 plob         81       19
+ 3 north    sh    t1       t1_11 plob         81       19
+ 4 north    sh    t1       t1_12 plob         56       44
+ 5 north    sh    t1       t1_13 plob         68       32
+ 6 north    sh    t1       t1_14 plob         93        7
+ 7 north    sh    t1       t1_15 plob         57       43
+ 8 north    sh    t1       t1_2  plob         81       19
+ 9 north    sh    t1       t1_3  plob         82       18
+10 north    sh    t1       t1_4  plob         84       16
+# ℹ 170 more rows</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>rpn_north.glm <span class="ot">&lt;-</span> <span class="fu">glm</span>(<span class="fu">cbind</span>(successes, failures) <span class="sc">~</span> depth, </span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>), <span class="at">data =</span> rpn_north_plob)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(rpn_north.glm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = cbind(successes, failures) ~ depth, family = binomial(link = "logit"), 
+    data = rpn_north_plob)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-16.671   -1.141    0.883    2.608    6.449  
+
+Coefficients:
+            Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)  1.10306    0.02985  36.957   &lt;2e-16 ***
+depthmd     -0.10082    0.04171  -2.417   0.0156 *  
+depthdp     -0.55221    0.04012 -13.765   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 2859.7  on 179  degrees of freedom
+Residual deviance: 2638.2  on 177  degrees of freedom
+AIC: 3470.5
+
+Number of Fisher Scoring iterations: 4</code></pre>
+</div>
+</div>
+<p><code>Anova</code> function from the <em>car</em> package</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Anova</span>(rpn_north.glm, <span class="at">type =</span> <span class="st">"III"</span>) <span class="co"># Type III because... </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Deviance Table (Type III tests)
+
+Response: cbind(successes, failures)
+      LR Chisq Df Pr(&gt;Chisq)    
+depth   221.54  2  &lt; 2.2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>rpn_north_poci <span class="ot">&lt;-</span> rpn_north <span class="sc">%&gt;%</span>  </span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(group <span class="sc">==</span> <span class="st">"poci"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(depth, transect, photo)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>rpn_north_poci</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 180 × 7
+# Groups:   depth, transect, photo [179]
+   location depth transect photo group successes failures
+   &lt;fct&gt;    &lt;fct&gt; &lt;fct&gt;    &lt;fct&gt; &lt;fct&gt;     &lt;int&gt;    &lt;int&gt;
+ 1 north    sh    t1       t1_1  poci          0      100
+ 2 north    sh    t1       t1_10 poci          0      100
+ 3 north    sh    t1       t1_11 poci          0      100
+ 4 north    sh    t1       t1_12 poci          0      100
+ 5 north    sh    t1       t1_13 poci          0      100
+ 6 north    sh    t1       t1_14 poci          0      100
+ 7 north    sh    t1       t1_15 poci          0      100
+ 8 north    sh    t1       t1_2  poci          0      100
+ 9 north    sh    t1       t1_3  poci          0      100
+10 north    sh    t1       t1_4  poci          0      100
+# ℹ 170 more rows</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>rpn_north_poci.glm <span class="ot">&lt;-</span> <span class="fu">glm</span>(<span class="fu">cbind</span>(successes, failures) <span class="sc">~</span> depth, </span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>), <span class="at">data =</span> rpn_north_poci)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(rpn_north_poci.glm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = cbind(successes, failures) ~ depth, family = binomial(link = "logit"), 
+    data = rpn_north_poci)
+
+Deviance Residuals: 
+   Min      1Q  Median      3Q     Max  
+-1.487  -1.127  -1.122   0.000   6.473  
+
+Coefficients:
+             Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept) -5.064235   0.193055 -26.232   &lt;2e-16 ***
+depthmd      0.008659   0.252491   0.034   0.9726    
+depthdp      0.565436   0.229324   2.466   0.0137 *  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 391.76  on 162  degrees of freedom
+Residual deviance: 381.68  on 160  degrees of freedom
+AIC: 515.35
+
+Number of Fisher Scoring iterations: 5</code></pre>
+</div>
+</div>
+<p><code>Anova</code> function from the <em>car</em> package</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Anova</span>(rpn_north_poci.glm, <span class="at">type =</span> <span class="st">"III"</span>) <span class="co"># Type III because... </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Deviance Table (Type III tests)
+
+Response: cbind(successes, failures)
+      LR Chisq Df Pr(&gt;Chisq)   
+depth   10.083  2   0.006465 **
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
 

@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.335">
+<meta name="generator" content="quarto-1.2.475">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="jjh">
-<meta name="dcterms.date" content="2023-03-20">
+<meta name="dcterms.date" content="2023-03-25">
 
 <title>NOAA quarto simple - Percent Cover</title>
 <style>
@@ -238,7 +238,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../content/fuck_this.html" class="sidebar-item-text sidebar-link">Fuck This</a>
+  <a href="../content/soil.html" class="sidebar-item-text sidebar-link">Soil</a>
   </div>
 </li>
     </ul>
@@ -282,7 +282,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">March 20, 2023</p>
+      <p class="date">March 25, 2023</p>
     </div>
   </div>
   
@@ -325,20 +325,20 @@ lgl (2): id, NA
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 750 × 13
 # Groups:   Site [3]
-   plot_id class Site  cover level layer id    percen…¹ clumpy    pd pland `NA` 
-   &lt;fct&gt;   &lt;dbl&gt; &lt;fct&gt; &lt;fct&gt; &lt;chr&gt; &lt;dbl&gt; &lt;lgl&gt;    &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;
- 1 1           1 ana   coral class     1 NA       100.   0.992  2.00  1.24 NA   
- 2 1           0 man   coral class    NA NA        NA   NA     NA     0    NA   
- 3 1           0 vhu   coral class     1 NA       100.   0.987 19.0  36.4  NA   
- 4 2           1 ana   coral class     1 NA        99.9  0.990  8.01  6.01 NA   
- 5 2           0 man   coral class    NA NA        NA   NA     NA     0    NA   
- 6 2           0 vhu   coral class     1 NA        99.9  0.987 20.0  24.0  NA   
- 7 3           1 ana   coral class     1 NA       100.   0.995  4.00  3.22 NA   
- 8 3           0 man   coral class    NA NA        NA   NA     NA     0    NA   
- 9 3           0 vhu   coral class     1 NA       100.   0.989 16.0  30.0  NA   
-10 4           1 ana   coral class     1 NA       100.   0.995  3.00  3.67 NA   
-# … with 740 more rows, 1 more variable: pland_decimal &lt;dbl&gt;, and abbreviated
-#   variable name ¹​percentage_inside</code></pre>
+   plot_id class Site  cover level layer id    percentage_inside clumpy    pd
+   &lt;fct&gt;   &lt;dbl&gt; &lt;fct&gt; &lt;fct&gt; &lt;chr&gt; &lt;dbl&gt; &lt;lgl&gt;             &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
+ 1 1           1 ana   coral class     1 NA                100.   0.992  2.00
+ 2 1           0 man   coral class    NA NA                 NA   NA     NA   
+ 3 1           0 vhu   coral class     1 NA                100.   0.987 19.0 
+ 4 2           1 ana   coral class     1 NA                 99.9  0.990  8.01
+ 5 2           0 man   coral class    NA NA                 NA   NA     NA   
+ 6 2           0 vhu   coral class     1 NA                 99.9  0.987 20.0 
+ 7 3           1 ana   coral class     1 NA                100.   0.995  4.00
+ 8 3           0 man   coral class    NA NA                 NA   NA     NA   
+ 9 3           0 vhu   coral class     1 NA                100.   0.989 16.0 
+10 4           1 ana   coral class     1 NA                100.   0.995  3.00
+# ℹ 740 more rows
+# ℹ 3 more variables: pland &lt;dbl&gt;, `NA` &lt;lgl&gt;, pland_decimal &lt;dbl&gt;</code></pre>
 </div>
 </div>
 <div class="cell">
@@ -346,16 +346,15 @@ lgl (2): id, NA
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 13
 # Groups:   Site [3]
-  plot_id class Site  cover level layer id    percent…¹ clumpy    pd pland `NA` 
-  &lt;fct&gt;   &lt;dbl&gt; &lt;fct&gt; &lt;fct&gt; &lt;chr&gt; &lt;dbl&gt; &lt;lgl&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;
-1 1           1 ana   coral class     1 NA        100.   0.992  2.00  1.24 NA   
-2 1           0 man   coral class    NA NA         NA   NA     NA     0    NA   
-3 1           0 vhu   coral class     1 NA        100.   0.987 19.0  36.4  NA   
-4 2           1 ana   coral class     1 NA         99.9  0.990  8.01  6.01 NA   
-5 2           0 man   coral class    NA NA         NA   NA     NA     0    NA   
-6 2           0 vhu   coral class     1 NA         99.9  0.987 20.0  24.0  NA   
-# … with 1 more variable: pland_decimal &lt;dbl&gt;, and abbreviated variable name
-#   ¹​percentage_inside</code></pre>
+  plot_id class Site  cover level layer id    percentage_inside clumpy    pd
+  &lt;fct&gt;   &lt;dbl&gt; &lt;fct&gt; &lt;fct&gt; &lt;chr&gt; &lt;dbl&gt; &lt;lgl&gt;             &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
+1 1           1 ana   coral class     1 NA                100.   0.992  2.00
+2 1           0 man   coral class    NA NA                 NA   NA     NA   
+3 1           0 vhu   coral class     1 NA                100.   0.987 19.0 
+4 2           1 ana   coral class     1 NA                 99.9  0.990  8.01
+5 2           0 man   coral class    NA NA                 NA   NA     NA   
+6 2           0 vhu   coral class     1 NA                 99.9  0.987 20.0 
+# ℹ 3 more variables: pland &lt;dbl&gt;, `NA` &lt;lgl&gt;, pland_decimal &lt;dbl&gt;</code></pre>
 </div>
 </div>
 <div class="cell">
@@ -611,7 +610,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <p><strong>Beta Regression I:</strong> <span class="math inline">\(\phi\)</span> does not vary</p>
 
 <!-- html table generated in R 4.2.3 by xtable 1.8-4 package -->
-<!-- Mon Mar 20 02:10:45 2023 -->
+<!-- Sat Mar 25 16:47:06 2023 -->
 
 <table border="1">
 <caption align="bottom">
@@ -748,7 +747,7 @@ Number of iterations: 22 (BFGS) + 1 (Fisher scoring) </code></pre>
 <div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">xtable</span>(<span class="fu">summary</span>(p_cover_mod.glm1), <span class="at">digits =</span> <span class="dv">3</span>, <span class="at">caption =</span> <span class="st">" . "</span>), <span class="at">type =</span> <span class="st">"html"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>&lt;!-- html table generated in R 4.2.3 by xtable 1.8-4 package --&gt;
-&lt;!-- Mon Mar 20 02:10:45 2023 --&gt;
+&lt;!-- Sat Mar 25 16:47:07 2023 --&gt;
 &lt;table border=1&gt;
 &lt;caption align="bottom"&gt;  .  &lt;/caption&gt;
 &lt;tr&gt; &lt;th&gt;  &lt;/th&gt; &lt;th&gt; Estimate &lt;/th&gt; &lt;th&gt; Std. Error &lt;/th&gt; &lt;th&gt; z value &lt;/th&gt; &lt;th&gt; Pr(&amp;gt;|z|) &lt;/th&gt;  &lt;/tr&gt;

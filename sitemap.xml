@@ -2,78 +2,86 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://nmfs-opensci.github.io/NOAA-quarto-simple/rpn_sppa.html</loc>
-    <lastmod>2023-03-20T02:10:18.873Z</lastmod>
+    <lastmod>2023-03-25T16:46:35.299Z</lastmod>
   </url>
   <url>
     <loc>https://nmfs-opensci.github.io/NOAA-quarto-simple/content/percent_cover_fieldwork2016.html</loc>
-    <lastmod>2023-03-20T02:10:31.673Z</lastmod>
+    <lastmod>2023-03-25T16:46:48.549Z</lastmod>
   </url>
   <url>
     <loc>https://nmfs-opensci.github.io/NOAA-quarto-simple/content/percent_cover.html</loc>
-    <lastmod>2023-03-20T02:11:23.339Z</lastmod>
+    <lastmod>2023-03-25T16:47:40.064Z</lastmod>
   </url>
   <url>
     <loc>https://nmfs-opensci.github.io/NOAA-quarto-simple/content/publishing.html</loc>
-    <lastmod>2023-03-20T02:11:23.869Z</lastmod>
+    <lastmod>2023-03-25T16:47:40.576Z</lastmod>
   </url>
   <url>
     <loc>https://nmfs-opensci.github.io/NOAA-quarto-simple/content/rpn_sppa.html</loc>
-    <lastmod>2023-03-20T02:12:00.382Z</lastmod>
+    <lastmod>2023-03-25T16:48:18.109Z</lastmod>
   </url>
   <url>
     <loc>https://nmfs-opensci.github.io/NOAA-quarto-simple/content/dispersion_presentation.html</loc>
-    <lastmod>2023-03-20T02:12:05.462Z</lastmod>
+    <lastmod>2023-03-25T16:48:22.913Z</lastmod>
   </url>
   <url>
     <loc>https://nmfs-opensci.github.io/NOAA-quarto-simple/content/rendering.html</loc>
-    <lastmod>2023-03-20T02:12:07.078Z</lastmod>
+    <lastmod>2023-03-25T16:48:24.415Z</lastmod>
   </url>
   <url>
     <loc>https://nmfs-opensci.github.io/NOAA-quarto-simple/content/code.html</loc>
-    <lastmod>2023-03-20T02:12:08.592Z</lastmod>
+    <lastmod>2023-03-25T16:48:25.978Z</lastmod>
   </url>
   <url>
     <loc>https://nmfs-opensci.github.io/NOAA-quarto-simple/content/acknowledgements.html</loc>
-    <lastmod>2023-03-20T02:12:09.081Z</lastmod>
+    <lastmod>2023-03-25T16:48:26.406Z</lastmod>
   </url>
   <url>
     <loc>https://nmfs-opensci.github.io/NOAA-quarto-simple/content/rmarkdown.html</loc>
-    <lastmod>2023-03-20T02:12:11.598Z</lastmod>
+    <lastmod>2023-03-25T16:48:28.693Z</lastmod>
   </url>
   <url>
     <loc>https://nmfs-opensci.github.io/NOAA-quarto-simple/content/rpn_sppa2.html</loc>
-    <lastmod>2023-03-20T02:16:33.353Z</lastmod>
+    <lastmod>2023-03-25T16:52:54.150Z</lastmod>
   </url>
   <url>
     <loc>https://nmfs-opensci.github.io/NOAA-quarto-simple/content/draft.html</loc>
-    <lastmod>2023-03-20T02:16:33.824Z</lastmod>
+    <lastmod>2023-03-25T16:52:54.666Z</lastmod>
+  </url>
+  <url>
+    <loc>https://nmfs-opensci.github.io/NOAA-quarto-simple/content/soil.html</loc>
+    <lastmod>2023-03-25T16:53:04.791Z</lastmod>
   </url>
   <url>
     <loc>https://nmfs-opensci.github.io/NOAA-quarto-simple/content/customizing.html</loc>
-    <lastmod>2023-03-20T02:16:34.361Z</lastmod>
-  </url>
-  <url>
-    <loc>https://nmfs-opensci.github.io/NOAA-quarto-simple/content/fuck_this.html</loc>
-    <lastmod>2023-03-20T02:16:48.639Z</lastmod>
+    <lastmod>2023-03-25T16:53:05.396Z</lastmod>
   </url>
   <url>
     <loc>https://nmfs-opensci.github.io/NOAA-quarto-simple/content/coral_size.html</loc>
-    <lastmod>2023-03-20T02:17:04.230Z</lastmod>
+    <lastmod>2023-03-25T16:53:18.774Z</lastmod>
   </url>
   <url>
     <loc>https://nmfs-opensci.github.io/NOAA-quarto-simple/content/bleaching.html</loc>
-    <lastmod>2023-03-20T02:17:23.447Z</lastmod>
+    <lastmod>2023-03-25T16:53:35.739Z</lastmod>
   </url>
   <url>
     <loc>https://nmfs-opensci.github.io/NOAA-quarto-simple/content/add-content.html</loc>
-    <lastmod>2023-03-20T02:17:23.919Z</lastmod>
+    <lastmod>2023-03-25T16:53:36.200Z</lastmod>
   </url>
   <url>
     <loc>https://nmfs-opensci.github.io/NOAA-quarto-simple/index.html</loc>
-    <lastmod>2023-03-20T02:17:24.383Z</lastmod>
+    <lastmod>2023-03-25T16:53:36.680Z</lastmod>
+  </url>
+  <url>
+    <loc>https://nmfs-opensci.github.io/NOAA-quarto-simple/soil2.html</loc>
+    <lastmod>2023-03-25T16:53:42.972Z</lastmod>
+  </url>
+  <url>
+    <loc>https://nmfs-opensci.github.io/NOAA-quarto-simple/soil.html</loc>
+    <lastmod>2023-03-25T16:53:48.227Z</lastmod>
   </url>
   <url>
     <loc>https://nmfs-opensci.github.io/NOAA-quarto-simple/fuck_this.html</loc>
-    <lastmod>2023-03-20T02:17:41.317Z</lastmod>
+    <lastmod>2023-03-25T16:54:01.900Z</lastmod>
   </url>
 </urlset>
