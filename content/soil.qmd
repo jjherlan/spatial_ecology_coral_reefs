@@ -212,10 +212,3 @@ with(soil_full, tapply(mbc, material, function(x) {
     sprintf("M (SD) = %1.2f (%1.2f)", mean(x), sd(x))
 }))
 ```
-
-
-
-
-
-
-
