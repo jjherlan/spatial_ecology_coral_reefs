@@ -307,13 +307,350 @@ write.csv(rpn_mtt_dp, 'rpn_mtt_dp.csv')
 
 rpn_ana_sh <- read.csv('rpn_ana_sh.csv')
 
+# West Manavai Shallow Depth
 
+rpn_man_sh <- read.csv('man_sh_2016.csv', header = T) %>%
+  mutate_at(vars(transect, photo), factor) %>%
+  #group_by(transect) %>%
+  #filter(Tdir >= 90 & Tdir < 250) %>%
+  pivot_longer(cols = pt1:pt100,
+               names_to = "point",
+               values_to = "taxa",
+               values_drop_na = FALSE
+  ) %>%
+  group_by(transect, photo, taxa) %>%
+  dplyr::summarize(n = n()
+  ) %>%
+  #select(all_of(-c(X, X.1))) %>%
+  mutate(group = case_when(
+    taxa == "PLOB" ~ "plob",
+    taxa == "POCI" ~ "poci",
+    taxa == "PVER" ~ "poci",
+    taxa == "CALC" ~ "macro",
+    taxa == "CPOC" ~ "macro",
+    taxa == "DC" ~ "plob",
+    taxa == "DAUS" ~ "macro", 
+    taxa == "DCRE" ~ "macro",
+    taxa == "EAM" ~ "turf",
+    taxa == "HALI" ~ "macro",
+    taxa == "LVAR" ~ "macro",
+    taxa == "MACRO_UNK" ~ "macro",
+    taxa == "O" ~ "biotic",
+    taxa == "PLIG" ~ "poci",
+    taxa == "SHAD" ~ "non-reef",
+    taxa == "SOBT" ~ "macro",
+    taxa == "SPR" ~ "abiotic",
+    taxa == "TAPE" ~ "non-reef",
+    taxa == "TURF" ~ "turf",
+    taxa == "UNK" ~ "non-reef",
+    taxa == "WAND" ~ "non-reef"
+  )
+  ) %>%
+  group_by(photo, group) %>%
+  mutate_at(vars(group), factor) %>%
+  dplyr::summarize(successes = sum(n)
+  ) %>%
+  mutate(
+    failures = 100 - successes)
 
+rpn_man_sh %>%
+  complete(group)
 
+rpn_man_sh <-
+  rpn_man_sh %>%
+  complete(group)
 
+write.csv(rpn_man_sh, 'rpn_man_sh.csv')
 
+# West Manavai Medium Depth
 
+rpn_man_md <- read.csv('man_md_2016.csv', header = T) %>%
+  mutate_at(vars(transect, photo), factor) %>%
+  #group_by(transect) %>%
+  #filter(Tdir >= 90 & Tdir < 250) %>%
+  pivot_longer(cols = pt1:pt100,
+               names_to = "point",
+               values_to = "taxa",
+               values_drop_na = FALSE
+  ) %>%
+  group_by(transect, photo, taxa) %>%
+  dplyr::summarize(n = n()
+  ) %>%
+  #select(all_of(-c(X, X.1))) %>%
+  mutate(group = case_when(
+    taxa == "PLOB" ~ "plob",
+    taxa == "POCI" ~ "poci",
+    taxa == "PVER" ~ "poci",
+    taxa == "CALC" ~ "macro",
+    taxa == "CPOC" ~ "macro",
+    taxa == "DC" ~ "plob",
+    taxa == "DAUS" ~ "macro", 
+    taxa == "DCRE" ~ "macro",
+    taxa == "EAM" ~ "turf",
+    taxa == "HALI" ~ "macro",
+    taxa == "LVAR" ~ "macro",
+    taxa == "MACRO_UNK" ~ "macro",
+    taxa == "O" ~ "biotic",
+    taxa == "PLIG" ~ "poci",
+    taxa == "SHAD" ~ "non-reef",
+    taxa == "SOBT" ~ "macro",
+    taxa == "SPR" ~ "abiotic",
+    taxa == "TAPE" ~ "non-reef",
+    taxa == "TURF" ~ "turf",
+    taxa == "UNK" ~ "non-reef",
+    taxa == "WAND" ~ "non-reef"
+  )
+  ) %>%
+  group_by(photo, group) %>%
+  mutate_at(vars(group), factor) %>%
+  dplyr::summarize(successes = sum(n)
+  ) %>%
+  mutate(
+    failures = 100 - successes)
 
+# Check
+rpn_man_md %>%
+  complete(group)
+
+# Save
+rpn_man_md <-
+  rpn_man_md %>%
+  complete(group)
+
+# Save file
+write.csv(rpn_man_sh, 'rpn_man_md.csv')
+
+# West Manavai Deep Depth
+
+rpn_man_dp <- read.csv('man_dp_2016.csv', header = T) %>%
+  mutate_at(vars(transect, photo), factor) %>%
+  #group_by(transect) %>%
+  #filter(Tdir >= 90 & Tdir < 250) %>%
+  pivot_longer(cols = pt1:pt100,
+               names_to = "point",
+               values_to = "taxa",
+               values_drop_na = FALSE
+  ) %>%
+  group_by(transect, photo, taxa) %>%
+  dplyr::summarize(n = n()
+  ) %>%
+  #select(all_of(-c(X, X.1))) %>%
+  mutate(group = case_when(
+    taxa == "PLOB" ~ "plob",
+    taxa == "POCI" ~ "poci",
+    taxa == "PVER" ~ "poci",
+    taxa == "CALC" ~ "macro",
+    taxa == "CPOC" ~ "macro",
+    taxa == "DC" ~ "plob",
+    taxa == "DAUS" ~ "macro", 
+    taxa == "DCRE" ~ "macro",
+    taxa == "EAM" ~ "turf",
+    taxa == "HALI" ~ "macro",
+    taxa == "LVAR" ~ "macro",
+    taxa == "MACRO_UNK" ~ "macro",
+    taxa == "O" ~ "biotic",
+    taxa == "PLIG" ~ "poci",
+    taxa == "SHAD" ~ "non-reef",
+    taxa == "SOBT" ~ "macro",
+    taxa == "SPR" ~ "abiotic",
+    taxa == "TAPE" ~ "non-reef",
+    taxa == "TURF" ~ "turf",
+    taxa == "UNK" ~ "non-reef",
+    taxa == "WAND" ~ "non-reef"
+  )
+  ) %>%
+  group_by(photo, group) %>%
+  mutate_at(vars(group), factor) %>%
+  dplyr::summarize(successes = sum(n)
+  ) %>%
+  mutate(
+    failures = 100 - successes)
+
+# Check
+rpn_man_dp %>%
+  complete(group)
+
+# Save
+rpn_man_dp <-
+  rpn_man_dp %>%
+  complete(group)
+
+# Save file
+write.csv(rpn_man_dp, 'rpn_man_dp.csv')
+
+# Southeast Shallow Depth
+
+rpn_se_sh <- read.csv('se_sh_2016.csv', header = T) %>%
+  mutate_at(vars(transect, photo), factor) %>%
+  #group_by(transect) %>%
+  #filter(Tdir >= 90 & Tdir < 250) %>%
+  pivot_longer(cols = pt1:pt100,
+               names_to = "point",
+               values_to = "taxa",
+               values_drop_na = FALSE
+  ) %>%
+  group_by(transect, photo, taxa) %>%
+  dplyr::summarize(n = n()
+  ) %>%
+  #select(all_of(-c(X, X.1))) %>%
+  mutate(group = case_when(
+    taxa == "PLOB" ~ "plob",
+    taxa == "POCI" ~ "poci",
+    taxa == "PVER" ~ "poci",
+    taxa == "CALC" ~ "macro",
+    taxa == "CPOC" ~ "macro",
+    taxa == "DC" ~ "plob",
+    taxa == "DAUS" ~ "macro", 
+    taxa == "DCRE" ~ "macro",
+    taxa == "EAM" ~ "turf",
+    taxa == "HALI" ~ "macro",
+    taxa == "LVAR" ~ "macro",
+    taxa == "MACRO_UNK" ~ "macro",
+    taxa == "O" ~ "biotic",
+    taxa == "PLIG" ~ "poci",
+    taxa == "SHAD" ~ "non-reef",
+    taxa == "SOBT" ~ "macro",
+    taxa == "SPR" ~ "abiotic",
+    taxa == "TAPE" ~ "non-reef",
+    taxa == "TURF" ~ "turf",
+    taxa == "UNK" ~ "non-reef",
+    taxa == "WAND" ~ "non-reef"
+  )
+  ) %>%
+  group_by(photo, group) %>%
+  mutate_at(vars(group), factor) %>%
+  dplyr::summarize(successes = sum(n)
+  ) %>%
+  mutate(
+    failures = 100 - successes)
+
+# Check
+rpn_se_sh %>%
+  complete(group)
+
+# Save
+rpn_se_sh <-
+  rpn_se_sh %>%
+  complete(group)
+
+# Save file
+write.csv(rpn_se_sh, 'rpn_se_sh.csv')
+
+# Southeast Mid Depth
+
+rpn_se_md <- read.csv('se_md_2016.csv', header = T) %>%
+  mutate_at(vars(transect, photo), factor) %>%
+  #group_by(transect) %>%
+  #filter(Tdir >= 90 & Tdir < 250) %>%
+  pivot_longer(cols = pt1:pt100,
+               names_to = "point",
+               values_to = "taxa",
+               values_drop_na = FALSE
+  ) %>%
+  group_by(transect, photo, taxa) %>%
+  dplyr::summarize(n = n()
+  ) %>%
+  #select(all_of(-c(X, X.1))) %>%
+  mutate(group = case_when(
+    taxa == "PLOB" ~ "plob",
+    taxa == "POCI" ~ "poci",
+    taxa == "PVER" ~ "poci",
+    taxa == "CALC" ~ "macro",
+    taxa == "CPOC" ~ "macro",
+    taxa == "DC" ~ "plob",
+    taxa == "DAUS" ~ "macro", 
+    taxa == "DCRE" ~ "macro",
+    taxa == "EAM" ~ "turf",
+    taxa == "HALI" ~ "macro",
+    taxa == "LVAR" ~ "macro",
+    taxa == "MACRO_UNK" ~ "macro",
+    taxa == "O" ~ "biotic",
+    taxa == "PLIG" ~ "poci",
+    taxa == "SHAD" ~ "non-reef",
+    taxa == "SOBT" ~ "macro",
+    taxa == "SPR" ~ "abiotic",
+    taxa == "TAPE" ~ "non-reef",
+    taxa == "TURF" ~ "turf",
+    taxa == "UNK" ~ "non-reef",
+    taxa == "WAND" ~ "non-reef"
+  )
+  ) %>%
+  group_by(photo, group) %>%
+  mutate_at(vars(group), factor) %>%
+  dplyr::summarize(successes = sum(n)
+  ) %>%
+  mutate(
+    failures = 100 - successes)
+
+# Check
+rpn_se_md %>%
+  complete(group)
+
+# Save
+rpn_se_md <-
+  rpn_se_md %>%
+  complete(group)
+
+# Save file
+write.csv(rpn_se_md, 'rpn_se_md.csv')
+
+# Southeast Deep Depth
+
+rpn_se_dp <- read.csv('se_dp_2016.csv', header = T) %>%
+  mutate_at(vars(transect, photo), factor) %>%
+  #group_by(transect) %>%
+  #filter(Tdir >= 90 & Tdir < 250) %>%
+  pivot_longer(cols = pt1:pt100,
+               names_to = "point",
+               values_to = "taxa",
+               values_drop_na = FALSE
+  ) %>%
+  group_by(transect, photo, taxa) %>%
+  dplyr::summarize(n = n()
+  ) %>%
+  #select(all_of(-c(X, X.1))) %>%
+  mutate(group = case_when(
+    taxa == "PLOB" ~ "plob",
+    taxa == "POCI" ~ "poci",
+    taxa == "PVER" ~ "poci",
+    taxa == "CALC" ~ "macro",
+    taxa == "CPOC" ~ "macro",
+    taxa == "DC" ~ "plob",
+    taxa == "DAUS" ~ "macro", 
+    taxa == "DCRE" ~ "macro",
+    taxa == "EAM" ~ "turf",
+    taxa == "HALI" ~ "macro",
+    taxa == "LVAR" ~ "macro",
+    taxa == "MACRO_UNK" ~ "macro",
+    taxa == "O" ~ "biotic",
+    taxa == "PLIG" ~ "poci",
+    taxa == "SHAD" ~ "non-reef",
+    taxa == "SOBT" ~ "macro",
+    taxa == "SPR" ~ "abiotic",
+    taxa == "TAPE" ~ "non-reef",
+    taxa == "TURF" ~ "turf",
+    taxa == "UNK" ~ "non-reef",
+    taxa == "WAND" ~ "non-reef"
+  )
+  ) %>%
+  group_by(photo, group) %>%
+  mutate_at(vars(group), factor) %>%
+  dplyr::summarize(successes = sum(n)
+  ) %>%
+  mutate(
+    failures = 100 - successes)
+
+# Check
+rpn_se_dp %>%
+  complete(group)
+
+# Save
+rpn_se_dp <-
+  rpn_se_dp %>%
+  complete(group)
+
+# Save file
+write.csv(rpn_se_dp, 'rpn_se_dp.csv')
 
 
 
