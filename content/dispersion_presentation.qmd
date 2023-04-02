@@ -124,6 +124,7 @@ Anova(p_cover_mod.lm2, type = "III")
 :::
 
 ::: {.column width="50%" style="font-size: 27px"}
+Em
 :::
 :::
 
