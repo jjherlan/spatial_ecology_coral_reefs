@@ -12,13 +12,13 @@ jobs:
         uses: actions/checkout@v3
         
       - name: Set up R (needed for Rmd)
-        uses: r-lib/actions/setup-r@v3
+        uses: r-lib/actions/setup-r@v2
 
       - name: Install packages (needed for Rmd)
         run: Rscript -e 'install.packages(c("leaflet", "rmarkdown", "knitr", "jsonlite", "revealjs", "knitr", "tidyverse", "plyr", "betareg", "lmtest", "glmmTMB", "boot", "emmeans", "brms", "mvtnorm", "nlme", "rstan", "VGAM", "car", "lme4", "Rmisc", "readr", "multcomp", "ggthemes", "multcompView", "xtable", "tidyr", "ordinal", "mosaic", "arm", "cowplot", "qqtest", "spatstat", "rgdal", "sf", "stars", "terra", "magick", "unmarked", "AHMbook", "png", "raster", "landscapemetrics", "gapminder", "wesanderson", "ggridges", "psych", "DHARMa"))'
      
       - name: Set up Quarto
-        uses: quarto-dev/quarto-actions/setup@v3
+        uses: quarto-dev/quarto-actions/setup@v2
         with:
           # To install LaTeX to build PDF book 
           tinytex: true 
@@ -28,7 +28,7 @@ jobs:
       # add software dependencies here
 
       - name: Publish to GitHub Pages (and render)
-        uses: quarto-dev/quarto-actions/publish@v3
+        uses: quarto-dev/quarto-actions/publish@v2
         with:
           target: gh-pages
         env:
