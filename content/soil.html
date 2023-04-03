@@ -243,7 +243,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </nav>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#section" id="toc-section" class="nav-link active" data-scroll-target="#section">4/3/2023</a></li>
+  <li><a href="#linear-regression---no-transformation" id="toc-linear-regression---no-transformation" class="nav-link" data-scroll-target="#linear-regression---no-transformation">Linear regression - no transformation</a></li>
+  <li><a href="#model-assumption" id="toc-model-assumption" class="nav-link" data-scroll-target="#model-assumption">Model assumption</a></li>
+  <li><a href="#log-transformation" id="toc-log-transformation" class="nav-link" data-scroll-target="#log-transformation">Log-transformation</a></li>
+  <li><a href="#car-package" id="toc-car-package" class="nav-link" data-scroll-target="#car-package">car package</a></li>
+  <li><a href="#just-depth-as-a-predictor-variable" id="toc-just-depth-as-a-predictor-variable" class="nav-link" data-scroll-target="#just-depth-as-a-predictor-variable">Just depth as a predictor variable</a></li>
+  <li><a href="#anova-model-with-aov" id="toc-anova-model-with-aov" class="nav-link" data-scroll-target="#anova-model-with-aov">ANOVA model with “aov”</a></li>
+  <li><a href="#tukey-hsd-test" id="toc-tukey-hsd-test" class="nav-link" data-scroll-target="#tukey-hsd-test">Tukey HSD test</a></li>
+  <li><a href="#cld" id="toc-cld" class="nav-link" data-scroll-target="#cld">cld</a></li>
+  <li><a href="#table" id="toc-table" class="nav-link" data-scroll-target="#table">Table</a></li>
+  <li><a href="#adding-the-compact-letter-display-to-the-table-with-mean-se" id="toc-adding-the-compact-letter-display-to-the-table-with-mean-se" class="nav-link" data-scroll-target="#adding-the-compact-letter-display-to-the-table-with-mean-se">Adding the compact letter display to the table with mean, se</a></li>
+  <li><a href="#graph-original-data-first" id="toc-graph-original-data-first" class="nav-link" data-scroll-target="#graph-original-data-first">Graph original data first</a></li>
+  <li><a href="#log-transformed-summary" id="toc-log-transformed-summary" class="nav-link" data-scroll-target="#log-transformed-summary">Log-transformed summary</a></li>
+  <li><a href="#add-letters-for-significance" id="toc-add-letters-for-significance" class="nav-link" data-scroll-target="#add-letters-for-significance">Add Letters for significance</a></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/nmfs-opensci/NOAA-quarto-simple/edit/main/content/soil.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/nmfs-opensci/NOAA-quarto-simple/blob/main/content/soil.qmd" class="toc-action">View source</a></p><p><a href="https://github.com/nmfs-opensci/NOAA-quarto-simple/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -295,7 +314,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>soil <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">'soil_full.csv'</span>) <span class="sc">%&gt;%</span></span>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>soil_summary <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">'soil_full.csv'</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate_at</span>(<span class="fu">vars</span>(material, range, range_mean), factor) <span class="sc">%&gt;%</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(material, range_mean) <span class="sc">%&gt;%</span></span>
@@ -313,7 +332,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>soil</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>soil_summary</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 12 × 8
 # Groups:   material [2]
@@ -337,7 +356,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>x_labels <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"0 - 10 cm"</span>, <span class="st">"10 - 30 cm"</span>, <span class="st">"30 - 50 cm"</span>, <span class="st">"50 - 70 cm"</span>, <span class="st">"70 - 90 cm"</span>, <span class="st">"90+ cm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>soil.barplot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(soil, <span class="fu">aes</span>(<span class="at">x =</span> range_mean, <span class="at">y =</span> mean, <span class="at">fill =</span> material)) <span class="sc">+</span>   </span>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>soil.barplot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(soil_summary, <span class="fu">aes</span>(<span class="at">x =</span> range_mean, <span class="at">y =</span> mean, <span class="at">fill =</span> material)) <span class="sc">+</span>   </span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> <span class="fl">0.8</span>), <span class="at">width =</span> <span class="fl">0.75</span>, <span class="at">color =</span> <span class="st">"#2b2b2b"</span>, <span class="at">linewidth =</span> <span class="fl">0.50</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_linerange</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> mean, <span class="at">ymax =</span> mean <span class="sc">+</span> se), <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> <span class="fl">0.8</span>), <span class="at">linewidth =</span> <span class="fl">0.75</span>) <span class="sc">+</span></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">labels =</span> x_labels) <span class="sc">+</span> </span>
@@ -371,8 +390,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>soil_main <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">'soil_main.csv'</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate_at</span>(<span class="fu">vars</span>(material, depth2), factor) <span class="sc">%&gt;%</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(material, depth2) <span class="sc">%&gt;%</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate_at</span>(<span class="fu">vars</span>(material, depth_cat), factor) <span class="sc">%&gt;%</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(material, depth_cat) <span class="sc">%&gt;%</span></span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">mean =</span> <span class="fu">mean</span>(mbc), </span>
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">sd =</span> <span class="fu">sd</span>(mbc), </span>
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>                   <span class="at">n =</span> <span class="fu">n</span>(),</span>
@@ -385,80 +404,71 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>`summarise()` has grouped output by 'material'. You can override using the
 `.groups` argument.</code></pre>
 </div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: There were 2 warnings in `mutate()`.
-The first warning was:
-ℹ In argument: `lower.ci = mean - qt(1 - (0.05/2), n - 1) * se`.
-ℹ In group 2: `material = NDM`.
-Caused by warning in `qt()`:
-! NaNs produced
-ℹ Run `dplyr::last_dplyr_warnings()` to see the 1 remaining warning.</code></pre>
-</div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>soil_main</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>soil_main</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 17 × 8
+<pre><code># A tibble: 16 × 8
 # Groups:   material [2]
-   material depth2  mean     sd     n     se lower.ci upper.ci
-   &lt;fct&gt;    &lt;fct&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
- 1 HAHTM    1      2244. 1659.      7  627.     710.     3778.
- 2 HAHTM    2       371.  144.      7   54.6    237.      504.
- 3 HAHTM    3       246.   65.7     7   24.8    185.      307.
- 4 HAHTM    4       214.   72.3     7   27.3    147.      281.
- 5 HAHTM    5       202.   69.5     7   26.3    138.      266.
- 6 HAHTM    6       259.  105.      6   42.7    149.      368.
- 7 HAHTM    7       212.   79.1     4   39.5     86.0     338.
- 8 HAHTM    8       223.   21.4     2   15.1     31.0     415.
- 9 NDM      1      5609. 6699.      3 3868.  -11032.    22250.
-10 NDM      2      2757. 3953.      3 2282.   -7062.    12576.
-11 NDM      3      2249. 3529.      3 2038.   -6518.    11015.
-12 NDM      4       381.  400.      3  231.    -612.     1374.
-13 NDM      5       268.   57.0     3   32.9    126.      409.
-14 NDM      6       136.  101.      3   58.3   -114.      387.
-15 NDM      7       165.   86.0     3   49.7    -48.9     378.
-16 NDM      8       267.   93.7     2   66.3   -575.     1109.
-17 NDM      9       237.   NA       1   NA      NaN       NaN </code></pre>
+   material depth_cat  mean     sd     n     se lower.ci upper.ci
+   &lt;fct&gt;    &lt;fct&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+ 1 HAHTM    1         2244. 1659.      7  627.     710.     3778.
+ 2 HAHTM    2          371.  144.      7   54.6    237.      504.
+ 3 HAHTM    3          246.   65.7     7   24.8    185.      307.
+ 4 HAHTM    4          214.   72.3     7   27.3    147.      281.
+ 5 HAHTM    5          202.   69.5     7   26.3    138.      266.
+ 6 HAHTM    6          259.  105.      6   42.7    149.      368.
+ 7 HAHTM    7          212.   79.1     4   39.5     86.0     338.
+ 8 HAHTM    8          223.   21.4     2   15.1     31.0     415.
+ 9 NDM      1         5609. 6699.      3 3868.  -11032.    22250.
+10 NDM      2         2757. 3953.      3 2282.   -7062.    12576.
+11 NDM      3         2249. 3529.      3 2038.   -6518.    11015.
+12 NDM      4          381.  400.      3  231.    -612.     1374.
+13 NDM      5          268.   57.0     3   32.9    126.      409.
+14 NDM      6          136.  101.      3   58.3   -114.      387.
+15 NDM      7          165.   86.0     3   49.7    -48.9     378.
+16 NDM      8          267.   93.7     2   66.3   -575.     1109.</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>x_labels <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"1"</span>, <span class="st">"2"</span>, <span class="st">"3"</span>, <span class="st">"4"</span>, <span class="st">"5"</span>, <span class="st">"6"</span>, <span class="st">"7"</span>, <span class="st">"8"</span>, <span class="st">"9"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>x_labels <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"1"</span>, <span class="st">"2"</span>, <span class="st">"3"</span>, <span class="st">"4"</span>, <span class="st">"5"</span>, <span class="st">"6"</span>, <span class="st">"7"</span>, <span class="st">"8"</span>, <span class="st">"9"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>soil_main.barplot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(soil_main, <span class="fu">aes</span>(<span class="at">x =</span> depth2, <span class="at">y =</span> mean, <span class="at">fill =</span> material)) <span class="sc">+</span>   </span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> <span class="fl">0.9</span>), <span class="at">width =</span> <span class="fl">0.75</span>, <span class="at">color =</span> <span class="st">"#2b2b2b"</span>, <span class="at">linewidth =</span> <span class="fl">0.50</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_linerange</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> mean, <span class="at">ymax =</span> mean <span class="sc">+</span> se), <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> <span class="fl">0.9</span>), <span class="at">linewidth =</span> <span class="fl">0.75</span>) <span class="sc">+</span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">labels =</span> x_labels) <span class="sc">+</span> </span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="fu">expression</span>(<span class="fu">paste</span>(<span class="fu">italic</span>(<span class="st">" Soil"</span>)))) <span class="sc">+</span></span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">"mbc"</span>))) <span class="sc">+</span></span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">hjust =</span> <span class="fl">0.50</span>),</span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">strip.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"#FFFFFF"</span>, <span class="at">color =</span> <span class="cn">NA</span>),    </span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"#FFFFFF"</span>, <span class="at">color =</span> <span class="cn">NA</span>),</span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.major.x =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.minor.x =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.minor.y =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.major.y =</span> <span class="fu">element_line</span>(<span class="at">color =</span> <span class="st">"#b2b2b2"</span>),</span>
-<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.spacing.x =</span> <span class="fu">unit</span>(<span class="dv">1</span>, <span class="st">"cm"</span>),</span>
-<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.spacing.y =</span> <span class="fu">unit</span>(<span class="fl">0.5</span>, <span class="st">"cm"</span>),</span>
-<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.spacing =</span> <span class="fu">unit</span>(<span class="dv">1</span>, <span class="st">"lines"</span>),</span>
-<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.ticks =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">"right"</span>,</span>
-<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>),</span>
-<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>),</span>
-<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.title =</span> <span class="fu">element_blank</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>soil_main.barplot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(soil_main, <span class="fu">aes</span>(<span class="at">x =</span> depth_cat, <span class="at">y =</span> mean, <span class="at">fill =</span> material)) <span class="sc">+</span>   </span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> <span class="fl">0.9</span>), <span class="at">width =</span> <span class="fl">0.75</span>, <span class="at">color =</span> <span class="st">"#2b2b2b"</span>, <span class="at">linewidth =</span> <span class="fl">0.50</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_linerange</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> mean, <span class="at">ymax =</span> mean <span class="sc">+</span> se), <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> <span class="fl">0.9</span>), <span class="at">linewidth =</span> <span class="fl">0.75</span>) <span class="sc">+</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">labels =</span> x_labels) <span class="sc">+</span> </span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="fu">expression</span>(<span class="fu">paste</span>(<span class="fu">italic</span>(<span class="st">" Soil"</span>)))) <span class="sc">+</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">"mbc"</span>))) <span class="sc">+</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">hjust =</span> <span class="fl">0.50</span>),</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">strip.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"#FFFFFF"</span>, <span class="at">color =</span> <span class="cn">NA</span>),    </span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"#FFFFFF"</span>, <span class="at">color =</span> <span class="cn">NA</span>),</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.major.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.minor.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.minor.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.major.y =</span> <span class="fu">element_line</span>(<span class="at">color =</span> <span class="st">"#b2b2b2"</span>),</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.spacing.x =</span> <span class="fu">unit</span>(<span class="dv">1</span>, <span class="st">"cm"</span>),</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.spacing.y =</span> <span class="fu">unit</span>(<span class="fl">0.5</span>, <span class="st">"cm"</span>),</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.spacing =</span> <span class="fu">unit</span>(<span class="dv">1</span>, <span class="st">"lines"</span>),</span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.ticks =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">"right"</span>,</span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>),</span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>),</span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.title =</span> <span class="fu">element_blank</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>soil_main.barplot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 1 rows containing missing values (`geom_segment()`).</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>soil_main.barplot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="soil_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>soil_full</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>soil_full <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">'soil_full.csv'</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>soil_full</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 71 × 5
    material range depth range_mean    mbc
@@ -477,126 +487,833 @@ Caused by warning in `qt()`:
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>soil.lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(mbc <span class="sc">~</span> depth <span class="sc">*</span> material, <span class="at">data =</span> soil_full)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>soil <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">'soil_full.csv'</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate_at</span>(<span class="fu">vars</span>(material, range, range_mean), factor) <span class="sc">%&gt;%</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(material, range_mean) <span class="sc">%&gt;%</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">mean =</span> <span class="fu">mean</span>(mbc), </span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">sd =</span> <span class="fu">sd</span>(mbc), </span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>                   <span class="at">n =</span> <span class="fu">n</span>(),</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>                   <span class="at">se =</span> sd<span class="sc">/</span><span class="fu">sqrt</span>(n)</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">se =</span> sd <span class="sc">/</span> <span class="fu">sqrt</span>(n),</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>         <span class="at">lower.ci =</span> mean <span class="sc">-</span> <span class="fu">qt</span>(<span class="dv">1</span> <span class="sc">-</span> (<span class="fl">0.05</span> <span class="sc">/</span> <span class="dv">2</span>), n <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> se,</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>         <span class="at">upper.ci =</span> mean <span class="sc">+</span> <span class="fu">qt</span>(<span class="dv">1</span> <span class="sc">-</span> (<span class="fl">0.05</span> <span class="sc">/</span> <span class="dv">2</span>), n <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> se)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has grouped output by 'material'. You can override using the
+`.groups` argument.</code></pre>
+</div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(soil.lm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>soil</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 12 × 8
+# Groups:   material [2]
+   material range_mean  mean      sd     n       se lower.ci upper.ci
+   &lt;fct&gt;    &lt;fct&gt;      &lt;dbl&gt;   &lt;dbl&gt; &lt;int&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+ 1 HAHTM    0-10       2244. 1659.       7  627.      710.      3778.
+ 2 HAHTM    10-20       302.  141.      11   42.4     207.       396.
+ 3 HAHTM    30-50       242.   94.8     11   28.6     178.       306.
+ 4 HAHTM    50-70       188.   52.0      7   19.7     140.       237.
+ 5 HAHTM    70-90       242.   55.0      6   22.5     185.       300.
+ 6 HAHTM    90+         264.  104.       5   46.4     135.       393.
+ 7 NDM      0-10       5193. 4823.       6 1969.      131.     10254.
+ 8 NDM      10-20       434.  271.       4  136.        2.34     865.
+ 9 NDM      30-50       136.   63.5      3   36.6     -21.4      294.
+10 NDM      50-70       234.    1.06     2    0.749   224.       243.
+11 NDM      70-90       220.   98.8      4   49.4      62.4      377.
+12 NDM      90+         164.   84.5      5   37.8      58.6      268.</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>x_labels <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"0 - 10 cm"</span>, <span class="st">"10 - 30 cm"</span>, <span class="st">"30 - 50 cm"</span>, <span class="st">"50 - 70 cm"</span>, <span class="st">"70 - 90 cm"</span>, <span class="st">"90+ cm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>soil.barplot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(soil, <span class="fu">aes</span>(<span class="at">x =</span> range_mean, <span class="at">y =</span> mean, <span class="at">fill =</span> material)) <span class="sc">+</span>   </span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> <span class="fl">0.8</span>), <span class="at">width =</span> <span class="fl">0.75</span>, <span class="at">color =</span> <span class="st">"#2b2b2b"</span>, <span class="at">linewidth =</span> <span class="fl">0.50</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_linerange</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> mean, <span class="at">ymax =</span> mean <span class="sc">+</span> se), <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> <span class="fl">0.8</span>), <span class="at">linewidth =</span> <span class="fl">0.75</span>) <span class="sc">+</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">labels =</span> x_labels) <span class="sc">+</span> </span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="fu">expression</span>(<span class="fu">paste</span>(<span class="fu">italic</span>(<span class="st">" Soil"</span>)))) <span class="sc">+</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">"mbc"</span>))) <span class="sc">+</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">hjust =</span> <span class="fl">0.50</span>),</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">strip.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"#FFFFFF"</span>, <span class="at">color =</span> <span class="cn">NA</span>),    </span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"#FFFFFF"</span>, <span class="at">color =</span> <span class="cn">NA</span>),</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.major.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.minor.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.minor.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.major.y =</span> <span class="fu">element_line</span>(<span class="at">color =</span> <span class="st">"#b2b2b2"</span>),</span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.spacing.x =</span> <span class="fu">unit</span>(<span class="dv">1</span>, <span class="st">"cm"</span>),</span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.spacing.y =</span> <span class="fu">unit</span>(<span class="fl">0.5</span>, <span class="st">"cm"</span>),</span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.spacing =</span> <span class="fu">unit</span>(<span class="dv">1</span>, <span class="st">"lines"</span>),</span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.ticks =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">"right"</span>,</span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>),</span>
+<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>),</span>
+<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.title =</span> <span class="fu">element_blank</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>soil.barplot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="soil_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid" width="672"></p>
+<p><img src="soil_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="soil-main-file---numbered-categories-for-depth-1" class="level4">
+<h4 class="anchored" data-anchor-id="soil-main-file---numbered-categories-for-depth-1">Soil Main File - Numbered categories for depth</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>soil_main <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">'soil_main.csv'</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate_at</span>(<span class="fu">vars</span>(material, depth_cat), factor) <span class="sc">%&gt;%</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(material, depth_cat) <span class="sc">%&gt;%</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">mean =</span> <span class="fu">mean</span>(mbc), </span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">sd =</span> <span class="fu">sd</span>(mbc), </span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>                   <span class="at">n =</span> <span class="fu">n</span>(),</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>                   <span class="at">se =</span> sd<span class="sc">/</span><span class="fu">sqrt</span>(n)</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">se =</span> sd <span class="sc">/</span> <span class="fu">sqrt</span>(n),</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>         <span class="at">lower.ci =</span> mean <span class="sc">-</span> <span class="fu">qt</span>(<span class="dv">1</span> <span class="sc">-</span> (<span class="fl">0.05</span> <span class="sc">/</span> <span class="dv">2</span>), n <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> se,</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>         <span class="at">upper.ci =</span> mean <span class="sc">+</span> <span class="fu">qt</span>(<span class="dv">1</span> <span class="sc">-</span> (<span class="fl">0.05</span> <span class="sc">/</span> <span class="dv">2</span>), n <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> se)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has grouped output by 'material'. You can override using the
+`.groups` argument.</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(soil.lm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>soil_main</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 16 × 8
+# Groups:   material [2]
+   material depth_cat  mean     sd     n     se lower.ci upper.ci
+   &lt;fct&gt;    &lt;fct&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+ 1 HAHTM    1         2244. 1659.      7  627.     710.     3778.
+ 2 HAHTM    2          371.  144.      7   54.6    237.      504.
+ 3 HAHTM    3          246.   65.7     7   24.8    185.      307.
+ 4 HAHTM    4          214.   72.3     7   27.3    147.      281.
+ 5 HAHTM    5          202.   69.5     7   26.3    138.      266.
+ 6 HAHTM    6          259.  105.      6   42.7    149.      368.
+ 7 HAHTM    7          212.   79.1     4   39.5     86.0     338.
+ 8 HAHTM    8          223.   21.4     2   15.1     31.0     415.
+ 9 NDM      1         5609. 6699.      3 3868.  -11032.    22250.
+10 NDM      2         2757. 3953.      3 2282.   -7062.    12576.
+11 NDM      3         2249. 3529.      3 2038.   -6518.    11015.
+12 NDM      4          381.  400.      3  231.    -612.     1374.
+13 NDM      5          268.   57.0     3   32.9    126.      409.
+14 NDM      6          136.  101.      3   58.3   -114.      387.
+15 NDM      7          165.   86.0     3   49.7    -48.9     378.
+16 NDM      8          267.   93.7     2   66.3   -575.     1109.</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>x_labels <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"1"</span>, <span class="st">"2"</span>, <span class="st">"3"</span>, <span class="st">"4"</span>, <span class="st">"5"</span>, <span class="st">"6"</span>, <span class="st">"7"</span>, <span class="st">"8"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>soil_main.barplot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(soil_main, <span class="fu">aes</span>(<span class="at">x =</span> depth_cat, <span class="at">y =</span> mean, <span class="at">fill =</span> material)) <span class="sc">+</span>   </span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> <span class="fl">0.9</span>), <span class="at">width =</span> <span class="fl">0.75</span>, <span class="at">color =</span> <span class="st">"#2b2b2b"</span>, <span class="at">linewidth =</span> <span class="fl">0.50</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_linerange</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> mean, <span class="at">ymax =</span> mean <span class="sc">+</span> se), <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> <span class="fl">0.9</span>), <span class="at">linewidth =</span> <span class="fl">0.75</span>) <span class="sc">+</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">labels =</span> x_labels) <span class="sc">+</span> </span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="fu">expression</span>(<span class="fu">paste</span>(<span class="fu">italic</span>(<span class="st">" Soil"</span>)))) <span class="sc">+</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">"mbc"</span>))) <span class="sc">+</span></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">hjust =</span> <span class="fl">0.50</span>),</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">strip.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"#FFFFFF"</span>, <span class="at">color =</span> <span class="cn">NA</span>),    </span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"#FFFFFF"</span>, <span class="at">color =</span> <span class="cn">NA</span>),</span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.major.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.minor.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.minor.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.major.y =</span> <span class="fu">element_line</span>(<span class="at">color =</span> <span class="st">"#b2b2b2"</span>),</span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.spacing.x =</span> <span class="fu">unit</span>(<span class="dv">1</span>, <span class="st">"cm"</span>),</span>
+<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.spacing.y =</span> <span class="fu">unit</span>(<span class="fl">0.5</span>, <span class="st">"cm"</span>),</span>
+<span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.spacing =</span> <span class="fu">unit</span>(<span class="dv">1</span>, <span class="st">"lines"</span>),</span>
+<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.ticks =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb33-19"><a href="#cb33-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">"right"</span>,</span>
+<span id="cb33-20"><a href="#cb33-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>),</span>
+<span id="cb33-21"><a href="#cb33-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>),</span>
+<span id="cb33-22"><a href="#cb33-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.title =</span> <span class="fu">element_blank</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>soil_main.barplot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="soil_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="section" class="level1">
+<h1>4/3/2023</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>soil <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">'soil_main.csv'</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate_at</span>(<span class="fu">vars</span>(material, depth_range, depth_cat), factor)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>soil</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 70 × 5
+   material depth_range depth_cat depth_mean   mbc
+   &lt;fct&gt;    &lt;fct&gt;       &lt;fct&gt;          &lt;dbl&gt; &lt;dbl&gt;
+ 1 HAHTM    0-11        1                6.5  896.
+ 2 HAHTM    11-26       2               20.5  262.
+ 3 HAHTM    26-38       3               35.5  231.
+ 4 HAHTM    38-54       4               53    121.
+ 5 HAHTM    54-67       5               70    146.
+ 6 HAHTM    67-81       6               80.5  212.
+ 7 HAHTM    81-96       7               94    153.
+ 8 HAHTM    0-11        1                3   3274.
+ 9 HAHTM    11-26       2               11    197.
+10 HAHTM    26-38       3               22    144.
+# ℹ 60 more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="linear-regression---no-transformation" class="level1">
+<h1>Linear regression - no transformation</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>soil.lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(mbc <span class="sc">~</span> depth_cat <span class="sc">*</span> material, <span class="at">data =</span> soil)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="model-assumption" class="level1">
+<h1>Model assumption</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(soil.lm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="soil_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="log-transformation" class="level1">
+<h1>Log-transformation</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>soil_log.lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(mbc) <span class="sc">~</span> depth_cat <span class="sc">*</span> material, <span class="at">data =</span> soil)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(soil_log.lm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="soil_files/figure-html/unnamed-chunk-32-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(soil_log.lm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
-lm(formula = mbc ~ depth * material, data = soil_full)
+lm(formula = log(mbc) ~ depth_cat * material, data = soil)
 
 Residuals:
-    Min      1Q  Median      3Q     Max 
--2461.8  -555.8  -308.3   316.4  9913.9 
+     Min       1Q   Median       3Q      Max 
+-1.60270 -0.35072 -0.04529  0.26735  2.32616 
 
 Coefficients:
-                  Estimate Std. Error t value Pr(&gt;|t|)   
-(Intercept)       1174.254    454.177   2.585   0.0119 * 
-depth              -14.064      8.463  -1.662   0.1012   
-materialNDM       2293.428    738.969   3.104   0.0028 **
-depth:materialNDM  -25.148     12.430  -2.023   0.0470 * 
+                       Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)              7.4695     0.2787  26.801  &lt; 2e-16 ***
+depth_cat2              -1.6196     0.3941  -4.109 0.000136 ***
+depth_cat3              -1.9960     0.3941  -5.064 5.10e-06 ***
+depth_cat4              -2.1555     0.3941  -5.469 1.19e-06 ***
+depth_cat5              -2.2082     0.3941  -5.603 7.33e-07 ***
+depth_cat6              -1.9788     0.4102  -4.823 1.19e-05 ***
+depth_cat7              -2.1664     0.4622  -4.687 1.92e-05 ***
+depth_cat8              -2.0644     0.5912  -3.492 0.000965 ***
+materialNDM              0.6470     0.5088   1.272 0.208981    
+depth_cat2:materialNDM   0.5075     0.7196   0.705 0.483723    
+depth_cat3:materialNDM   0.3052     0.7196   0.424 0.673149    
+depth_cat4:materialNDM  -0.4108     0.7196  -0.571 0.570472    
+depth_cat5:materialNDM  -0.3327     0.7196  -0.462 0.645712    
+depth_cat6:materialNDM  -1.3894     0.7285  -1.907 0.061842 .  
+depth_cat7:materialNDM  -0.9710     0.7590  -1.279 0.206255    
+depth_cat8:materialNDM  -0.4959     0.8959  -0.554 0.582182    
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 1741 on 67 degrees of freedom
-Multiple R-squared:  0.2783,    Adjusted R-squared:  0.246 
-F-statistic: 8.612 on 3 and 67 DF,  p-value: 6.493e-05</code></pre>
+Residual standard error: 0.7374 on 54 degrees of freedom
+Multiple R-squared:  0.6441,    Adjusted R-squared:  0.5452 
+F-statistic: 6.515 on 15 and 54 DF,  p-value: 1.247e-07</code></pre>
 </div>
+</div>
+</section>
+<section id="car-package" class="level1">
+<h1>car package</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Anova</span>(soil_log.lm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Anova Table (Type II tests)
+
+Response: log(mbc)
+                   Sum Sq Df F value   Pr(&gt;F)    
+depth_cat          46.579  7 12.2381 2.99e-09 ***
+material            1.676  1  3.0828  0.08479 .  
+depth_cat:material  5.536  7  1.4544  0.20338    
+Residuals          29.361 54                     
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+</section>
+<section id="just-depth-as-a-predictor-variable" class="level1">
+<h1>Just depth as a predictor variable</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>soil_log2.lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(mbc) <span class="sc">~</span> material <span class="sc">+</span> depth_cat, <span class="at">data =</span> soil)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(soil_full, <span class="fu">aes</span>(<span class="at">x =</span> depth, <span class="at">y =</span> mbc, <span class="at">color =</span> material)) <span class="sc">+</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">1.5</span>)<span class="sc">+</span></span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"depth"</span>) <span class="sc">+</span></span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"mbc"</span>) <span class="sc">+</span></span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Soil"</span>) <span class="sc">+</span></span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">14</span>), </span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">14</span>), </span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y  =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>),</span>
-<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.x  =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>), </span>
-<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>),</span>
-<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
-<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">16</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(soil_log2.lm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="soil_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="672"></p>
+<p><img src="soil_files/figure-html/unnamed-chunk-36-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>soil_log.lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(mbc) <span class="sc">~</span> depth <span class="sc">*</span> material, <span class="at">data =</span> soil_full)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(soil_log.lm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="soil_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(soil_log.lm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(soil_log2.lm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
-lm(formula = log(mbc) ~ depth * material, data = soil_full)
+lm(formula = log(mbc) ~ material + depth_cat, data = soil)
 
 Residuals:
-    Min      1Q  Median      3Q     Max 
--1.8928 -0.5593 -0.0242  0.4972  2.2318 
+     Min       1Q   Median       3Q      Max 
+-1.19906 -0.32395 -0.01198  0.22237  2.76037 
 
 Coefficients:
-                   Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)        6.426412   0.219971  29.215  &lt; 2e-16 ***
-depth             -0.015063   0.004099  -3.675 0.000475 ***
-materialNDM        0.877818   0.357905   2.453 0.016791 *  
-depth:materialNDM -0.010816   0.006020  -1.797 0.076912 .  
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   7.5641     0.2462  30.729  &lt; 2e-16 ***
+materialNDM   0.3319     0.1939   1.712    0.092 .  
+depth_cat2   -1.4674     0.3383  -4.338 5.49e-05 ***
+depth_cat3   -1.9045     0.3383  -5.630 4.84e-07 ***
+depth_cat4   -2.2787     0.3383  -6.737 6.55e-09 ***
+depth_cat5   -2.3080     0.3383  -6.823 4.66e-09 ***
+depth_cat6   -2.4314     0.3476  -6.995 2.36e-09 ***
+depth_cat7   -2.5421     0.3736  -6.805 5.01e-09 ***
+depth_cat8   -2.2493     0.4491  -5.008 4.99e-06 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 0.8434 on 67 degrees of freedom
-Multiple R-squared:  0.4233,    Adjusted R-squared:  0.3975 
-F-statistic: 16.39 on 3 and 67 DF,  p-value: 4.295e-08</code></pre>
+Residual standard error: 0.7564 on 61 degrees of freedom
+Multiple R-squared:  0.577, Adjusted R-squared:  0.5215 
+F-statistic:  10.4 on 8 and 61 DF,  p-value: 4.727e-09</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(soil_full, <span class="fu">aes</span>(<span class="at">x =</span> depth, <span class="at">y =</span> <span class="fu">log</span>(mbc), <span class="at">color =</span> material)) <span class="sc">+</span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">1.5</span>)<span class="sc">+</span></span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"depth"</span>) <span class="sc">+</span></span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"mbc"</span>) <span class="sc">+</span></span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Soil"</span>) <span class="sc">+</span></span>
-<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">14</span>), </span>
-<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">14</span>), </span>
-<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y  =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>),</span>
-<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.x  =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>), </span>
-<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>),</span>
-<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
-<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">16</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Anova</span>(soil_log2.lm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Anova Table (Type II tests)
+
+Response: log(mbc)
+          Sum Sq Df F value    Pr(&gt;F)    
+material   1.676  1   2.930   0.09203 .  
+depth_cat 46.579  7  11.632 2.735e-09 ***
+Residuals 34.897 61                      
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+</section>
+<section id="anova-model-with-aov" class="level1">
+<h1>ANOVA model with “aov”</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>soil_log2.aov <span class="ot">&lt;-</span> <span class="fu">aov</span>(<span class="fu">log</span>(mbc) <span class="sc">~</span> material <span class="sc">+</span> depth_cat, <span class="at">data =</span> soil)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>soil_log3.aov <span class="ot">&lt;-</span> <span class="fu">aov</span>(<span class="fu">log</span>(mbc) <span class="sc">~</span> material <span class="sc">*</span> depth_cat, <span class="at">data =</span> soil)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(soil_log3.aov)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                   Df Sum Sq Mean Sq F value   Pr(&gt;F)    
+material            1   1.02   1.022   1.881    0.176    
+depth_cat           7  46.58   6.654  12.238 2.99e-09 ***
+material:depth_cat  7   5.54   0.791   1.454    0.203    
+Residuals          54  29.36   0.544                     
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+</section>
+<section id="tukey-hsd-test" class="level1">
+<h1>Tukey HSD test</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>tukey <span class="ot">&lt;-</span> <span class="fu">TukeyHSD</span>(soil_log2.aov)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>tukey2 <span class="ot">&lt;-</span> <span class="fu">TukeyHSD</span>(soil_log3.aov)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>tukey</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Tukey multiple comparisons of means
+    95% family-wise confidence level
+
+Fit: aov(formula = log(mbc) ~ material + depth_cat, data = soil)
+
+$material
+               diff        lwr       upr     p adj
+NDM-HAHTM 0.2573159 -0.1275509 0.6421827 0.1862144
+
+$depth_cat
+           diff       lwr        upr     p adj
+2-1 -1.46740010 -2.529003 -0.4057974 0.0013471
+3-1 -1.90446394 -2.966067 -0.8428612 0.0000129
+4-1 -2.27871293 -3.340316 -1.2171102 0.0000002
+5-1 -2.30801737 -3.369620 -1.2464146 0.0000001
+6-1 -2.42888709 -3.519580 -1.3381940 0.0000001
+7-1 -2.53247315 -3.702302 -1.3626439 0.0000001
+8-1 -2.23438532 -3.638754 -0.8300169 0.0001366
+3-2 -0.43706384 -1.498667  0.6245389 0.8983200
+4-2 -0.81131283 -1.872916  0.2502899 0.2606909
+5-2 -0.84061727 -1.902220  0.2209855 0.2214228
+6-2 -0.96148699 -2.052180  0.1292061 0.1229177
+7-2 -1.06507305 -2.234902  0.1047562 0.0998910
+8-2 -0.76698522 -2.171354  0.6373832 0.6782474
+4-3 -0.37424899 -1.435852  0.6873537 0.9529965
+5-3 -0.40355343 -1.465156  0.6580493 0.9308957
+6-3 -0.52442315 -1.615116  0.5662700 0.7996502
+7-3 -0.62800921 -1.797838  0.5418200 0.6967219
+8-3 -0.32992138 -1.734290  1.0744470 0.9954441
+5-4 -0.02930445 -1.090907  1.0322983 1.0000000
+6-4 -0.15017416 -1.240867  0.9405190 0.9998568
+7-4 -0.25376022 -1.423589  0.9160690 0.9972261
+8-4  0.04432761 -1.360041  1.4486960 1.0000000
+6-5 -0.12086972 -1.211563  0.9698234 0.9999670
+7-5 -0.22445578 -1.394285  0.9453735 0.9987287
+8-5  0.07363205 -1.330736  1.4780005 0.9999998
+7-6 -0.10358606 -1.299877  1.0927047 0.9999939
+8-6  0.19450177 -1.231984  1.6209876 0.9998659
+8-7  0.29808783 -1.189780  1.7859557 0.9983231</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>tukey2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Tukey multiple comparisons of means
+    95% family-wise confidence level
+
+Fit: aov(formula = log(mbc) ~ material * depth_cat, data = soil)
+
+$material
+               diff        lwr       upr     p adj
+NDM-HAHTM 0.2573159 -0.1188787 0.6335105 0.1759437
+
+$depth_cat
+           diff       lwr         upr     p adj
+2-1 -1.46740010 -2.507052 -0.42774784 0.0010649
+3-1 -1.90446394 -2.944116 -0.86481168 0.0000104
+4-1 -2.27871293 -3.318365 -1.23906067 0.0000002
+5-1 -2.30801737 -3.347670 -1.26836512 0.0000001
+6-1 -2.42888709 -3.497028 -1.36074594 0.0000001
+7-1 -2.53247315 -3.678114 -1.38683216 0.0000001
+8-1 -2.23438532 -3.609716 -0.85905466 0.0001076
+3-2 -0.43706384 -1.476716  0.60258842 0.8851075
+4-2 -0.81131283 -1.850965  0.22833943 0.2346644
+5-2 -0.84061727 -1.880270  0.19903498 0.1976742
+6-2 -0.96148699 -2.029628  0.10665416 0.1068952
+7-2 -1.06507305 -2.210714  0.08056794 0.0861689
+8-2 -0.76698522 -2.142316  0.60834544 0.6499960
+4-3 -0.37424899 -1.413901  0.66540327 0.9460011
+5-3 -0.40355343 -1.443206  0.63609882 0.9212158
+6-3 -0.52442315 -1.592564  0.54371800 0.7780472
+7-3 -0.62800921 -1.773650  0.51763178 0.6692532
+8-3 -0.32992138 -1.705252  1.04540928 0.9946106
+5-4 -0.02930445 -1.068957  1.01034781 1.0000000
+6-4 -0.15017416 -1.218315  0.91796699 0.9998277
+7-4 -0.25376022 -1.399401  0.89188077 0.9967062
+8-4  0.04432761 -1.331003  1.41965826 1.0000000
+6-5 -0.12086972 -1.189011  0.94727144 0.9999601
+7-5 -0.22445578 -1.370097  0.92118521 0.9984831
+8-5  0.07363205 -1.301699  1.44896271 0.9999998
+7-6 -0.10358606 -1.275141  1.06796931 0.9999926
+8-6  0.19450177 -1.202489  1.59149251 0.9998385
+8-7  0.29808783 -1.159016  1.75519142 0.9980023
+
+$`material:depth_cat`
+                        diff        lwr         upr     p adj
+NDM:1-HAHTM:1    0.647013759 -1.1805683  2.47459580 0.9954240
+HAHTM:2-HAHTM:1 -1.619637305 -3.0352763 -0.20399834 0.0114910
+NDM:2-HAHTM:1   -0.465166194 -2.2927482  1.36241585 0.9998921
+HAHTM:3-HAHTM:1 -1.996027802 -3.4116668 -0.58038884 0.0005181
+NDM:3-HAHTM:1   -1.043801167 -2.8713832  0.78378087 0.7858034
+HAHTM:4-HAHTM:1 -2.155478145 -3.5711171 -0.73983918 0.0001263
+NDM:4-HAHTM:1   -1.919246995 -3.7468290 -0.09166496 0.0306288
+HAHTM:5-HAHTM:1 -2.208211953 -3.6238509 -0.79257299 0.0000785
+NDM:5-HAHTM:1   -1.893882928 -3.7214650 -0.06630089 0.0351654
+HAHTM:6-HAHTM:1 -1.978757687 -3.4522014 -0.50531394 0.0011727
+NDM:6-HAHTM:1   -2.721101922 -4.5486840 -0.89351988 0.0001936
+HAHTM:7-HAHTM:1 -2.166431990 -3.8264158 -0.50644817 0.0018431
+NDM:7-HAHTM:1   -2.490423615 -4.3180057 -0.66284158 0.0009239
+HAHTM:8-HAHTM:1 -2.064369276 -4.1878277  0.05908917 0.0648806
+NDM:8-HAHTM:1   -1.913266739 -4.0367252  0.21019170 0.1212109
+HAHTM:2-NDM:1   -2.266651064 -4.0942331 -0.43906902 0.0039281
+NDM:2-NDM:1     -1.112179953 -3.2746042  1.05024428 0.8872919
+HAHTM:3-NDM:1   -2.643041562 -4.4706236 -0.81545952 0.0003307
+NDM:3-NDM:1     -1.690814926 -3.8532392  0.47160930 0.2954697
+HAHTM:4-NDM:1   -2.802491904 -4.6300739 -0.97490986 0.0001101
+NDM:4-NDM:1     -2.566260755 -4.7286850 -0.40383652 0.0071940
+HAHTM:5-NDM:1   -2.855225712 -4.6828078 -1.02764367 0.0000761
+NDM:5-NDM:1     -2.540896687 -4.7033209 -0.37847246 0.0081936
+HAHTM:6-NDM:1   -2.625771447 -4.4984858 -0.75305713 0.0005708
+NDM:6-NDM:1     -3.368115681 -5.5305399 -1.20569145 0.0000809
+HAHTM:7-NDM:1   -2.813445749 -4.8362084 -0.79068310 0.0006551
+NDM:7-NDM:1     -3.137437375 -5.2998616 -0.97501314 0.0003119
+HAHTM:8-NDM:1   -2.711383035 -5.1290468 -0.29371925 0.0146483
+NDM:8-NDM:1     -2.560280499 -4.9779443 -0.14261671 0.0280243
+NDM:2-HAHTM:2    1.154471111 -0.6731109  2.98205315 0.6466982
+HAHTM:3-HAHTM:2 -0.376390497 -1.7920295  1.03924846 0.9998162
+NDM:3-HAHTM:2    0.575836138 -1.2517459  2.40341818 0.9986813
+HAHTM:4-HAHTM:2 -0.535840840 -1.9514798  0.87979812 0.9910805
+NDM:4-HAHTM:2   -0.299609691 -2.1271917  1.52797235 0.9999997
+HAHTM:5-HAHTM:2 -0.588574648 -2.0042136  0.82706431 0.9786528
+NDM:5-HAHTM:2   -0.274245623 -2.1018277  1.55333642 0.9999999
+HAHTM:6-HAHTM:2 -0.359120383 -1.8325641  1.11432336 0.9999370
+NDM:6-HAHTM:2   -1.101464617 -2.9290467  0.72611742 0.7161936
+HAHTM:7-HAHTM:2 -0.546794685 -2.2067785  1.11318914 0.9978564
+NDM:7-HAHTM:2   -0.870786311 -2.6983684  0.95679573 0.9346099
+HAHTM:8-HAHTM:2 -0.444731971 -2.5681904  1.67872647 0.9999910
+NDM:8-HAHTM:2   -0.293629435 -2.4170879  1.82982901 1.0000000
+HAHTM:3-NDM:2   -1.530861609 -3.3584436  0.29672043 0.1999427
+NDM:3-NDM:2     -0.578634973 -2.7410592  1.58378926 0.9998014
+HAHTM:4-NDM:2   -1.690311951 -3.5178940  0.13727009 0.0989695
+NDM:4-NDM:2     -1.454080802 -3.6165050  0.70834343 0.5451397
+HAHTM:5-NDM:2   -1.743045759 -3.5706278  0.08453628 0.0767298
+NDM:5-NDM:2     -1.428716734 -3.5911410  0.73370750 0.5745061
+HAHTM:6-NDM:2   -1.513591494 -3.3863058  0.35912282 0.2472096
+NDM:6-NDM:2     -2.255935728 -4.4183600 -0.09351150 0.0328177
+HAHTM:7-NDM:2   -1.701265796 -3.7240284  0.32149685 0.1949055
+NDM:7-NDM:2     -2.025257422 -4.1876817  0.13716681 0.0893913
+HAHTM:8-NDM:2   -1.599203082 -4.0168669  0.81846071 0.5725899
+NDM:8-NDM:2     -1.448100546 -3.8657643  0.96956324 0.7247870
+NDM:3-HAHTM:3    0.952226635 -0.8753554  2.77980867 0.8771640
+HAHTM:4-HAHTM:3 -0.159450343 -1.5750893  1.25618862 1.0000000
+NDM:4-HAHTM:3    0.076780807 -1.7508012  1.90436285 1.0000000
+HAHTM:5-HAHTM:3 -0.212184150 -1.6278231  1.20345481 0.9999999
+NDM:5-HAHTM:3    0.102144874 -1.7254372  1.92972691 1.0000000
+HAHTM:6-HAHTM:3  0.017270115 -1.4561736  1.49071386 1.0000000
+NDM:6-HAHTM:3   -0.725074120 -2.5526562  1.10250792 0.9860543
+HAHTM:7-HAHTM:3 -0.170404188 -1.8303880  1.48957964 1.0000000
+NDM:7-HAHTM:3   -0.494395813 -2.3219779  1.33318623 0.9997736
+HAHTM:8-HAHTM:3 -0.068341474 -2.1917999  2.05511697 1.0000000
+NDM:8-HAHTM:3    0.082761063 -2.0406974  2.20621950 1.0000000
+HAHTM:4-NDM:3   -1.111676978 -2.9392590  0.71590506 0.7031343
+NDM:4-NDM:3     -0.875445828 -3.0378701  1.28697840 0.9831994
+HAHTM:5-NDM:3   -1.164410786 -2.9919928  0.66317125 0.6332893
+NDM:5-NDM:3     -0.850081761 -3.0125060  1.31234247 0.9871999
+HAHTM:6-NDM:3   -0.934956521 -2.8076708  0.93775780 0.9081213
+NDM:6-NDM:3     -1.677300755 -3.8397250  0.48512348 0.3077303
+HAHTM:7-NDM:3   -1.122630823 -3.1453935  0.90013183 0.8180970
+NDM:7-NDM:3     -1.446622449 -3.6090467  0.71580178 0.5537672
+HAHTM:8-NDM:3   -1.020568109 -3.4382319  1.39709568 0.9755983
+NDM:8-NDM:3     -0.869465573 -3.2871294  1.54819822 0.9946304
+NDM:4-HAHTM:4    0.236231150 -1.5913509  2.06381319 1.0000000
+HAHTM:5-HAHTM:4 -0.052733808 -1.4683728  1.36290515 1.0000000
+NDM:5-HAHTM:4    0.261595217 -1.5659868  2.08917726 1.0000000
+HAHTM:6-HAHTM:4  0.176720458 -1.2967233  1.65016420 1.0000000
+NDM:6-HAHTM:4   -0.565623777 -2.3932058  1.26195826 0.9989197
+HAHTM:7-HAHTM:4 -0.010953845 -1.6709377  1.64902998 1.0000000
+NDM:7-HAHTM:4   -0.334945470 -2.1625275  1.49263657 0.9999985
+HAHTM:8-HAHTM:4  0.091108869 -2.0323496  2.21456731 1.0000000
+NDM:8-HAHTM:4    0.242211405 -1.8812470  2.36566985 1.0000000
+HAHTM:5-NDM:4   -0.288964957 -2.1165470  1.53861708 0.9999998
+NDM:5-NDM:4      0.025364067 -2.1370602  2.18778830 1.0000000
+HAHTM:6-NDM:4   -0.059510692 -1.9322250  1.81320363 1.0000000
+NDM:6-NDM:4     -0.801854926 -2.9642792  1.36056930 0.9927067
+HAHTM:7-NDM:4   -0.247184994 -2.2699476  1.77557766 1.0000000
+NDM:7-NDM:4     -0.571176620 -2.7336009  1.59124761 0.9998302
+HAHTM:8-NDM:4   -0.145122280 -2.5627861  2.27254151 1.0000000
+NDM:8-NDM:4      0.005980256 -2.4116835  2.42364404 1.0000000
+NDM:5-HAHTM:5    0.314329025 -1.5132530  2.14191106 0.9999994
+HAHTM:6-HAHTM:5  0.229454265 -1.2439895  1.70289801 0.9999998
+NDM:6-HAHTM:5   -0.512889969 -2.3404720  1.31469207 0.9996496
+HAHTM:7-HAHTM:5  0.041779963 -1.6182039  1.70176379 1.0000000
+NDM:7-HAHTM:5   -0.282211663 -2.1097937  1.54537038 0.9999999
+HAHTM:8-HAHTM:5  0.143842677 -1.9796158  2.26730112 1.0000000
+NDM:8-HAHTM:5    0.294945213 -1.8285132  2.41840365 1.0000000
+HAHTM:6-NDM:5   -0.084874760 -1.9575891  1.78783956 1.0000000
+NDM:6-NDM:5     -0.827218994 -2.9896432  1.33520524 0.9901203
+HAHTM:7-NDM:5   -0.272549062 -2.2953117  1.75021359 1.0000000
+NDM:7-NDM:5     -0.596540688 -2.7589649  1.56588354 0.9997140
+HAHTM:8-NDM:5   -0.170486348 -2.5881501  2.24717744 1.0000000
+NDM:8-NDM:5     -0.019383812 -2.4370476  2.39827998 1.0000000
+NDM:6-HAHTM:6   -0.742344234 -2.6150586  1.13037008 0.9861649
+HAHTM:7-HAHTM:6 -0.187674302 -1.8972208  1.52187216 1.0000000
+NDM:7-HAHTM:6   -0.511665928 -2.3843802  1.36104839 0.9997450
+HAHTM:8-HAHTM:6 -0.085611588 -2.2480358  2.07681264 1.0000000
+NDM:8-HAHTM:6    0.065490948 -2.0969333  2.22791518 1.0000000
+HAHTM:7-NDM:6    0.554669932 -1.4680927  2.57743258 0.9997338
+NDM:7-NDM:6      0.230678306 -1.9317459  2.39310254 1.0000000
+HAHTM:8-NDM:6    0.656732646 -1.7609311  3.07439643 0.9997621
+NDM:8-NDM:6      0.807835182 -1.6098286  3.22549897 0.9975012
+NDM:7-HAHTM:7   -0.323991626 -2.3467543  1.69877102 0.9999998
+HAHTM:8-HAHTM:7  0.102062714 -2.1915345  2.39565997 1.0000000
+NDM:8-HAHTM:7    0.253165250 -2.0404320  2.54676251 1.0000000
+HAHTM:8-NDM:7    0.426054340 -1.9916094  2.84371813 0.9999991
+NDM:8-NDM:7      0.577156876 -1.8405069  2.99482066 0.9999514
+NDM:8-HAHTM:8    0.151102536 -2.4973155  2.79952052 1.0000000</code></pre>
+</div>
+</div>
+</section>
+<section id="cld" class="level1">
+<h1>cld</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>cld <span class="ot">&lt;-</span> <span class="fu">multcompLetters4</span>(soil_log3.aov, tukey2) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>cld</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$material
+$material$Letters
+  NDM HAHTM 
+  "a"   "a" 
+
+$material$LetterMatrix
+         a
+NDM   TRUE
+HAHTM TRUE
+
+
+$depth_cat
+  1   2   3   8   4   5   6   7 
+"a" "b" "b" "b" "b" "b" "b" "b" 
+
+$`material:depth_cat`
+  NDM:1 HAHTM:1   NDM:2   NDM:3 HAHTM:2   NDM:5   NDM:8   NDM:4 HAHTM:6 HAHTM:3 
+    "a"    "ab"   "abc"  "abcd"    "cd"    "cd"   "bcd"    "cd"    "cd"    "cd" 
+HAHTM:8 HAHTM:4 HAHTM:7 HAHTM:5   NDM:7   NDM:6 
+  "bcd"    "cd"    "cd"    "cd"    "cd"     "d" </code></pre>
+</div>
+</div>
+</section>
+<section id="table" class="level1">
+<h1>Table</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>data_summary <span class="ot">&lt;-</span> soil <span class="sc">%&gt;%</span></span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate_at</span>(<span class="fu">vars</span>(material, depth_range, depth_cat), factor) <span class="sc">%&gt;%</span></span>
+<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(material, depth_cat) <span class="sc">%&gt;%</span></span>
+<span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">mean =</span> <span class="fu">mean</span>(mbc), </span>
+<span id="cb65-5"><a href="#cb65-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">sd =</span> <span class="fu">sd</span>(mbc), </span>
+<span id="cb65-6"><a href="#cb65-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">n =</span> <span class="fu">n</span>(),</span>
+<span id="cb65-7"><a href="#cb65-7" aria-hidden="true" tabindex="-1"></a>                   <span class="at">se =</span> sd<span class="sc">/</span><span class="fu">sqrt</span>(n)) <span class="sc">%&gt;%</span></span>
+<span id="cb65-8"><a href="#cb65-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(mean))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has grouped output by 'material'. You can override using the
+`.groups` argument.</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>data_summary</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 16 × 6
+# Groups:   material [2]
+   material depth_cat  mean     sd     n     se
+   &lt;fct&gt;    &lt;fct&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt;
+ 1 NDM      1         5609. 6699.      3 3868. 
+ 2 NDM      2         2757. 3953.      3 2282. 
+ 3 NDM      3         2249. 3529.      3 2038. 
+ 4 HAHTM    1         2244. 1659.      7  627. 
+ 5 NDM      4          381.  400.      3  231. 
+ 6 HAHTM    2          371.  144.      7   54.6
+ 7 NDM      5          268.   57.0     3   32.9
+ 8 NDM      8          267.   93.7     2   66.3
+ 9 HAHTM    6          259.  105.      6   42.7
+10 HAHTM    3          246.   65.7     7   24.8
+11 HAHTM    8          223.   21.4     2   15.1
+12 HAHTM    4          214.   72.3     7   27.3
+13 HAHTM    7          212.   79.1     4   39.5
+14 HAHTM    5          202.   69.5     7   26.3
+15 NDM      7          165.   86.0     3   49.7
+16 NDM      6          136.  101.      3   58.3</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>soil_main <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">'soil_main.csv'</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate_at</span>(<span class="fu">vars</span>(material, depth_cat), factor) <span class="sc">%&gt;%</span></span>
+<span id="cb69-4"><a href="#cb69-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(material, depth_cat) <span class="sc">%&gt;%</span></span>
+<span id="cb69-5"><a href="#cb69-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">mean =</span> <span class="fu">mean</span>(mbc), </span>
+<span id="cb69-6"><a href="#cb69-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">sd =</span> <span class="fu">sd</span>(mbc), </span>
+<span id="cb69-7"><a href="#cb69-7" aria-hidden="true" tabindex="-1"></a>                   <span class="at">n =</span> <span class="fu">n</span>(),</span>
+<span id="cb69-8"><a href="#cb69-8" aria-hidden="true" tabindex="-1"></a>                   <span class="at">se =</span> sd<span class="sc">/</span><span class="fu">sqrt</span>(n)</span>
+<span id="cb69-9"><a href="#cb69-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb69-10"><a href="#cb69-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">se =</span> sd <span class="sc">/</span> <span class="fu">sqrt</span>(n),</span>
+<span id="cb69-11"><a href="#cb69-11" aria-hidden="true" tabindex="-1"></a>         <span class="at">lower.ci =</span> mean <span class="sc">-</span> <span class="fu">qt</span>(<span class="dv">1</span> <span class="sc">-</span> (<span class="fl">0.05</span> <span class="sc">/</span> <span class="dv">2</span>), n <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> se,</span>
+<span id="cb69-12"><a href="#cb69-12" aria-hidden="true" tabindex="-1"></a>         <span class="at">upper.ci =</span> mean <span class="sc">+</span> <span class="fu">qt</span>(<span class="dv">1</span> <span class="sc">-</span> (<span class="fl">0.05</span> <span class="sc">/</span> <span class="dv">2</span>), n <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> se)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has grouped output by 'material'. You can override using the
+`.groups` argument.</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>soil_main</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 16 × 8
+# Groups:   material [2]
+   material depth_cat  mean     sd     n     se lower.ci upper.ci
+   &lt;fct&gt;    &lt;fct&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+ 1 HAHTM    1         2244. 1659.      7  627.     710.     3778.
+ 2 HAHTM    2          371.  144.      7   54.6    237.      504.
+ 3 HAHTM    3          246.   65.7     7   24.8    185.      307.
+ 4 HAHTM    4          214.   72.3     7   27.3    147.      281.
+ 5 HAHTM    5          202.   69.5     7   26.3    138.      266.
+ 6 HAHTM    6          259.  105.      6   42.7    149.      368.
+ 7 HAHTM    7          212.   79.1     4   39.5     86.0     338.
+ 8 HAHTM    8          223.   21.4     2   15.1     31.0     415.
+ 9 NDM      1         5609. 6699.      3 3868.  -11032.    22250.
+10 NDM      2         2757. 3953.      3 2282.   -7062.    12576.
+11 NDM      3         2249. 3529.      3 2038.   -6518.    11015.
+12 NDM      4          381.  400.      3  231.    -612.     1374.
+13 NDM      5          268.   57.0     3   32.9    126.      409.
+14 NDM      6          136.  101.      3   58.3   -114.      387.
+15 NDM      7          165.   86.0     3   49.7    -48.9     378.
+16 NDM      8          267.   93.7     2   66.3   -575.     1109.</code></pre>
+</div>
+</div>
+</section>
+<section id="adding-the-compact-letter-display-to-the-table-with-mean-se" class="level1">
+<h1>Adding the compact letter display to the table with mean, se</h1>
+<p>#<code>{r} #tukey.cld &lt;- as.data.frame(cld$depth_cat) #</code></p>
+<p>#<code>{r} #data_summary$tukey &lt;- tukey.cld$Letters #</code></p>
+<p>#<code>{r} #data_summary #</code></p>
+</section>
+<section id="graph-original-data-first" class="level1">
+<h1>Graph original data first</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>soil_main.barplot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(soil_main, <span class="fu">aes</span>(<span class="at">x =</span> depth_cat, <span class="at">y =</span> mean, <span class="at">fill =</span> material)) <span class="sc">+</span>   </span>
+<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> <span class="fl">0.9</span>), <span class="at">width =</span> <span class="fl">0.75</span>, <span class="at">color =</span> <span class="st">"#2b2b2b"</span>, <span class="at">linewidth =</span> <span class="fl">0.50</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb73-3"><a href="#cb73-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_linerange</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> mean, <span class="at">ymax =</span> mean <span class="sc">+</span> se), <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> <span class="fl">0.9</span>), <span class="at">linewidth =</span> <span class="fl">0.75</span>) <span class="sc">+</span></span>
+<span id="cb73-4"><a href="#cb73-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">labels =</span> x_labels) <span class="sc">+</span> </span>
+<span id="cb73-5"><a href="#cb73-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="fu">expression</span>(<span class="fu">paste</span>(<span class="fu">italic</span>(<span class="st">" Soil"</span>)))) <span class="sc">+</span></span>
+<span id="cb73-6"><a href="#cb73-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">"mbc"</span>))) <span class="sc">+</span></span>
+<span id="cb73-7"><a href="#cb73-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb73-8"><a href="#cb73-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">hjust =</span> <span class="fl">0.50</span>),</span>
+<span id="cb73-9"><a href="#cb73-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">strip.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"#FFFFFF"</span>, <span class="at">color =</span> <span class="cn">NA</span>),    </span>
+<span id="cb73-10"><a href="#cb73-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"#FFFFFF"</span>, <span class="at">color =</span> <span class="cn">NA</span>),</span>
+<span id="cb73-11"><a href="#cb73-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.major.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb73-12"><a href="#cb73-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.minor.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb73-13"><a href="#cb73-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.minor.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb73-14"><a href="#cb73-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.major.y =</span> <span class="fu">element_line</span>(<span class="at">color =</span> <span class="st">"#b2b2b2"</span>),</span>
+<span id="cb73-15"><a href="#cb73-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.spacing.x =</span> <span class="fu">unit</span>(<span class="dv">1</span>, <span class="st">"cm"</span>),</span>
+<span id="cb73-16"><a href="#cb73-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.spacing.y =</span> <span class="fu">unit</span>(<span class="fl">0.5</span>, <span class="st">"cm"</span>),</span>
+<span id="cb73-17"><a href="#cb73-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.spacing =</span> <span class="fu">unit</span>(<span class="dv">1</span>, <span class="st">"lines"</span>),</span>
+<span id="cb73-18"><a href="#cb73-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.ticks =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb73-19"><a href="#cb73-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">"right"</span>,</span>
+<span id="cb73-20"><a href="#cb73-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>),</span>
+<span id="cb73-21"><a href="#cb73-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>),</span>
+<span id="cb73-22"><a href="#cb73-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.title =</span> <span class="fu">element_blank</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>soil_main.barplot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="soil_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="672"></p>
+<p><img src="soil_files/figure-html/unnamed-chunk-53-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="log-transformed-summary" class="level1">
+<h1>Log-transformed summary</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>soil_log_main <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">'soil_main.csv'</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb75-3"><a href="#cb75-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate_at</span>(<span class="fu">vars</span>(material, depth_cat), factor) <span class="sc">%&gt;%</span></span>
+<span id="cb75-4"><a href="#cb75-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(material, depth_cat) <span class="sc">%&gt;%</span></span>
+<span id="cb75-5"><a href="#cb75-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">mean =</span> <span class="fu">log</span>(<span class="fu">mean</span>(mbc)), </span>
+<span id="cb75-6"><a href="#cb75-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">sd =</span> <span class="fu">sd</span>(<span class="fu">log</span>(mbc)), </span>
+<span id="cb75-7"><a href="#cb75-7" aria-hidden="true" tabindex="-1"></a>                   <span class="at">n =</span> <span class="fu">n</span>(),</span>
+<span id="cb75-8"><a href="#cb75-8" aria-hidden="true" tabindex="-1"></a>                   <span class="at">se =</span> sd<span class="sc">/</span><span class="fu">sqrt</span>(n)</span>
+<span id="cb75-9"><a href="#cb75-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb75-10"><a href="#cb75-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">se =</span> sd <span class="sc">/</span> <span class="fu">sqrt</span>(n),</span>
+<span id="cb75-11"><a href="#cb75-11" aria-hidden="true" tabindex="-1"></a>         <span class="at">lower.ci =</span> mean <span class="sc">-</span> <span class="fu">qt</span>(<span class="dv">1</span> <span class="sc">-</span> (<span class="fl">0.05</span> <span class="sc">/</span> <span class="dv">2</span>), n <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> se,</span>
+<span id="cb75-12"><a href="#cb75-12" aria-hidden="true" tabindex="-1"></a>         <span class="at">upper.ci =</span> mean <span class="sc">+</span> <span class="fu">qt</span>(<span class="dv">1</span> <span class="sc">-</span> (<span class="fl">0.05</span> <span class="sc">/</span> <span class="dv">2</span>), n <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> se)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has grouped output by 'material'. You can override using the
+`.groups` argument.</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>soil_hyp.lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(<span class="dv">1</span><span class="sc">/</span>mbc) <span class="sc">~</span> <span class="fu">exp</span>(depth) <span class="sc">*</span> material, <span class="at">data =</span> soil_full)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a>soil_log_main</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 16 × 8
+# Groups:   material [2]
+   material depth_cat  mean     sd     n     se lower.ci upper.ci
+   &lt;fct&gt;    &lt;fct&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+ 1 HAHTM    1          7.72 0.777      7 0.294      7.00     8.43
+ 2 HAHTM    2          5.92 0.395      7 0.149      5.55     6.28
+ 3 HAHTM    3          5.51 0.280      7 0.106      5.25     5.77
+ 4 HAHTM    4          5.37 0.358      7 0.135      5.04     5.70
+ 5 HAHTM    5          5.31 0.323      7 0.122      5.01     5.61
+ 6 HAHTM    6          5.56 0.391      6 0.160      5.14     5.97
+ 7 HAHTM    7          5.36 0.375      4 0.188      4.76     5.95
+ 8 HAHTM    8          5.41 0.0960     2 0.0679     4.55     6.27
+ 9 NDM      1          8.63 1.23       3 0.711      5.57    11.7 
+10 NDM      2          7.92 1.71       3 0.987      3.68    12.2 
+11 NDM      3          7.72 2.06       3 1.19       2.60    12.8 
+12 NDM      4          5.94 1.09       3 0.627      3.25     8.64
+13 NDM      5          5.59 0.203      3 0.117      5.09     6.09
+14 NDM      6          4.91 0.679      3 0.392      3.23     6.60
+15 NDM      7          5.10 0.662      3 0.382      3.46     6.75
+16 NDM      8          5.59 0.358      2 0.253      2.37     8.81</code></pre>
+</div>
+</div>
+</section>
+<section id="add-letters-for-significance" class="level1">
+<h1>Add Letters for significance</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a>soil_log_main.barplot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(soil_log_main, <span class="fu">aes</span>(<span class="at">x =</span> depth_cat, <span class="at">y =</span> mean, <span class="at">fill =</span> material)) <span class="sc">+</span>   </span>
+<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> <span class="fl">0.9</span>), <span class="at">width =</span> <span class="fl">0.75</span>, <span class="at">color =</span> <span class="st">"#2b2b2b"</span>, <span class="at">linewidth =</span> <span class="fl">0.50</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb79-3"><a href="#cb79-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_linerange</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> mean, <span class="at">ymax =</span> mean <span class="sc">+</span> se), <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> <span class="fl">0.9</span>), <span class="at">linewidth =</span> <span class="fl">0.75</span>) <span class="sc">+</span></span>
+<span id="cb79-4"><a href="#cb79-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">labels =</span> x_labels) <span class="sc">+</span> </span>
+<span id="cb79-5"><a href="#cb79-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="fu">expression</span>(<span class="fu">paste</span>(<span class="fu">italic</span>(<span class="st">" Soil"</span>)))) <span class="sc">+</span></span>
+<span id="cb79-6"><a href="#cb79-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">"mbc"</span>))) <span class="sc">+</span></span>
+<span id="cb79-7"><a href="#cb79-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb79-8"><a href="#cb79-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">hjust =</span> <span class="fl">0.50</span>),</span>
+<span id="cb79-9"><a href="#cb79-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">strip.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"#FFFFFF"</span>, <span class="at">color =</span> <span class="cn">NA</span>),    </span>
+<span id="cb79-10"><a href="#cb79-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"#FFFFFF"</span>, <span class="at">color =</span> <span class="cn">NA</span>),</span>
+<span id="cb79-11"><a href="#cb79-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.major.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb79-12"><a href="#cb79-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.minor.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb79-13"><a href="#cb79-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.minor.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb79-14"><a href="#cb79-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.major.y =</span> <span class="fu">element_line</span>(<span class="at">color =</span> <span class="st">"#b2b2b2"</span>),</span>
+<span id="cb79-15"><a href="#cb79-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.spacing.x =</span> <span class="fu">unit</span>(<span class="dv">1</span>, <span class="st">"cm"</span>),</span>
+<span id="cb79-16"><a href="#cb79-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.spacing.y =</span> <span class="fu">unit</span>(<span class="fl">0.5</span>, <span class="st">"cm"</span>),</span>
+<span id="cb79-17"><a href="#cb79-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.spacing =</span> <span class="fu">unit</span>(<span class="dv">1</span>, <span class="st">"lines"</span>),</span>
+<span id="cb79-18"><a href="#cb79-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.ticks =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb79-19"><a href="#cb79-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">"right"</span>,</span>
+<span id="cb79-20"><a href="#cb79-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>),</span>
+<span id="cb79-21"><a href="#cb79-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>),</span>
+<span id="cb79-22"><a href="#cb79-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.title =</span> <span class="fu">element_blank</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(soil_hyp.lm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a>soil_log_main.barplot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="soil_files/figure-html/unnamed-chunk-57-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(soil_full, <span class="fu">aes</span>(<span class="at">x =</span> depth, <span class="at">y =</span> <span class="fu">log</span>(mbc), <span class="at">color =</span> material)) <span class="sc">+</span></span>
+<span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">1.5</span>)<span class="sc">+</span></span>
+<span id="cb81-3"><a href="#cb81-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"depth"</span>) <span class="sc">+</span></span>
+<span id="cb81-4"><a href="#cb81-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"mbc"</span>) <span class="sc">+</span></span>
+<span id="cb81-5"><a href="#cb81-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Soil"</span>) <span class="sc">+</span></span>
+<span id="cb81-6"><a href="#cb81-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">14</span>), </span>
+<span id="cb81-7"><a href="#cb81-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">14</span>), </span>
+<span id="cb81-8"><a href="#cb81-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y  =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>),</span>
+<span id="cb81-9"><a href="#cb81-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.x  =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>), </span>
+<span id="cb81-10"><a href="#cb81-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>),</span>
+<span id="cb81-11"><a href="#cb81-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb81-12"><a href="#cb81-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">16</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="soil_files/figure-html/unnamed-chunk-58-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a>soil_hyp.lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(<span class="dv">1</span><span class="sc">/</span>mbc) <span class="sc">~</span> <span class="fu">exp</span>(depth) <span class="sc">*</span> material, <span class="at">data =</span> soil_full)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(soil_hyp.lm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in sqrt(crit * p * (1 - hh)/hh): NaNs produced
 
 Warning in sqrt(crit * p * (1 - hh)/hh): NaNs produced</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="soil_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid" width="672"></p>
+<p><img src="soil_files/figure-html/unnamed-chunk-60-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(soil_hyp.lm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(soil_hyp.lm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -621,13 +1338,13 @@ F-statistic: 1.201 on 3 and 67 DF,  p-value: 0.3161</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(soil_full, <span class="fu">aes</span>(<span class="fu">log</span>(mbc), <span class="at">fill =</span> material)) <span class="sc">+</span> <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="fl">1.0</span>) <span class="sc">+</span> <span class="fu">facet_grid</span>(material <span class="sc">~</span> ., <span class="at">margins =</span> <span class="cn">TRUE</span>, <span class="at">scales =</span> <span class="st">"free"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(soil_full, <span class="fu">aes</span>(<span class="fu">log</span>(mbc), <span class="at">fill =</span> material)) <span class="sc">+</span> <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="fl">1.0</span>) <span class="sc">+</span> <span class="fu">facet_grid</span>(material <span class="sc">~</span> ., <span class="at">margins =</span> <span class="cn">TRUE</span>, <span class="at">scales =</span> <span class="st">"free"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="soil_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid" width="672"></p>
+<p><img src="soil_files/figure-html/unnamed-chunk-62-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m1 <span class="ot">&lt;-</span> <span class="fu">glm.nb</span>(mbc <span class="sc">~</span> depth <span class="sc">+</span> material, <span class="at">data =</span> soil_full))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m1 <span class="ot">&lt;-</span> <span class="fu">glm.nb</span>(mbc <span class="sc">~</span> depth <span class="sc">+</span> material, <span class="at">data =</span> soil_full))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in dpois(y, mu, log = TRUE): non-integer x = 13322.756000</code></pre>
 </div>
@@ -874,9 +1591,9 @@ Number of Fisher Scoring iterations: 1
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb111"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb111-1"><a href="#cb111-1" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(soil_full, <span class="fu">tapply</span>(mbc, material, <span class="cf">function</span>(x) {</span>
-<span id="cb111-2"><a href="#cb111-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sprintf</span>(<span class="st">"M (SD) = %1.2f (%1.2f)"</span>, <span class="fu">mean</span>(x), <span class="fu">sd</span>(x))</span>
-<span id="cb111-3"><a href="#cb111-3" aria-hidden="true" tabindex="-1"></a>}))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb161"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb161-1"><a href="#cb161-1" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(soil_full, <span class="fu">tapply</span>(mbc, material, <span class="cf">function</span>(x) {</span>
+<span id="cb161-2"><a href="#cb161-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sprintf</span>(<span class="st">"M (SD) = %1.2f (%1.2f)"</span>, <span class="fu">mean</span>(x), <span class="fu">sd</span>(x))</span>
+<span id="cb161-3"><a href="#cb161-3" aria-hidden="true" tabindex="-1"></a>}))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                       HAHTM                          NDM 
   "M (SD) = 548.56 (939.01)" "M (SD) = 1477.69 (3143.08)" </code></pre>
