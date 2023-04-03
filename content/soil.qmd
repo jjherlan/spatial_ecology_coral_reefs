@@ -9,6 +9,130 @@ require(tidyverse)
 require(foreign)
 require(ggplot2)
 require(MASS)
+require(multcompView)
+require(car)
+```
+
+```{r}
+soil_full <- read.csv('soil_full.csv') %>%
+  as_tibble()
+```
+
+```{r}
+soil_full
+```
+
+```{r}
+soil_summary <- read.csv('soil_full.csv') %>%
+  as_tibble() %>%
+  mutate_at(vars(material, range, range_mean), factor) %>%
+  group_by(material, range_mean) %>%
+  dplyr::summarize(mean = mean(mbc), 
+                   sd = sd(mbc), 
+                   n = n(),
+                   se = sd/sqrt(n)
+  ) %>%
+  mutate(se = sd / sqrt(n),
+         lower.ci = mean - qt(1 - (0.05 / 2), n - 1) * se,
+         upper.ci = mean + qt(1 - (0.05 / 2), n - 1) * se)
+```
+
+```{r}
+soil_summary
+```
+
+```{r}
+x_labels = c("0 - 10 cm", "10 - 30 cm", "30 - 50 cm", "50 - 70 cm", "70 - 90 cm", "90+ cm")
+```
+
+```{r}
+soil.barplot <- ggplot(soil_summary, aes(x = range_mean, y = mean, fill = material)) +   
+  geom_bar(stat = "identity", position = position_dodge(width = 0.8), width = 0.75, color = "#2b2b2b", linewidth = 0.50, alpha = 0.6) +
+  geom_linerange(aes(ymin = mean, ymax = mean + se), position = position_dodge(width = 0.8), linewidth = 0.75) +
+  scale_x_discrete(expand = c(0, 1), labels = x_labels) + 
+  ggtitle(expression(paste(italic(" Soil")))) +
+  ylab(expression(paste("mbc"))) +
+  labs(x = NULL) +
+  theme(strip.text = element_text(size = 10, color = "black", hjust = 0.50),
+        strip.background = element_rect(fill = "#FFFFFF", color = NA),    
+        panel.background = element_rect(fill = "#FFFFFF", color = NA),
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        panel.grid.major.y = element_line(color = "#b2b2b2"),
+        panel.spacing.x = unit(1, "cm"),
+        panel.spacing.y = unit(0.5, "cm"),
+        panel.spacing = unit(1, "lines"),
+        axis.ticks = element_blank(),
+        legend.position = "right",
+        plot.title = element_text(size = 11),
+        axis.title.y = element_text(size = 11),
+        legend.title = element_blank())
+```
+
+```{r}
+soil.barplot
+```
+
+#### Soil Main File - Numbered categories for depth
+
+```{r}
+soil_main <- read.csv('soil_main.csv') %>%
+  as_tibble() %>%
+  mutate_at(vars(material, depth_cat), factor) %>%
+  group_by(material, depth_cat) %>%
+  dplyr::summarize(mean = mean(mbc), 
+                   sd = sd(mbc), 
+                   n = n(),
+                   se = sd/sqrt(n)
+  ) %>%
+  mutate(se = sd / sqrt(n),
+         lower.ci = mean - qt(1 - (0.05 / 2), n - 1) * se,
+         upper.ci = mean + qt(1 - (0.05 / 2), n - 1) * se)
+```
+
+```{r}
+soil_main
+```
+
+```{r}
+x_labels = c("1", "2", "3", "4", "5", "6", "7", "8", "9")
+```
+
+```{r}
+soil_main.barplot <- ggplot(soil_main, aes(x = depth_cat, y = mean, fill = material)) +   
+  geom_bar(stat = "identity", position = position_dodge(width = 0.9), width = 0.75, color = "#2b2b2b", linewidth = 0.50, alpha = 0.6) +
+  geom_linerange(aes(ymin = mean, ymax = mean + se), position = position_dodge(width = 0.9), linewidth = 0.75) +
+  scale_x_discrete(expand = c(0, 1), labels = x_labels) + 
+  ggtitle(expression(paste(italic(" Soil")))) +
+  ylab(expression(paste("mbc"))) +
+  labs(x = NULL) +
+  theme(strip.text = element_text(size = 10, color = "black", hjust = 0.50),
+        strip.background = element_rect(fill = "#FFFFFF", color = NA),    
+        panel.background = element_rect(fill = "#FFFFFF", color = NA),
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        panel.grid.major.y = element_line(color = "#b2b2b2"),
+        panel.spacing.x = unit(1, "cm"),
+        panel.spacing.y = unit(0.5, "cm"),
+        panel.spacing = unit(1, "lines"),
+        axis.ticks = element_blank(),
+        legend.position = "right",
+        plot.title = element_text(size = 11),
+        axis.title.y = element_text(size = 11),
+        legend.title = element_blank())
+```
+
+```{r}
+soil_main.barplot
+```
+
+```{r, include = FALSE}
+require(tidyverse)
+require(foreign)
+require(ggplot2)
+require(MASS)
 ```
 
 ```{r}
@@ -77,8 +201,8 @@ soil.barplot
 ```{r}
 soil_main <- read.csv('soil_main.csv') %>%
   as_tibble() %>%
-  mutate_at(vars(material, depth2), factor) %>%
-  group_by(material, depth2) %>%
+  mutate_at(vars(material, depth_cat), factor) %>%
+  group_by(material, depth_cat) %>%
   dplyr::summarize(mean = mean(mbc), 
                    sd = sd(mbc), 
                    n = n(),
@@ -94,11 +218,11 @@ soil_main
 ```
 
 ```{r}
-x_labels = c("1", "2", "3", "4", "5", "6", "7", "8", "9")
+x_labels = c("1", "2", "3", "4", "5", "6", "7", "8")
 ```
 
 ```{r}
-soil_main.barplot <- ggplot(soil_main, aes(x = depth2, y = mean, fill = material)) +   
+soil_main.barplot <- ggplot(soil_main, aes(x = depth_cat, y = mean, fill = material)) +   
   geom_bar(stat = "identity", position = position_dodge(width = 0.9), width = 0.75, color = "#2b2b2b", linewidth = 0.50, alpha = 0.6) +
   geom_linerange(aes(ymin = mean, ymax = mean + se), position = position_dodge(width = 0.9), linewidth = 0.75) +
   scale_x_discrete(expand = c(0, 1), labels = x_labels) + 
@@ -126,40 +250,35 @@ soil_main.barplot <- ggplot(soil_main, aes(x = depth2, y = mean, fill = material
 soil_main.barplot
 ```
 
+# 4/3/2023
+
 ```{r}
-soil_full
+soil <- read.csv('soil_main.csv') %>%
+  as_tibble() %>%
+    mutate_at(vars(material, depth_range, depth_cat), factor)
 ```
 
 ```{r}
-soil.lm <- lm(mbc ~ depth * material, data = soil_full)
+soil
 ```
+
+# Linear regression - no transformation
+
+```{r}
+soil.lm <- lm(mbc ~ depth_cat * material, data = soil)
+```
+
+# Model assumption
 
 ```{r}
 par(mfrow = c(2, 2))
 plot(soil.lm)
 ```
 
-```{r}
-summary(soil.lm)
-```
+# Log-transformation
 
 ```{r}
-ggplot(soil_full, aes(x = depth, y = mbc, color = material)) +
-  geom_point(size = 1.5)+
-  xlab("depth") +
-  ylab("mbc") +
-  ggtitle("Soil") +
-  theme(axis.title.x = element_text(face = "bold", size = 14), 
-        axis.title.y = element_text(face = "bold", size = 14), 
-        axis.text.y  = element_text(size = 10),
-        axis.text.x  = element_text(size = 10), 
-        legend.text = element_text(size = 10),
-        legend.title = element_text(size = 10, face = "bold"),
-        plot.title = element_text(hjust = 0.5, face = "bold", size = 16))
-```
-
-```{r}
-soil_log.lm <- lm(log(mbc) ~ depth * material, data = soil_full)
+soil_log.lm <- lm(log(mbc) ~ depth_cat * material, data = soil)
 ```
 
 ```{r}
@@ -170,6 +289,209 @@ plot(soil_log.lm)
 ```{r}
 summary(soil_log.lm)
 ```
+
+# car package
+
+```{r}
+Anova(soil_log.lm)
+```
+
+# Just depth as a predictor variable
+
+```{r}
+soil_log2.lm <- lm(log(mbc) ~ material + depth_cat, data = soil)
+```
+
+```{r}
+par(mfrow = c(2, 2))
+plot(soil_log2.lm)
+```
+
+```{r}
+summary(soil_log2.lm)
+```
+
+```{r}
+Anova(soil_log2.lm)
+```
+
+# ANOVA model with "aov"
+
+```{r}
+soil_log2.aov <- aov(log(mbc) ~ material + depth_cat, data = soil)
+```
+
+```{r}
+soil_log3.aov <- aov(log(mbc) ~ material * depth_cat, data = soil)
+```
+
+```{r}
+summary(soil_log3.aov)
+```
+
+
+# Tukey HSD test
+
+```{r}
+tukey <- TukeyHSD(soil_log2.aov)
+```
+
+```{r}
+tukey2 <- TukeyHSD(soil_log3.aov)
+```
+
+```{r}
+tukey
+```
+
+```{r}
+tukey2
+```
+
+
+# cld
+
+```{r}
+cld <- multcompLetters4(soil_log3.aov, tukey2) 
+```
+
+```{r}
+cld
+```
+# Table
+
+```{r}
+data_summary <- soil %>%
+    mutate_at(vars(material, depth_range, depth_cat), factor) %>%
+    group_by(material, depth_cat) %>%
+  dplyr::summarize(mean = mean(mbc), 
+                   sd = sd(mbc), 
+                   n = n(),
+                   se = sd/sqrt(n)) %>%
+  arrange(desc(mean))
+```
+
+```{r}
+data_summary
+```
+
+```{r}
+soil_main <- read.csv('soil_main.csv') %>%
+  as_tibble() %>%
+  mutate_at(vars(material, depth_cat), factor) %>%
+  group_by(material, depth_cat) %>%
+  dplyr::summarize(mean = mean(mbc), 
+                   sd = sd(mbc), 
+                   n = n(),
+                   se = sd/sqrt(n)
+  ) %>%
+  mutate(se = sd / sqrt(n),
+         lower.ci = mean - qt(1 - (0.05 / 2), n - 1) * se,
+         upper.ci = mean + qt(1 - (0.05 / 2), n - 1) * se)
+```
+
+```{r}
+soil_main
+```
+
+
+# Adding the compact letter display to the table with mean, se
+
+#```{r}
+#tukey.cld <- as.data.frame(cld$depth_cat)
+#```
+
+#```{r}
+#data_summary$tukey <- tukey.cld$Letters
+#```
+
+#```{r}
+#data_summary
+#```
+
+# Graph original data first
+
+```{r}
+soil_main.barplot <- ggplot(soil_main, aes(x = depth_cat, y = mean, fill = material)) +   
+  geom_bar(stat = "identity", position = position_dodge(width = 0.9), width = 0.75, color = "#2b2b2b", linewidth = 0.50, alpha = 0.6) +
+  geom_linerange(aes(ymin = mean, ymax = mean + se), position = position_dodge(width = 0.9), linewidth = 0.75) +
+  scale_x_discrete(expand = c(0, 1), labels = x_labels) + 
+  ggtitle(expression(paste(italic(" Soil")))) +
+  ylab(expression(paste("mbc"))) +
+  labs(x = NULL) +
+  theme(strip.text = element_text(size = 10, color = "black", hjust = 0.50),
+        strip.background = element_rect(fill = "#FFFFFF", color = NA),    
+        panel.background = element_rect(fill = "#FFFFFF", color = NA),
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        panel.grid.major.y = element_line(color = "#b2b2b2"),
+        panel.spacing.x = unit(1, "cm"),
+        panel.spacing.y = unit(0.5, "cm"),
+        panel.spacing = unit(1, "lines"),
+        axis.ticks = element_blank(),
+        legend.position = "right",
+        plot.title = element_text(size = 11),
+        axis.title.y = element_text(size = 11),
+        legend.title = element_blank())
+```
+
+```{r}
+soil_main.barplot
+```
+
+# Log-transformed summary
+
+```{r}
+soil_log_main <- read.csv('soil_main.csv') %>%
+  as_tibble() %>%
+  mutate_at(vars(material, depth_cat), factor) %>%
+  group_by(material, depth_cat) %>%
+  dplyr::summarize(mean = log(mean(mbc)), 
+                   sd = sd(log(mbc)), 
+                   n = n(),
+                   se = sd/sqrt(n)
+  ) %>%
+  mutate(se = sd / sqrt(n),
+         lower.ci = mean - qt(1 - (0.05 / 2), n - 1) * se,
+         upper.ci = mean + qt(1 - (0.05 / 2), n - 1) * se)
+```
+
+```{r}
+soil_log_main
+```
+
+# Add Letters for significance
+
+```{r}
+soil_log_main.barplot <- ggplot(soil_log_main, aes(x = depth_cat, y = mean, fill = material)) +   
+  geom_bar(stat = "identity", position = position_dodge(width = 0.9), width = 0.75, color = "#2b2b2b", linewidth = 0.50, alpha = 0.6) +
+  geom_linerange(aes(ymin = mean, ymax = mean + se), position = position_dodge(width = 0.9), linewidth = 0.75) +
+  scale_x_discrete(expand = c(0, 1), labels = x_labels) + 
+  ggtitle(expression(paste(italic(" Soil")))) +
+  ylab(expression(paste("mbc"))) +
+  labs(x = NULL) +
+  theme(strip.text = element_text(size = 10, color = "black", hjust = 0.50),
+        strip.background = element_rect(fill = "#FFFFFF", color = NA),    
+        panel.background = element_rect(fill = "#FFFFFF", color = NA),
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        panel.grid.major.y = element_line(color = "#b2b2b2"),
+        panel.spacing.x = unit(1, "cm"),
+        panel.spacing.y = unit(0.5, "cm"),
+        panel.spacing = unit(1, "lines"),
+        axis.ticks = element_blank(),
+        legend.position = "right",
+        plot.title = element_text(size = 11),
+        axis.title.y = element_text(size = 11),
+        legend.title = element_blank())
+```
+
+```{r}
+soil_log_main.barplot
+```
+
 
 ```{r}
 ggplot(soil_full, aes(x = depth, y = log(mbc), color = material)) +
