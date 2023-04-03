@@ -137,6 +137,62 @@ summary(ana_sh.glm2_qu)
 # `Anova` function from the *car* package
 Anova(ana_sh.glm2_qu, type = "III") # Type III because... 
 
+# North Anakena
+# Mid Depth
+
+rpn_ana_md <- read.csv('ana_md_2016.csv', header = T) %>%
+  mutate_at(vars(transect, photo), factor) %>%
+  #group_by(transect) %>%
+  #filter(Tdir >= 90 & Tdir < 250) %>%
+  pivot_longer(cols = pt1:pt100,
+               names_to = "point",
+               values_to = "taxa",
+               values_drop_na = FALSE
+  ) %>%
+  group_by(transect, photo, taxa) %>%
+  dplyr::summarize(n = n()
+  ) %>%
+  #select(all_of(-c(X, X.1))) %>%
+  mutate(group = case_when(
+    taxa == "PLOB" ~ "plob",
+    taxa == "POCI" ~ "poci",
+    taxa == "PVER" ~ "poci",
+    taxa == "CALC" ~ "macro",
+    taxa == "CPOC" ~ "macro",
+    taxa == "DC" ~ "plob",
+    taxa == "DAUS" ~ "macro", 
+    taxa == "DCRE" ~ "macro",
+    taxa == "EAM" ~ "turf",
+    taxa == "HALI" ~ "macro",
+    taxa == "LVAR" ~ "macro",
+    taxa == "MACRO_UNK" ~ "macro",
+    taxa == "O" ~ "biotic",
+    taxa == "PLIG" ~ "poci",
+    taxa == "SHAD" ~ "non-reef",
+    taxa == "SOBT" ~ "macro",
+    taxa == "SPR" ~ "abiotic",
+    taxa == "TAPE" ~ "non-reef",
+    taxa == "TURF" ~ "turf",
+    taxa == "UNK" ~ "non-reef",
+    taxa == "WAND" ~ "non-reef"
+  )
+  ) %>%
+  group_by(photo, group) %>%
+  mutate_at(vars(group), factor) %>%
+  dplyr::summarize(successes = sum(n)
+  ) %>%
+  mutate(
+    failures = 100 - successes)
+
+rpn_ana_md %>%
+  complete(group)
+
+rpn_ana_md <-
+  rpn_ana_md %>%
+  complete(group)
+
+write.csv(rpn_ana_md, 'rpn_ana_md.csv')
+
 # West Motu Tautara
 
 rpn_mtt_sh <- read.csv('mtt_sh_2016.csv', header = T) %>%
@@ -652,14 +708,23 @@ rpn_se_dp <-
 # Save file
 write.csv(rpn_se_dp, 'rpn_se_dp.csv')
 
+# Read files and combine
 
+rpn_man_dp <- read.csv('rpn_se_dp.csv')
+rpn_man_dp <- read.csv('rpn_se_dp.csv')
+rpn_man_dp <- read.csv('rpn_se_dp.csv')
 
+rpn_mtt_dp <- read.csv('rpn_se_dp.csv')
+rpn_mtt_dp <- read.csv('rpn_se_dp.csv')
+rpn_mtt_dp <- read.csv('rpn_se_dp.csv')
 
+rpn_man_dp <- read.csv('rpn_se_dp.csv')
+rpn_man_dp <- read.csv('rpn_se_dp.csv')
+rpn_man_dp <- read.csv('rpn_se_dp.csv')
 
-
-
-
-
+rpn_se_dp <- read.csv('rpn_se_dp.csv')
+rpn_se_dp <- read.csv('rpn_se_dp.csv')
+rpn_se_dp <- read.csv('rpn_se_dp.csv')
 
 
 
