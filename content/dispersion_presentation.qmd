@@ -60,7 +60,6 @@ require(car)
 
 ::: columns
 ::: {.column width="50%" style="font-size: 27px"}
-
 ```{r, include = FALSE}
 p_cover = read_csv('LSMclassGrid.csv') %>% 
   group_by(Site) %>%
