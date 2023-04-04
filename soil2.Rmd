@@ -19,7 +19,7 @@ require(ggsignif)
 ```{r}
 soil <- read.csv('soil_main.csv') %>%
   as_tibble() %>%
-    mutate_at(vars(material, depth_range, depth_cat), factor)
+    mutate_at(vars(material, depth_mean, depth_cat), factor)
 ```
 
 ```{r}

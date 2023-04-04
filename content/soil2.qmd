@@ -19,7 +19,7 @@ require(ggsignif)
 ```{r}
 soil <- read.csv('soil_main.csv') %>%
   as_tibble() %>%
-    mutate_at(vars(material, depth_range, depth_cat), factor)
+    mutate_at(vars(material, depth_mean, depth_cat), factor)
 ```
 
 ```{r}
@@ -33,7 +33,9 @@ soil.lm <- lm(mbc ~ depth_cat * material, data = soil)
 ```
 
 # Model assumption
+
 # Asumptions are not valid for simple linear regression
+
 # Residuals are not equally or independently distributed
 
 ```{r}
@@ -42,7 +44,8 @@ plot(soil.lm)
 ```
 
 # Log-transformation
-# Although outliers are present, log-transform of the response variable, mbc, appear to meet the #assumptions of simplae linear regression 
+
+# Although outliers are present, log-transform of the response variable, mbc, appear to meet the #assumptions of simplae linear regression
 
 ```{r}
 soil_log.lm <- lm(log(mbc) ~ depth_cat * material, data = soil)
@@ -111,25 +114,9 @@ cld <- multcompLetters4(soil_log2.aov, tukey)
 ```{r}
 cld
 ```
+
 ```{r}
 cld$depth_cat
-```
-
-# Table
-
-```{r}
-data_summary <- soil %>%
-    mutate_at(vars(material, depth_range, depth_cat), factor) %>%
-    group_by(material, depth_cat) %>%
-  dplyr::summarize(mean = mean(mbc), 
-                   sd = sd(mbc), 
-                   n = n(),
-                   se = sd/sqrt(n)) %>%
-  arrange(desc(mean))
-```
-
-```{r}
-data_summary
 ```
 
 ```{r}

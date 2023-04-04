@@ -27,6 +27,7 @@ poci_cover.ggbarplot <- ggplot(poci_cover2, aes(x = location, y = mean, fill = x
         legend.title = element_blank())
 
 poci_cover.ggbarplot
+#
 
 x_labels = c("North", "West", "Southeast")
 # label_names = c("8 m" = "8 m", "15 m" = "15 m", "25 m" = "25 m")

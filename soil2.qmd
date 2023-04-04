@@ -6,22 +6,124 @@ editor: visual
 
 ```{r, include = FALSE}
 require(tidyverse)
+require(foreign)
+require(ggplot2)
+require(MASS)
+require(multcompView)
+require(car)
+require(ggsignif)
 ```
 
-```{r}
-soil_full <- read.csv('soil_full.csv') %>%
-  as_tibble()
-```
+# April 4, 2023
 
 ```{r}
-soil_full
-```
-
-```{r}
-soil <- read.csv('soil_full.csv') %>%
+soil <- read.csv('soil_main.csv') %>%
   as_tibble() %>%
-  mutate_at(vars(material, range, range_mean), factor) %>%
-  group_by(material, range_mean) %>%
+    mutate_at(vars(material, depth_mean, depth_cat), factor)
+```
+
+```{r}
+soil
+```
+
+# Linear regression - no transformation
+
+```{r}
+soil.lm <- lm(mbc ~ depth_cat * material, data = soil)
+```
+
+# Model assumption
+
+# Asumptions are not valid for simple linear regression
+
+# Residuals are not equally or independently distributed
+
+```{r}
+par(mfrow = c(2, 2))
+plot(soil.lm)
+```
+
+# Log-transformation
+
+# Although outliers are present, log-transform of the response variable, mbc, appear to meet the #assumptions of simplae linear regression
+
+```{r}
+soil_log.lm <- lm(log(mbc) ~ depth_cat * material, data = soil)
+```
+
+```{r}
+par(mfrow = c(2, 2))
+plot(soil_log.lm)
+```
+
+```{r}
+summary(soil_log.lm)
+```
+
+# car package
+
+```{r}
+Anova(soil_log.lm)
+```
+
+# Just depth as a predictor variable
+
+```{r}
+soil_log2.lm <- lm(log(mbc) ~ material + depth_cat, data = soil)
+```
+
+```{r}
+par(mfrow = c(2, 2))
+plot(soil_log2.lm)
+```
+
+```{r}
+summary(soil_log2.lm)
+```
+
+```{r}
+Anova(soil_log2.lm)
+```
+
+# ANOVA model with "aov"
+
+```{r}
+soil_log2.aov <- aov(log(mbc) ~ material + depth_cat, data = soil)
+```
+
+```{r}
+summary(soil_log2.aov)
+```
+
+# Tukey HSD test
+
+```{r}
+tukey <- TukeyHSD(soil_log2.aov)
+```
+
+```{r}
+tukey
+```
+
+# cld
+
+```{r}
+cld <- multcompLetters4(soil_log2.aov, tukey) 
+```
+
+```{r}
+cld
+```
+
+```{r}
+cld$depth_cat
+```
+
+```{r}
+soil_main <- read.csv('soil_main.csv') %>%
+  as_tibble() %>%
+  mutate_at(vars(material, depth_cat), factor) %>%
+  group_by(material, depth_cat) %>%
   dplyr::summarize(mean = mean(mbc), 
                    sd = sd(mbc), 
                    n = n(),
@@ -33,20 +135,31 @@ soil <- read.csv('soil_full.csv') %>%
 ```
 
 ```{r}
-soil
+soil_main
 ```
 
 ```{r}
-x_labels = c("0 - 10 cm", "10 - 30 cm", "30 - 50 cm", "50 - 70 cm", "70 - 90 cm", "90+ cm")
+x_labels = c("1", "2", "3", "4", "5", "6", "7", "8")
 ```
 
 ```{r}
-soil.barplot <- ggplot(soil, aes(x = range_mean, y = mean, fill = material)) +   
-  geom_bar(stat = "identity", position = position_dodge(width = 0.8), width = 0.75, color = "#2b2b2b", linewidth = 0.50, alpha = 0.6) +
-  geom_linerange(aes(ymin = mean, ymax = mean + se), position = position_dodge(width = 0.8), linewidth = 0.75) +
-  scale_x_discrete(expand = c(0, 1), labels = x_labels) + 
+x_labels2 = c("0-11", "11-26", "26-38", "38-54", "54-67", "67-81", "81-96", "96-111")
+```
+
+```{r}
+soil_main.barplot <- ggplot(soil_main, aes(x = depth_cat, y = mean, fill = material)) +   
+  geom_bar(stat = "identity", position = position_dodge(width = 0.9), width = 0.75, color = "#2b2b2b", linewidth = 0.50, alpha = 0.6) +
+  geom_linerange(aes(ymin = mean, ymax = mean + se), position = position_dodge(width = 0.9), linewidth = 0.75) +
+  #geom_signif(comparisons = list(c("1", "1")), y_position = 9950,
+  #            tip_length = 0, vjust = 0.1) +
+  geom_signif(comparisons = list(c("2", "8")), y_position = 5250,
+              annotation = c("B"),
+              tip_length = 0, vjust = 0.1) +
+  #scale_y_discrete(expand = c(0, 8000), expression(paste("mbc"))) + 
+  scale_x_discrete(expand = c(0, 1), labels = x_labels2) + 
   ggtitle(expression(paste(italic(" Soil")))) +
   ylab(expression(paste("mbc"))) +
+  ylim(0, 10000) +
   labs(x = NULL) +
   theme(strip.text = element_text(size = 10, color = "black", hjust = 0.50),
         strip.background = element_rect(fill = "#FFFFFF", color = NA),    
@@ -66,46 +179,63 @@ soil.barplot <- ggplot(soil, aes(x = range_mean, y = mean, fill = material)) +
 ```
 
 ```{r}
-soil.barplot
+soil_main.barplot
+```
+
+# Log-transformed summary
+
+```{r}
+soil_log_main <- read.csv('soil_main.csv') %>%
+  as_tibble() %>%
+  mutate_at(vars(material, depth_cat), factor) %>%
+  group_by(material, depth_cat) %>%
+  dplyr::summarize(mean = mean(log(mbc)), 
+                   sd = sd(log(mbc)), 
+                   n = n(),
+                   se = sd/sqrt(n)
+  ) %>%
+  mutate(se = sd / sqrt(n),
+         lower.ci = mean - qt(1 - (0.05 / 2), n - 1) * se,
+         upper.ci = mean + qt(1 - (0.05 / 2), n - 1) * se)
 ```
 
 ```{r}
-soil_full <- read.csv('soil_full.csv') %>%
-  as_tibble() 
-#%>%
-#  group_by(ParentMaterials, Depth) %>%
-#  mutate_at(vars(ParentMaterials, Depth), factor)
+soil_log_main
+```
+
+# Add Letters for significance
+
+```{r}
+soil_log_main.barplot <- ggplot(soil_log_main, aes(x = depth_cat, y = mean, fill = material)) +   
+  geom_bar(stat = "identity", position = position_dodge(width = 0.9), width = 0.75, color = "#2b2b2b", linewidth = 0.50, alpha = 0.6) +
+  geom_linerange(aes(ymin = mean, ymax = mean + se), position = position_dodge(width = 0.9), linewidth = 0.75) +
+  #geom_signif(comparisons = list(c("1", "1")), y_position = 9950,
+  #            tip_length = 0, vjust = 0.1) +
+  geom_signif(comparisons = list(c("2", "8")), y_position = 8.0,
+              annotation = c("B"),
+              tip_length = 0, vjust = 0.1) +
+  scale_x_discrete(expand = c(0, 1), labels = x_labels2) + 
+  ggtitle(expression(paste(italic(" Soil")))) +
+  ylab(expression(paste("mbc (log-transformed)"))) +
+  ylim(0, 10) +
+  labs(x = NULL) +
+  theme(strip.text = element_text(size = 10, color = "black", hjust = 0.50),
+        strip.background = element_rect(fill = "#FFFFFF", color = NA),    
+        panel.background = element_rect(fill = "#FFFFFF", color = NA),
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        panel.grid.major.y = element_line(color = "#b2b2b2"),
+        panel.spacing.x = unit(1, "cm"),
+        panel.spacing.y = unit(0.5, "cm"),
+        panel.spacing = unit(1, "lines"),
+        axis.ticks = element_blank(),
+        legend.position = "right",
+        plot.title = element_text(size = 11),
+        axis.title.y = element_text(size = 11),
+        legend.title = element_blank())
 ```
 
 ```{r}
-soil_full
+soil_log_main.barplot
 ```
-
-```{r}
-soil.lm <- lm(mbc ~ depth * material, data = soil_full)
-```
-
-```{r}
-par(mfrow = c(2, 2))
-plot(soil.lm)
-```
-
-```{r}
-summary(soil.lm)
-```
-
-```{r}
-ggplot(soil_full, aes(x = depth, y = mbc, color = material)) +
-  geom_point(size = 1.5)+
-  xlab("depth") +
-  ylab("mbc") +
-  ggtitle("Soil") +
-  theme(axis.title.x = element_text(face = "bold", size = 14), 
-        axis.title.y = element_text(face = "bold", size = 14), 
-        axis.text.y  = element_text(size = 10),
-        axis.text.x  = element_text(size = 10), 
-        legend.text = element_text(size = 10),
-        legend.title = element_text(size = 10, face = "bold"),
-        plot.title = element_text(hjust = 0.5, face = "bold", size = 16))
-```
-

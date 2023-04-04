@@ -59,7 +59,7 @@ website:
         text: Coral Dispersion II
       - href: content/rpn_sppa.qmd
         text: Coral Dispersion
-      - href: content/soil.qmd
+      - href: content/soil2.qmd
         text: Soil
 
 format:
