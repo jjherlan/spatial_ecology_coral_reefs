@@ -143,14 +143,14 @@ plot(p_cover_mod.lm1)
 ```{r}
 Anova(p_cover_mod.lm1, type = "III")
 ```
-One option to deal with 0 and 100 percent cover is to add and subtract a small amount to those values 
+
+One option to deal with 0 and 100 percent cover is to add and subtract a small amount to those values
 
 ```{r}
 transform01 <- function(x) {
   (x * (length(x) - 1) + 0.5) / (length(x))
 }
 ```
-
 
 ```{r}
 p_cover$pland_decimal_scaled <- transform01(p_cover$pland_decimal)
@@ -194,8 +194,6 @@ plot(p_cover_mod.glm1)
 ```{r}
 Anova(p_cover_mod.glm1, type = "III")
 ```
-
-
 
 **Beta Regression I:** $\phi$ does not vary
 

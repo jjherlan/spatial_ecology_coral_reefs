@@ -60,12 +60,12 @@ require(car)
 
 ::: columns
 ::: {.column width="50%" style="font-size: 27px"}
+
 ```{r, include = FALSE}
 p_cover = read_csv('LSMclassGrid.csv') %>% 
   group_by(Site) %>%
   mutate(
-    pland_decimal = pland*0.01
-  ) %>%
+    pland_decimal = pland*0.01) %>%
   mutate_at(vars(Site, cover, plot_id), factor)
 ```
 
