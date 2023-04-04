@@ -61,8 +61,6 @@ website:
         text: Coral Dispersion
       - href: content/soil2.qmd
         text: Soil
-      - href: content/soil3.qmd
-        text: Soil2
 
 format:
   html:
