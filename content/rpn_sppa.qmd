@@ -345,13 +345,13 @@ L_csr_vhu <- envelope(vhu_corals, rmax = 5.0, Lest, nsim = 99, rank = 1, correct
 L_csr.g_vhu <- envelope(vhu_corals, rmax = 5.0, Lest, nsim = 99, rank = 1, correction = "trans", global = T)
 ```
 
- - Plot point-wise envelope
+-   Plot point-wise envelope
 
 ```{r}
 plot(L_csr_vhu, . - r ~ r, shade = c("hi", "lo"), legend = F, main = "Southeast: stand. L (Monte Carlo, CSR env)")
 ```
 
- - Plot global envelope
+-   Plot global envelope
 
 ```{r}
 plot(L_csr.g_vhu, . - r ~ r, shade = c("hi", "lo"), legend = F, main = "Southeast: stand. L (Monte Carlo, CSR env)")
@@ -467,44 +467,14 @@ The analyses so far are exploratory. While the observed statistics ($K$, $L$) ap
 
 To conduct formal inference regarding if the point pattern follows CSR, we can use Monte Carlo simulations ro calculate a confidence envelope under CSR with the `envelope` function.
 
-In the `envelope` function, rank specifies the alpha for the simulations.
-For a *rank = 1*, the max an min are used as the envelopes, such that for **99 simulations, alpha = 0.01** while for **19 simulations, alpha = 0.05**. 
+In the `envelope` function, rank specifies the alpha for the simulations. For a *rank = 1*, the max an min are used as the envelopes, such that for **99 simulations, alpha = 0.01** while for **19 simulations, alpha = 0.05**.
 
 Also not that we used `global = FALSE`. This means that these are *pointwise envelopes*.
 
 These envelopes work better for $L$ than $K$ because of variance stabilizing properties.
 
-Plots of pointwise envelopes show the stated upper and lower quantiles of simulated patterns for any distance r. Because such analyses are calculating envelopes for vhuy distances, pointwise envelopes with a specified alpha should not be used to reject a null model at that level (because of the multiple tests). Consequently, there are alternative global tests that can be used in this way. While global tests are under active development (Baddeley et al. 2014; Wiegand et al. 2016), `spatstat` does provide one option for a global test (using global = T). 
+Plots of pointwise envelopes show the stated upper and lower quantiles of simulated patterns for any distance r. Because such analyses are calculating envelopes for vhuy distances, pointwise envelopes with a specified alpha should not be used to reject a null model at that level (because of the multiple tests). Consequently, there are alternative global tests that can be used in this way. While global tests are under active development (Baddeley et al. 2014; Wiegand et al. 2016), `spatstat` does provide one option for a global test (using global = T).
 
-This approach estimates the maximum deviation from the Poisson point process across all r (i.e., $D = max|K_{(r)} - K_{pois(r)}|)$. This approach is referred to as a simultaneous envelope (or critical band) rather than a pointwise envelope. 
+This approach estimates the maximum deviation from the Poisson point process across all r (i.e., $D = max|K_{(r)} - K_{pois(r)}|)$. This approach is referred to as a simultaneous envelope (or critical band) rather than a pointwise envelope.
 
 If the observed line falls outside the simultaneous envelope at any point on $r$, we would reject the null hypothesis.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
