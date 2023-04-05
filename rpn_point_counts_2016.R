@@ -710,25 +710,56 @@ write.csv(rpn_se_dp, 'rpn_se_dp.csv')
 
 # Read files and combine
 
-rpn_man_dp <- read.csv('rpn_se_dp.csv')
-rpn_man_dp <- read.csv('rpn_se_dp.csv')
-rpn_man_dp <- read.csv('rpn_se_dp.csv')
+rpn_ana_sh <- read.csv('rpn_ana_sh.csv')
+rpn_ana_md <- read.csv('rpn_ana_md.csv')
+rpn_ana_dp <- read.csv('rpn_ana_dp.csv')
 
-rpn_mtt_dp <- read.csv('rpn_se_dp.csv')
-rpn_mtt_dp <- read.csv('rpn_se_dp.csv')
-rpn_mtt_dp <- read.csv('rpn_se_dp.csv')
+rpn_mtt_sh <- read.csv('rpn_mtt_dp.csv')
+rpn_mtt_md <- read.csv('rpn_mtt_dp.csv')
+rpn_mtt_dp <- read.csv('rpn_mtt_dp.csv')
 
-rpn_man_dp <- read.csv('rpn_se_dp.csv')
-rpn_man_dp <- read.csv('rpn_se_dp.csv')
-rpn_man_dp <- read.csv('rpn_se_dp.csv')
+rpn_man_sh <- read.csv('rpn_man_sh.csv')
+rpn_man_md <- read.csv('rpn_man_md.csv')
+rpn_man_dp <- read.csv('rpn_man_dp.csv')
 
+rpn_se_sh <- read.csv('rpn_se_sh.csv')
+rpn_se_ms <- read.csv('rpn_se_md.csv')
 rpn_se_dp <- read.csv('rpn_se_dp.csv')
-rpn_se_dp <- read.csv('rpn_se_dp.csv')
-rpn_se_dp <- read.csv('rpn_se_dp.csv')
 
+rpn_ana_sh
+rpn_ana_md
+rpn_ana_dp
 
+rpn_mtt_sh
+rpn_mtt_md
+rpn_mtt_dp
 
+rpn_man_sh
+rpn_man_md
+rpn_man_dp
 
+rpn_se_sh
+rpn_se_ms
+rpn_se_dp
+
+rpn_point_counts <-
+  bind_rows(rpn_man_sh,
+            rpn_man_md,
+            rpn_man_dp,
+            
+            rpn_mtt_sh,
+            rpn_mtt_md,
+            rpn_mtt_dp,
+            
+            rpn_man_sh,
+            rpn_man_md,
+            rpn_man_dp,
+            
+            rpn_se_sh,
+            rpn_se_md,
+            rpn_se_dp)
+
+write.csv(rpn_point_counts, "rpn_point_counts.csv")
 
 
 
