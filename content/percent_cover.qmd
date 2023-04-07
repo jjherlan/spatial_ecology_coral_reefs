@@ -36,7 +36,9 @@ library(mosaic)
 library(arm)
 library(cowplot)
 library(qqtest)  #for uncertainty intervals in qqplot
-library(lmtest)
+library(modelsummary)
+library(kableExtra)
+library(gt)
 ```
 
 *From* **Damgaard & Irvine (2019)** Using the beta distribution to analyse plant cover data *Journal of Ecology. 107:2747-2759*
@@ -44,9 +46,9 @@ library(lmtest)
 Wrote a function to create a table from `betreg` object that can be used in `xtable()`
 
 ```{r}
-Fcn.CreateSummary.betareg<-function(object.betareg){
-  OUT<-summary(object.betareg)
- tab<-rbind(OUT$coefficients$mean,OUT$coefficients$precision)
+Fcn.CreateSummary.betareg <- function(object.betareg){
+  OUT <- summary(object.betareg)
+ tab <- rbind(OUT$coefficients$mean,OUT$coefficients$precision)
       return(tab)
    }
 ```
@@ -207,6 +209,45 @@ p_cover_mod.beta1 <- betareg(pland_decimal_scaled ~ Site, data = p_cover, link =
 p_cover_mod.beta2 <- betareg(pland_decimal_scaled ~ Site | Site, data = p_cover, link = c("logit"), link.phi = NULL, type = c("ML"))
 ```
 
+```{r}
+summary(p_cover_mod.beta1)
+```
+
+```{r}
+p_cover_mod.beta1.aov <- Anova(p_cover_mod.beta1, type = 'III')
+```
+
+```{r}
+p_cover_mod.beta2.aov <- Anova(p_cover_mod.beta2, type = 'III')
+```
+
+```{r}
+p_cover_mod.beta2.aov
+```
+
+```{r}
+models <- list(
+  
+  'p_cover_mod.beta1' = betareg(pland_decimal_scaled ~ Site, 
+                                data = p_cover, 
+                                link = c("logit"), 
+                                link.phi = NULL, 
+                                type = c("ML")
+                                ),
+  
+  'p_cover_mod.beta2' = betareg(pland_decimal_scaled ~ Site | Site, 
+                      data = p_cover,
+                      link = c("logit"), 
+                      link.phi = NULL, 
+                      type = c("ML")
+                      )
+)
+```
+
+```{r}
+modelsummary(models)
+```
+
 **Extract AIC from beta regression models**
 
 ```{r}
@@ -252,6 +293,25 @@ summary(p_cover_mod.beta2)
 ```
 
 The function, `Fcn.CreateSummary.betareg`, doesn't work with phi varying, so just fixed labels manually.
+
+```{r, include = FALSE}
+#% latex table generated in R 3.4.1 by xtable 1.8-2 package
+#% Wed Sep 05 14:30:57 2018
+#\begin{table}[ht]
+#\centering
+#\begin{tabular}{rrrrr}
+#  \hline
+# & Estimate & Std. Error & z value & Pr($>$$|$z$|$) \\ 
+#  \hline
+#(Intercept) & -2.186 & 0.200 & -10.940 & 0.000 \\ 
+#  yrunit2016 & 1.776 & 0.266 & 6.677 & 0.000 \\ 
+#  phi (Intercept) 2015 & 1.009 & 0.211 & 4.785 & 0.000 \\ 
+#  phi (yrunit2016) 2016 & -1.580 & 0.252 & -6.266 & 0.000 \\ 
+#   \hline
+#\end{tabular}
+#\caption{Results from using betareg package in R by transforming the 0 and 1's. Allowing #for $\phi$ to vary by unit.  These are on the logit-scale for $\mu$ and log-scale for $\phi$} 
+#\end{table}
+```
 
 ```{r, include = FALSE}
 #% latex table generated in R 3.4.1 by xtable 1.8-2 package
