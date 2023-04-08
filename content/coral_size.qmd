@@ -25,6 +25,7 @@ require(readr)
 require(multcomp)
 require(ggthemes)
 require(multcompView)
+require(flextable)
 ```
 
 ```{r}
@@ -85,11 +86,19 @@ poci_size %>%
 ```
 
 ```{r}
+poci_size2
+```
+
+```{r}
 poci_size.gg <-
   poci_size %>%
   mutate(size_cm = area*10000) %>%
   as_tibble() %>%
   mutate_at(vars(Site), factor)
+```
+
+```{r}
+poci_size.gg
 ```
 
 ```{r}
@@ -111,6 +120,18 @@ plot(model_1.lm)
 
 ```{r}
 Anova(model_1.lm, type = "III")
+```
+
+```{r}
+model_1.aov <- Anova(model_1.lm, type = "III")
+```
+
+```{r}
+as.data.frame(model_1.aov)
+```
+
+```{r}
+flextable(model_1.aov)
 ```
 
 ```{r}

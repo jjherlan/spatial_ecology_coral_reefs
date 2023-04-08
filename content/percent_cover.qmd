@@ -113,6 +113,17 @@ plot(pland_decimal ~ Site, data = p_cover)
 ```
 :::
 
+```{r}
+p_cover.mean <-
+  p_cover %>%
+  group_by(Site) %>%
+  dplyr::summarise(mean = mean(pland_decimal))
+```
+
+```{r}
+p_cover.mean
+```
+
 ## Methods for analyzing percent cover of pocilloporid coral
 
 One option for dealing with the 0 and 1 values is to transform them to be slightly less than one or more than zero. This approach assumes that the data are consistent with a common beta distribution. We fit five models to the data: three variations on the beta model and two linear model approaches.
@@ -203,15 +214,19 @@ Anova(p_cover_mod.glm1, type = "III")
 p_cover_mod.beta1 <- betareg(pland_decimal_scaled ~ Site, data = p_cover, link = c("logit"), link.phi = NULL, type = c("ML"))
 ```
 
+```{r}
+summary(p_cover_mod.beta1)
+```
+
 **Beta Regression II:** $\phi$ does vary (by **Site**)
 
 ```{r}
 p_cover_mod.beta2 <- betareg(pland_decimal_scaled ~ Site | Site, data = p_cover, link = c("logit"), link.phi = NULL, type = c("ML"))
 ```
 
-```{r}
-summary(p_cover_mod.beta1)
-```
+#```{r}
+#test(pairs(emmeans(p_cover.bm2, ~ Site, mode = "link")))
+#```
 
 ```{r}
 p_cover_mod.beta1.aov <- Anova(p_cover_mod.beta1, type = 'III')
@@ -290,6 +305,10 @@ p_cover_mod.beta2 <- betareg(pland_decimal_scaled ~ Site | Site, data = p_cover,
 
 ```{r}
 summary(p_cover_mod.beta2)
+```
+
+```{r}
+exp(1.26338) # Percent cover of pocilloporids increased by a 
 ```
 
 The function, `Fcn.CreateSummary.betareg`, doesn't work with phi varying, so just fixed labels manually.
@@ -498,7 +517,7 @@ lmtest::lrtest(p_cover.bm1, p_cover.bmnull)
 AIC(p_cover.bm1, p_cover.lm1, p_cover.bmnull)
 ```
 
-According to the likelihood-ratio test there is a significant difference betwen the null model and the treatment model. The AIC analysis supports this conclusion, but also highlights the improved model fit with beta regression relative to normal ANOVA (`lm1`). From this initial analysis we would tentatively conclude that using beta regresson improves our ability to model the algal cover, but that there is no effect of grazer manipulation treatment.
+According to the likelihood-ratio test there is a significant difference between the null model and the treatment model. The AIC analysis supports this conclusion, but also highlights the improved model fit with beta regression relative to normal ANOVA (`lm1`). From this initial analysis we would tentatively conclude that using beta regresson improves our ability to model the algal cover, but that there is no effect of grazer manipulation treatment.
 
 It is useful to plot the predictions derived from the model and compare them to the observed data. First we define two new functions to allow us to use the `dbeta` and `rbeta` functions with the $\mu$ and $\phi$ parameterization.
 
