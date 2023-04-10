@@ -317,6 +317,7 @@ exp(4.09928) # Percent cover of pocilloporids increased by a factor of 60 from t
 ```{r}
 confint(p_cover_mod.beta2)
 ```
+
 CIs for increase of percent cover from the baseline northern site by factor of...
 
 ```{r}
@@ -326,7 +327,6 @@ exp(0.9962311)
 exp(1.5305252)
 
 ```
-
 
 The function, `Fcn.CreateSummary.betareg`, doesn't work with phi varying, so just fixed labels manually.
 
