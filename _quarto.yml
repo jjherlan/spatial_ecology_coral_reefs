@@ -59,6 +59,8 @@ website:
         text: Coral Dispersion II
       - href: content/rpn_sppa.qmd
         text: Coral Dispersion
+      - href: content/app2.qmd
+        text: Appendix II
       - href: content/soil2.qmd
         text: Soil
 

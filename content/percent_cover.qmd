@@ -39,6 +39,7 @@ library(qqtest)  #for uncertainty intervals in qqplot
 library(modelsummary)
 library(kableExtra)
 library(gt)
+require(MASS)
 ```
 
 *From* **Damgaard & Irvine (2019)** Using the beta distribution to analyse plant cover data *Journal of Ecology. 107:2747-2759*
@@ -224,9 +225,7 @@ summary(p_cover_mod.beta1)
 p_cover_mod.beta2 <- betareg(pland_decimal_scaled ~ Site | Site, data = p_cover, link = c("logit"), link.phi = NULL, type = c("ML"))
 ```
 
-#```{r}
-#test(pairs(emmeans(p_cover.bm2, ~ Site, mode = "link")))
-#```
+\#`{r} #test(pairs(emmeans(p_cover.bm2, ~ Site, mode = "link"))) #`
 
 ```{r}
 p_cover_mod.beta1.aov <- Anova(p_cover_mod.beta1, type = 'III')
@@ -307,9 +306,27 @@ p_cover_mod.beta2 <- betareg(pland_decimal_scaled ~ Site | Site, data = p_cover,
 summary(p_cover_mod.beta2)
 ```
 
+Increase of percent cover from the baseline northern site by **factor of...**
+
 ```{r}
-exp(1.26338) # Percent cover of pocilloporids increased by a 
+exp(-4.99928) 
+exp(1.26338) # Percent cover of pocilloporids increased by a factor of 3.5 from the north to the west
+exp(4.09928) # Percent cover of pocilloporids increased by a factor of 60 from the north to the southeast
 ```
+
+```{r}
+confint(p_cover_mod.beta2)
+```
+CIs for increase of percent cover from the baseline northern site by factor of...
+
+```{r}
+exp(-5.1714438)
+exp(-4.8271137)
+exp(0.9962311)  
+exp(1.5305252)
+
+```
+
 
 The function, `Fcn.CreateSummary.betareg`, doesn't work with phi varying, so just fixed labels manually.
 
@@ -321,14 +338,16 @@ The function, `Fcn.CreateSummary.betareg`, doesn't work with phi varying, so jus
 #\begin{tabular}{rrrrr}
 #  \hline
 # & Estimate & Std. Error & z value & Pr($>$$|$z$|$) \\ 
-#  \hline
-#(Intercept) & -2.186 & 0.200 & -10.940 & 0.000 \\ 
-#  yrunit2016 & 1.776 & 0.266 & 6.677 & 0.000 \\ 
-#  phi (Intercept) 2015 & 1.009 & 0.211 & 4.785 & 0.000 \\ 
-#  phi (yrunit2016) 2016 & -1.580 & 0.252 & -6.266 & 0.000 \\ 
+#   \hline
+#(Intercept)       & -4.9992  & 0.0878  & -56.913 & < 0.001 \\ 
+#  west            & 1.2633   & 0.1363  & 9.269   & < 0.001 \\ 
+#  southeast       & 4.0992   & 0.0919  & 44.584  & < 0.001 \\ 
+#  phi (Intercept) & 4.3427   & 0.1141  & 38.052  & < 0.001 \\ 
+#  phi west        & -1.6249  & 0.1679  & -9.680  & < 0.001 \\ 
+#  phi southeast   & -1.1097  & 0.1441  & -7.699  & < 0.001 \\
 #   \hline
 #\end{tabular}
-#\caption{Results from using betareg package in R by transforming the 0 and 1's. Allowing #for $\phi$ to vary by unit.  These are on the logit-scale for $\mu$ and log-scale for $\phi$} 
+#\caption{Results from using betareg package in R by transforming the 0 and 1's. Allowing #for #$\phi$ to vary by unit.  These are on the logit-scale for $\mu$ and log-scale for $\phi$} 
 #\end{table}
 ```
 
