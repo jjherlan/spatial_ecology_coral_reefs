@@ -1,7 +1,8 @@
 ---
 title: "Supplementary Material II"
-author: "jjh"
+author: "James J. Herlan"
 date: "Last compiled on `r format(Sys.time(), '%d %B, %Y %H:%M')`"
+format: pdf
 editor: visual
 ---
 
@@ -372,4 +373,3 @@ p_cover_mod.beta2_aic <- AIC(p_cover_mod.beta2)
 p_cover_mod.beta1_aic
 p_cover_mod.beta2_aic
 ```
-

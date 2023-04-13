@@ -123,6 +123,22 @@ Anova(model_1.lm, type = "III")
 ```
 
 ```{r}
+confint(model_1.lm)
+```
+
+```{r}
+89+14
+89+98
+132+66
+132+143
+```
+
+
+```{r}
+aggregate(size_cm ~ Site, data = poci_size.gg, mean)
+```
+
+```{r}
 model_1.aov <- Anova(model_1.lm, type = "III")
 ```
 
