@@ -133,7 +133,6 @@ confint(model_1.lm)
 132+143
 ```
 
-
 ```{r}
 aggregate(size_cm ~ Site, data = poci_size.gg, mean)
 ```
