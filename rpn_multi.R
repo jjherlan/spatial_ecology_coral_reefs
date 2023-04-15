@@ -1,5 +1,6 @@
 require(tidyverse)
 require(ggfortify)
+require(multcomp)
 
 rpn_benthic.df <- rpn_benthic.mat3
 
@@ -38,6 +39,7 @@ plot(rpn_plob.glm)
 # `Anova` function from the *car* package
 Anova(rpn_plob.glm, type = 'III') # Type III because... 
 
+post_hoc.model_1.lm <- glht(rpn_plob.glm, linfct = mcp(location*depth = 'Tukey'))
 
 
 

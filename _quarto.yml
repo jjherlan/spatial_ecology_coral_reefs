@@ -49,6 +49,8 @@ website:
         text: Percent Cover
       - href: content/bleaching.qmd
         text: Percent Cover & Bleaching
+      - href: content/bleaching2.qmd
+        text: Percent Cover & Bleaching Main
       - href: content/percent_cover_fieldwork2016.qmd
         text: Percent Cover Transects & Photos
       - href: content/dispersion_presentation.qmd

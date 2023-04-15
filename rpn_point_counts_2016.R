@@ -783,6 +783,8 @@ plot(rpn_plob.glm)
 # `Anova` function from the *car* package
 Anova(rpn_plob.glm, type = 'III') # Type III because... 
 
+post_hoc.model_1.lm <- glht(rpn_plob.glm, linfct = mcp(Site = 'Tukey'))
+
 # Quasi-binomial
 
 rpn_plob.glm_qu <- glm(cbind(successes, failures) ~ location * depth, 
