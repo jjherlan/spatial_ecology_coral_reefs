@@ -7,11 +7,11 @@ poci_cover.ggbarplot <- ggplot(poci_cover2, aes(x = location, y = mean, fill = x
   scale_fill_manual(values = c("#FFC74E", "#82A5C0", "#ABC178")) +
   #  facet_wrap( ~ depth2, labeller = as_labeller(label_names), dir = "v", ncol = 1) + 
   #ggtitle(expression(paste(italic(" Pocillopora "), "spp."))) +
-  geom_text(aes(label = cld, y = upper.ci), vjust = -0.5) +
+  geom_text(aes(label = cld, y = upper.ci), vjust = -0.5, size = 10) +
   #scale_y_log10(expression(paste("Colony Size (", cm^2, ")"), limits = c(0, 100000))) +
   labs(x = NULL) +
-  theme(strip.text = element_text(size = 10, color = "black", hjust = 0.50),
-        strip.background = element_rect(fill = "#FFFFFF", color = NA),    
+  theme(#strip.text = element_text(size = 10, color = "black", hjust = 0.50),
+        #strip.background = element_rect(fill = "#FFFFFF", color = NA),    
         panel.background = element_rect(fill = "#FFFFFF", color = NA),
         panel.grid.major.x = element_blank(),
         panel.grid.minor.x = element_blank(),
@@ -22,8 +22,10 @@ poci_cover.ggbarplot <- ggplot(poci_cover2, aes(x = location, y = mean, fill = x
         panel.spacing = unit(1, "lines"),
         axis.ticks = element_blank(),
         legend.position = 'none',
-        plot.title = element_text(size = 11),
-        axis.title.y = element_text(size = 11),
+        #plot.title = element_text(size = 11),
+        axis.text.y = element_text(size = 17),
+        axis.text.x = element_text(size = 18.5),
+        axis.title.y = element_text(size = 20),
         legend.title = element_blank())
 
 poci_cover.ggbarplot
@@ -40,11 +42,11 @@ poci_size.gg.barplot <- ggplot(poci_size3, aes(x = location, y = mean, fill = x_
   scale_fill_manual(values = c("#FFC74E", "#82A5C0", "#ABC178")) +
   # facet_wrap( ~ depth2, labeller = as_labeller(label_names), dir = "v", ncol = 1) + 
   # ggtitle(expression(paste(italic(" Pocillopora "), "spp."))) +
-  geom_text(aes(label = cld, y = upper.ci), vjust = -0.5) +
+  geom_text(aes(label = cld, y = upper.ci), vjust = -0.5, size = 10) +
   #scale_y_log10(expression(paste("Colony Size (", cm^2, ")"), limits = c(0, 100000))) +
   labs(x = NULL) +
-  theme(strip.text = element_text(size = 10, color = "black", hjust = 0.50),
-        strip.background = element_rect(fill = "#FFFFFF", color = NA),    
+  theme(#strip.text = element_text(size = 10, color = "black", hjust = 0.50),
+        #strip.background = element_rect(fill = "#FFFFFF", color = NA),    
         panel.background = element_rect(fill = "#FFFFFF", color = NA),
         panel.grid.major.x = element_blank(),
         panel.grid.minor.x = element_blank(),
@@ -55,8 +57,10 @@ poci_size.gg.barplot <- ggplot(poci_size3, aes(x = location, y = mean, fill = x_
         panel.spacing = unit(1, "lines"),
         axis.ticks = element_blank(),
         legend.position = "none",
-        plot.title = element_text(size = 11),
-        axis.title.y = element_text(size = 11),
+        #plot.title = element_text(size = 11),
+        axis.text.y = element_text(size = 17),
+        axis.text.x = element_text(size = 18.5),
+        axis.title.y = element_text(size = 20),
         legend.title = element_blank())
 
 poci_size.gg.barplot

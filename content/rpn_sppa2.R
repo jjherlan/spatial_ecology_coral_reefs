@@ -363,6 +363,11 @@ se_north <- plot(K_none_north, legend = F, main = "North: Ripley's K", col = c("
 se_west <- plot(K_none_west, legend = F, main = "West: Ripley's K", col = c("#ABC178", "#FF0000"))
 se_se <- plot(K_none_se, legend = F, main = "Southeast: Ripley's K", col = c("#82A5C0", "#FF0000"))
 
+par(mfrow = c(3, 1))
+se_north <- plot(K_none_north, legend = F, main = "North", col = c("#FFC74E", "#FF0000"))
+se_west <- plot(K_none_west, legend = F, main = "West", col = c("#ABC178", "#FF0000"))
+se_se <- plot(K_none_se, legend = F, main = "Southeast", col = c("#82A5C0", "#FF0000"))
+
 # Plot standardized L-function
 
 par(mfrow = c(3, 1))
