@@ -197,8 +197,8 @@ rpn_plob_2015.ggbarplot <- ggplot(rpn_plob_summ.gg, aes(x = coast, y = mean, fil
 ```{r}
 rpn_plob_2015.ggbarplot <- ggplot(rpn_plob_summ.gg, aes(x = factor(coast, x_labels), y = mean, fill = coast)) +   
   geom_bar(stat = "identity", width = 0.75, color = "black", linewidth = 0.50, alpha = 0.6) +
-  geom_linerange(aes(ymin = mean, ymax = sd), linewidth = 0.75) +
-  scale_y_continuous(expression(paste("Percent Cover")), limits = c(0, 1.5), 
+  geom_linerange(aes(ymin = mean, ymax = mean + sd), linewidth = 0.75) +
+  scale_y_continuous(expression(paste("Percent Cover")), limits = c(0, 1.0), 
                      labels = function(x) paste0(x*100)) + 
   scale_x_discrete(expand = c(0, 1), labels = x_labels) + 
   scale_fill_manual(values = c("#FFC74E", "#82A5C0", "#ABC178")) + #
@@ -235,10 +235,6 @@ rpn_plob_bleach <- rpn_bleach %>%
   filter(group == 'PLOB' & status == 'BL') %>%
   group_by(location, depth, transect) %>%
   dplyr::summarise(total_count = n())
-```
-
-```{r}
-rpn_plob_bleach
 ```
 
 ```{r}
