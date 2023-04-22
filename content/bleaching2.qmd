@@ -43,7 +43,6 @@ rpn_summary <- rpn_bleach %>%
 rpn_summary
 ```
 
-
 ```{r}
 rpn_PLOB <- rpn_bleach %>%  
   filter(group == "PLOB") %>%
@@ -876,6 +875,7 @@ summary(glht(rpn_plob_pb.lm,
                        "(se.dp) - (west.dp) = 0"))),
         test = adjusted("holm"))
 ```
+
 ## Pocillopora
 
 ### Generalized linear model
@@ -1039,6 +1039,905 @@ rpn_poci_2015.ggbarplot <- ggplot(rpn_poci_summ.gg, aes(x = factor(coast, x_labe
 ```{r}
 rpn_poci_2015.ggbarplot
 ```
+
+
+## Macroalgae
+
+### Generalized linear model
+
+```{r}
+rpn_ma <- read.csv('rpn_cover.csv') %>%
+  as_tibble() %>%
+  filter(group == "MA") %>%
+  mutate_at(vars(location, depth, transect, group), factor) %>%
+  mutate(
+  cover = total_count/total_points,
+  failures = total_points - total_count
+    )
+```
+
+```{r}
+ma.glm <- glm(cbind(total_count, failures) ~ location * depth, 
+                    family = binomial(link = "logit"), 
+                    data = rpn_ma)
+```
+
+```{r}
+par(mfrow = c(2, 2))
+plot(ma.glm)
+```
+
+```{r}
+summary(ma.glm)
+```
+
+#### https://www.rpubs.com/daharo_calpoly/502695
+
+```{r}
+rpn_ma$groups <- interaction(rpn_ma$location, rpn_ma$depth)
+```
+
+## Create a post-hoc model
+
+```{r}
+model_ma <- with(rpn_ma, glm(cbind(total_count, failures) ~ groups, family = binomial))
+```
+
+## Determine the post-hoc comparisons of interest
+
+```{r}
+summary(glht(model_ma, 
+             linfct = mcp(groups =
+                     #Is the difference between these groups different from zero?
+                     c("(north.sh) - (west.sh) = 0",
+                       "(north.sh) - (west.dp) = 0",
+                       "(north.sh) - (se.sh) = 0",
+                       "(north.sh) - (se.dp) = 0",
+                       "(north.dp) - (west.sh) = 0",
+                       "(north.dp) - (west.dp) = 0",
+                       "(north.dp) - (se.sh) = 0",
+                       "(north.dp) - (se.dp) = 0",
+                       "(se.sh) - (west.sh) = 0",
+                       "(se.sh) - (west.dp) = 0",
+                       "(se.dp) - (west.sh) = 0",
+                       "(se.dp) - (west.dp) = 0"))),
+        test = adjusted("holm"))
+```
+
+```{r}
+rpn_ma2 <- read.csv('rpn_cover.csv') %>%
+  as_tibble() %>%
+  filter(group == "MA") %>%
+  mutate_at(vars(location, depth, transect, group), factor) %>%
+  mutate(
+  cover = total_count/total_points,
+  failures = total_points - total_count
+    ) %>%
+  group_by(location, depth) %>%
+  dplyr::summarize(mean = mean(cover), 
+                   sd = sd(cover), 
+                   n = n(),
+                   se = sd/sqrt(n)
+  ) %>%
+  mutate(se = sd / sqrt(n),
+         lower.ci = mean - qt(1 - (0.05 / 2), n - 1) * se,
+         upper.ci = mean + qt(1 - (0.05 / 2), n - 1) * se)
+```
+
+```{r}
+rpn_ma2
+```
+
+```{r}
+rpn_ma3 <-
+  as_tibble(rpn_ma2)
+```
+
+```{r}
+rpn_ma_summ <-
+    rpn_ma3 %>%
+    add_column(coast = rep(c('North', 'Southeast', 'West'), each = 2)) %>%
+    add_column(depth2 = rep(c('15 m', '8 m'), times = 3)) %>%
+    mutate_at(vars(coast, depth2), factor)
+```
+
+```{r}
+rpn_ma_summ
+```
+
+```{r}
+rpn_ma_summ.gg <- rpn_ma_summ %>%
+  mutate(coast = factor(coast, levels = c("North", "West", "Southeast")),
+          depth2 = factor(depth2, levels = c('8 m', '15 m')
+                                )
+                )
+```
+
+```{r}
+rpn_ma_summ.gg <- rpn_ma_summ %>%
+  mutate(coast = factor(coast, levels = c('North', 'West', 'Southeast')),
+          depth2 = factor(depth2, levels = c('8 m', '15 m')
+                                )
+                )
+```
+
+```{r}
+rpn_ma_summ.gg
+```
+
+```{r}
+x_labels = c("North", "West", "Southeast")
+```
+
+```{r}
+label_names = c("8 m" = "8 m", "15 m" = "15 m")
+```
+
+```{r}
+rpn_ma_2015.ggbarplot <- ggplot(rpn_ma_summ.gg, aes(x = coast, y = mean, fill = coast)) + 
+  scale_x_discrete(expand = c(0, 1), labels = x_labels) + 
+  geom_bar(stat = "identity", width = 0.75, color = "black", linewidth = 0.50, alpha = 0.6) +
+  facet_wrap( ~ depth2, labeller = as_labeller(label_names), dir = "v", ncol = 1)
+```
+
+```{r}
+rpn_ma_2015.ggbarplot <- ggplot(rpn_ma_summ.gg, aes(x = factor(coast, x_labels), y = mean, fill = coast)) +   
+  geom_bar(stat = "identity", width = 0.75, color = "black", linewidth = 0.50, alpha = 0.6) +
+  geom_linerange(aes(ymin = mean, ymax = mean + sd), linewidth = 0.75) +
+  scale_y_continuous(expression(paste("Percent Cover")), limits = c(0, 1.0), 
+                     labels = function(x) paste0(x*100)) + 
+  scale_x_discrete(expand = c(0, 1), labels = x_labels) + 
+  scale_fill_manual(values = c("#FFC74E", "#82A5C0", "#ABC178")) + #
+  facet_wrap( ~ depth2, labeller = as_labeller(label_names), dir = "v", ncol = 1) + 
+  ggtitle(expression(paste(italic(" Macrolagae ")))) +
+  #geom_text(aes(label = cld, y = upper.ci), vjust = -0.5, size = 10) +
+  #scale_y_log10(expression(paste("Colony Size (", cm^2, ")"), limits = c(0, 100000))) +
+  labs(x = NULL) +
+  theme(strip.text = element_text(size = 10, color = "black", hjust = 0.50),
+        strip.background = element_rect(fill = "#FFFFFF", color = NA),    
+        panel.background = element_rect(fill = "#FFFFFF", color = NA),
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        panel.grid.major.y = element_line(color = "#b2b2b2"),
+        panel.spacing.x = unit(1, "cm"),
+        panel.spacing.y = unit(0.5, "cm"),
+        panel.spacing = unit(1, "lines"),
+        axis.ticks = element_blank(),
+        legend.position = 'none',
+        #plot.title = element_text(size = 11),
+        axis.text.y = element_text(size = 10),
+        axis.text.x = element_text(size = 12),
+        axis.title.y = element_text(size = 14),
+        legend.title = element_blank())
+```
+
+```{r}
+rpn_ma_2015.ggbarplot
+```
+
+## Turf
+
+### Generalized linear model
+
+```{r}
+rpn_turf <- read.csv('rpn_cover.csv') %>%
+  as_tibble() %>%
+  filter(group == "TURF") %>%
+  mutate_at(vars(location, depth, transect, group), factor) %>%
+  mutate(
+  cover = total_count/total_points,
+  failures = total_points - total_count
+    ) 
+```
+
+```{r}
+turf.glm <- glm(cbind(total_count, failures) ~ location * depth, 
+                    family = binomial(link = "logit"), 
+                    data = rpn_turf)
+```
+
+```{r}
+par(mfrow = c(2, 2))
+plot(turf.glm)
+```
+
+```{r}
+summary(turf.glm)
+```
+
+#### https://www.rpubs.com/daharo_calpoly/502695
+
+```{r}
+rpn_turf$groups <- interaction(rpn_turf$location, rpn_turf$depth)
+```
+
+## Create a post-hoc model
+
+```{r}
+model_turf <- with(rpn_turf, glm(cbind(total_count, failures) ~ groups, family = binomial))
+```
+
+## Determine the post-hoc comparisons of interest
+
+```{r}
+summary(glht(model_turf, 
+             linfct = mcp(groups =
+                     #Is the difference between these groups different from zero?
+                     c("(north.sh) - (west.sh) = 0",
+                       "(north.sh) - (west.dp) = 0",
+                       "(north.sh) - (se.sh) = 0",
+                       "(north.sh) - (se.dp) = 0",
+                       "(north.dp) - (west.sh) = 0",
+                       "(north.dp) - (west.dp) = 0",
+                       "(north.dp) - (se.sh) = 0",
+                       "(north.dp) - (se.dp) = 0",
+                       "(se.sh) - (west.sh) = 0",
+                       "(se.sh) - (west.dp) = 0",
+                       "(se.dp) - (west.sh) = 0",
+                       "(se.dp) - (west.dp) = 0"))),
+        test = adjusted("holm"))
+```
+
+```{r}
+rpn_turf2 <- read.csv('rpn_cover.csv') %>%
+  as_tibble() %>%
+  filter(group == "TURF") %>%
+  mutate_at(vars(location, depth, transect, group), factor) %>%
+  mutate(
+  cover = total_count/total_points,
+  failures = total_points - total_count
+    ) %>%
+  group_by(location, depth) %>%
+  dplyr::summarize(mean = mean(cover), 
+                   sd = sd(cover), 
+                   n = n(),
+                   se = sd/sqrt(n)
+  ) %>%
+  mutate(se = sd / sqrt(n),
+         lower.ci = mean - qt(1 - (0.05 / 2), n - 1) * se,
+         upper.ci = mean + qt(1 - (0.05 / 2), n - 1) * se)
+```
+
+```{r}
+rpn_turf2
+```
+
+```{r}
+rpn_turf3 <-
+  as_tibble(rpn_turf2)
+```
+
+```{r}
+rpn_turf_summ <-
+    rpn_turf3 %>%
+    add_column(coast = rep(c('North', 'Southeast', 'West'), each = 2)) %>%
+    add_column(depth2 = rep(c('15 m', '8 m'), times = 3)) %>%
+    mutate_at(vars(coast, depth2), factor)
+```
+
+```{r}
+rpn_turf_summ
+```
+
+```{r}
+rpn_turf_summ.gg <- rpn_turf_summ %>%
+  mutate(coast = factor(coast, levels = c("North", "West", "Southeast")),
+          depth2 = factor(depth2, levels = c('8 m', '15 m')
+                                )
+                )
+```
+
+```{r}
+rpn_turf_summ.gg <- rpn_turf_summ %>%
+  mutate(coast = factor(coast, levels = c('North', 'West', 'Southeast')),
+          depth2 = factor(depth2, levels = c('8 m', '15 m')
+                                )
+                )
+```
+
+```{r}
+rpn_turf_summ.gg
+```
+
+```{r}
+x_labels = c("North", "West", "Southeast")
+```
+
+```{r}
+label_names = c("8 m" = "8 m", "15 m" = "15 m")
+```
+
+```{r}
+rpn_turf_2015.ggbarplot <- ggplot(rpn_turf_summ.gg, aes(x = coast, y = mean, fill = coast)) + 
+  scale_x_discrete(expand = c(0, 1), labels = x_labels) + 
+  geom_bar(stat = "identity", width = 0.75, color = "black", linewidth = 0.50, alpha = 0.6) +
+  facet_wrap( ~ depth2, labeller = as_labeller(label_names), dir = "v", ncol = 1)
+```
+
+```{r}
+rpn_turf_2015.ggbarplot <- ggplot(rpn_turf_summ.gg, aes(x = factor(coast, x_labels), y = mean, fill = coast)) +   
+  geom_bar(stat = "identity", width = 0.75, color = "black", linewidth = 0.50, alpha = 0.6) +
+  geom_linerange(aes(ymin = mean, ymax = mean + sd), linewidth = 0.75) +
+  scale_y_continuous(expression(paste("Percent Cover")), limits = c(0, 1.0), 
+                     labels = function(x) paste0(x*100)) + 
+  scale_x_discrete(expand = c(0, 1), labels = x_labels) + 
+  scale_fill_manual(values = c("#FFC74E", "#82A5C0", "#ABC178")) + #
+  facet_wrap( ~ depth2, labeller = as_labeller(label_names), dir = "v", ncol = 1) + 
+  #ggtitle(expression(paste(italic(" turfllopora "), "spp."))) +
+  #geom_text(aes(label = cld, y = upper.ci), vjust = -0.5, size = 10) +
+  #scale_y_log10(expression(paste("Colony Size (", cm^2, ")"), limits = c(0, 100000))) +
+  labs(x = NULL) +
+  theme(strip.text = element_text(size = 10, color = "black", hjust = 0.50),
+        strip.background = element_rect(fill = "#FFFFFF", color = NA),    
+        panel.background = element_rect(fill = "#FFFFFF", color = NA),
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        panel.grid.major.y = element_line(color = "#b2b2b2"),
+        panel.spacing.x = unit(1, "cm"),
+        panel.spacing.y = unit(0.5, "cm"),
+        panel.spacing = unit(1, "lines"),
+        axis.ticks = element_blank(),
+        legend.position = 'none',
+        #plot.title = element_text(size = 11),
+        axis.text.y = element_text(size = 10),
+        axis.text.x = element_text(size = 12),
+        axis.title.y = element_text(size = 14),
+        legend.title = element_blank())
+```
+
+```{r}
+rpn_turf_2015.ggbarplot
+```
+
+## Sand
+
+### Generalized linear model
+
+```{r}
+rpn_sand <- read.csv('rpn_cover.csv') %>%
+  as_tibble() %>%
+  filter(group == "SAND") %>%
+  mutate_at(vars(location, depth, transect, group), factor) %>%
+  mutate(
+  cover = total_count/total_points,
+  failures = total_points - total_count
+    )
+```
+
+```{r}
+sand.glm <- glm(cbind(total_count, failures) ~ location * depth, 
+                    family = binomial(link = "logit"), 
+                    data = rpn_sand)
+```
+
+```{r}
+par(mfrow = c(2, 2))
+plot(sand.glm)
+```
+
+```{r}
+summary(sand.glm)
+```
+
+#### https://www.rpubs.com/daharo_calpoly/502695
+
+```{r}
+rpn_sand$groups <- interaction(rpn_sand$location, rpn_sand$depth)
+```
+
+## Create a post-hoc model
+
+```{r}
+model_sand <- with(rpn_sand, glm(cbind(total_count, failures) ~ groups, family = binomial))
+```
+
+## Determine the post-hoc comparisons of interest
+
+```{r}
+summary(glht(model_sand, 
+             linfct = mcp(groups =
+                     #Is the difference between these groups different from zero?
+                     c("(north.sh) - (west.sh) = 0",
+                       "(north.sh) - (west.dp) = 0",
+                       "(north.sh) - (se.sh) = 0",
+                       "(north.sh) - (se.dp) = 0",
+                       "(north.dp) - (west.sh) = 0",
+                       "(north.dp) - (west.dp) = 0",
+                       "(north.dp) - (se.sh) = 0",
+                       "(north.dp) - (se.dp) = 0",
+                       "(se.sh) - (west.sh) = 0",
+                       "(se.sh) - (west.dp) = 0",
+                       "(se.dp) - (west.sh) = 0",
+                       "(se.dp) - (west.dp) = 0"))),
+        test = adjusted("holm"))
+```
+
+```{r}
+rpn_sand2 <- read.csv('rpn_cover.csv') %>%
+  as_tibble() %>%
+  filter(group == "SAND") %>%
+  mutate_at(vars(location, depth, transect, group), factor) %>%
+  mutate(
+  cover = total_count/total_points,
+  failures = total_points - total_count
+    ) %>%
+  group_by(location, depth) %>%
+  dplyr::summarize(mean = mean(cover), 
+                   sd = sd(cover), 
+                   n = n(),
+                   se = sd/sqrt(n)
+  ) %>%
+  mutate(se = sd / sqrt(n),
+         lower.ci = mean - qt(1 - (0.05 / 2), n - 1) * se,
+         upper.ci = mean + qt(1 - (0.05 / 2), n - 1) * se)
+```
+
+```{r}
+rpn_sand2
+```
+
+```{r}
+rpn_sand3 <-
+  as_tibble(rpn_sand2)
+```
+
+```{r}
+rpn_sand_summ <-
+    rpn_sand3 %>%
+    add_column(coast = rep(c('North', 'Southeast', 'West'), each = 2)) %>%
+    add_column(depth2 = rep(c('15 m', '8 m'), times = 3)) %>%
+    mutate_at(vars(coast, depth2), factor)
+```
+
+```{r}
+rpn_sand_summ
+```
+
+```{r}
+rpn_sand_summ.gg <- rpn_sand_summ %>%
+  mutate(coast = factor(coast, levels = c("North", "West", "Southeast")),
+          depth2 = factor(depth2, levels = c('8 m', '15 m')
+                                )
+                )
+```
+
+```{r}
+rpn_sand_summ.gg <- rpn_sand_summ %>%
+  mutate(coast = factor(coast, levels = c('North', 'West', 'Southeast')),
+          depth2 = factor(depth2, levels = c('8 m', '15 m')
+                                )
+                )
+```
+
+```{r}
+rpn_sand_summ.gg
+```
+
+```{r}
+x_labels = c("North", "West", "Southeast")
+```
+
+```{r}
+label_names = c("8 m" = "8 m", "15 m" = "15 m")
+```
+
+```{r}
+rpn_sand_2015.ggbarplot <- ggplot(rpn_sand_summ.gg, aes(x = coast, y = mean, fill = coast)) + 
+  scale_x_discrete(expand = c(0, 1), labels = x_labels) + 
+  geom_bar(stat = "identity", width = 0.75, color = "black", linewidth = 0.50, alpha = 0.6) +
+  facet_wrap( ~ depth2, labeller = as_labeller(label_names), dir = "v", ncol = 1)
+```
+
+```{r}
+rpn_sand_2015.ggbarplot <- ggplot(rpn_sand_summ.gg, aes(x = factor(coast, x_labels), y = mean, fill = coast)) +   
+  geom_bar(stat = "identity", width = 0.75, color = "black", linewidth = 0.50, alpha = 0.6) +
+  geom_linerange(aes(ymin = mean, ymax = mean + sd), linewidth = 0.75) +
+  scale_y_continuous(expression(paste("Percent Cover")), limits = c(0, 1.0), 
+                     labels = function(x) paste0(x*100)) + 
+  scale_x_discrete(expand = c(0, 1), labels = x_labels) + 
+  scale_fill_manual(values = c("#FFC74E", "#82A5C0", "#ABC178")) + #
+  facet_wrap( ~ depth2, labeller = as_labeller(label_names), dir = "v", ncol = 1) + 
+  ggtitle(expression(paste(italic(" Sand ")))) +
+  #geom_text(aes(label = cld, y = upper.ci), vjust = -0.5, size = 10) +
+  #scale_y_log10(expression(paste("Colony Size (", cm^2, ")"), limits = c(0, 100000))) +
+  labs(x = NULL) +
+  theme(strip.text = element_text(size = 10, color = "black", hjust = 0.50),
+        strip.background = element_rect(fill = "#FFFFFF", color = NA),    
+        panel.background = element_rect(fill = "#FFFFFF", color = NA),
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        panel.grid.major.y = element_line(color = "#b2b2b2"),
+        panel.spacing.x = unit(1, "cm"),
+        panel.spacing.y = unit(0.5, "cm"),
+        panel.spacing = unit(1, "lines"),
+        axis.ticks = element_blank(),
+        legend.position = 'none',
+        #plot.title = element_text(size = 11),
+        axis.text.y = element_text(size = 10),
+        axis.text.x = element_text(size = 12),
+        axis.title.y = element_text(size = 14),
+        legend.title = element_blank())
+```
+
+```{r}
+rpn_sand_2015.ggbarplot
+```
+
+## Bare substrate
+
+### Generalized linear model
+
+```{r}
+rpn_bare <- read.csv('rpn_cover.csv') %>%
+  as_tibble() %>%
+  filter(group == "BARE") %>%
+  mutate_at(vars(location, depth, transect, group), factor) %>%
+  mutate(
+  cover = total_count/total_points,
+  failures = total_points - total_count
+    )
+```
+
+```{r}
+bare.glm <- glm(cbind(total_count, failures) ~ location * depth, 
+                    family = binomial(link = "logit"), 
+                    data = rpn_bare)
+```
+
+```{r}
+par(mfrow = c(2, 2))
+plot(bare.glm)
+```
+
+```{r}
+summary(bare.glm)
+```
+
+#### https://www.rpubs.com/daharo_calpoly/502695
+
+```{r}
+rpn_bare$groups <- interaction(rpn_bare$location, rpn_bare$depth)
+```
+
+## Create a post-hoc model
+
+```{r}
+model_bare <- with(rpn_bare, glm(cbind(total_count, failures) ~ groups, family = binomial))
+```
+
+## Determine the post-hoc comparisons of interest
+
+```{r}
+summary(glht(model_bare, 
+             linfct = mcp(groups =
+                     #Is the difference between these groups different from zero?
+                     c("(north.sh) - (west.sh) = 0",
+                       "(north.sh) - (west.dp) = 0",
+                       "(north.sh) - (se.sh) = 0",
+                       "(north.sh) - (se.dp) = 0",
+                       "(north.dp) - (west.sh) = 0",
+                       "(north.dp) - (west.dp) = 0",
+                       "(north.dp) - (se.sh) = 0",
+                       "(north.dp) - (se.dp) = 0",
+                       "(se.sh) - (west.sh) = 0",
+                       "(se.sh) - (west.dp) = 0",
+                       "(se.dp) - (west.sh) = 0",
+                       "(se.dp) - (west.dp) = 0"))),
+        test = adjusted("holm"))
+```
+
+```{r}
+rpn_bare2 <- read.csv('rpn_cover.csv')
+```
+
+```{r}
+rpn_bare2
+```
+
+```{r}
+rpn_bare2 <- read.csv('rpn_cover.csv') %>%
+  as_tibble() %>%
+  filter(group == "BARE") %>%
+  mutate_at(vars(location, depth, transect, group), factor) %>%
+  mutate(
+  cover = total_count/total_points,
+  failures = total_points - total_count
+    ) %>%
+  group_by(location, depth) %>%
+  dplyr::summarize(mean = mean(cover), 
+                   sd = sd(cover), 
+                   n = n(),
+                   se = sd/sqrt(n)
+  ) %>%
+  mutate(se = sd / sqrt(n),
+         lower.ci = mean - qt(1 - (0.05 / 2), n - 1) * se,
+         upper.ci = mean + qt(1 - (0.05 / 2), n - 1) * se)
+```
+
+```{r}
+rpn_bare2
+```
+
+```{r}
+rpn_bare3 <-
+  as_tibble(rpn_bare2)
+```
+
+```{r}
+rpn_bare_summ <-
+    rpn_bare3 %>%
+    add_column(coast = rep(c('North', 'Southeast', 'West'), each = 2)) %>%
+    add_column(depth2 = rep(c('15 m', '8 m'), times = 3)) %>%
+    mutate_at(vars(coast, depth2), factor)
+```
+
+```{r}
+rpn_bare_summ
+```
+
+```{r}
+rpn_bare_summ.gg <- rpn_bare_summ %>%
+  mutate(coast = factor(coast, levels = c("North", "West", "Southeast")),
+          depth2 = factor(depth2, levels = c('8 m', '15 m')
+                                )
+                )
+```
+
+```{r}
+rpn_bare_summ.gg <- rpn_bare_summ %>%
+  mutate(coast = factor(coast, levels = c('North', 'West', 'Southeast')),
+          depth2 = factor(depth2, levels = c('8 m', '15 m')
+                                )
+                )
+```
+
+```{r}
+rpn_bare_summ.gg
+```
+
+```{r}
+x_labels = c("North", "West", "Southeast")
+```
+
+```{r}
+label_names = c("8 m" = "8 m", "15 m" = "15 m")
+```
+
+```{r}
+rpn_bare_2015.ggbarplot <- ggplot(rpn_bare_summ.gg, aes(x = coast, y = mean, fill = coast)) + 
+  scale_x_discrete(expand = c(0, 1), labels = x_labels) + 
+  geom_bar(stat = "identity", width = 0.75, color = "black", linewidth = 0.50, alpha = 0.6) +
+  facet_wrap( ~ depth2, labeller = as_labeller(label_names), dir = "v", ncol = 1)
+```
+
+```{r}
+rpn_bare_2015.ggbarplot <- ggplot(rpn_bare_summ.gg, aes(x = factor(coast, x_labels), y = mean, fill = coast)) +   
+  geom_bar(stat = "identity", width = 0.75, color = "black", linewidth = 0.50, alpha = 0.6) +
+  geom_linerange(aes(ymin = mean, ymax = mean + sd), linewidth = 0.75) +
+  scale_y_continuous(expression(paste("Percent Cover")), limits = c(0, 1.0), 
+                     labels = function(x) paste0(x*100)) + 
+  scale_x_discrete(expand = c(0, 1), labels = x_labels) + 
+  scale_fill_manual(values = c("#FFC74E", "#82A5C0", "#ABC178")) + #
+  facet_wrap( ~ depth2, labeller = as_labeller(label_names), dir = "v", ncol = 1) + 
+  ggtitle(expression(paste(italic(" Bare ")))) +
+  #geom_text(aes(label = cld, y = upper.ci), vjust = -0.5, size = 10) +
+  #scale_y_log10(expression(paste("Colony Size (", cm^2, ")"), limits = c(0, 100000))) +
+  labs(x = NULL) +
+  theme(strip.text = element_text(size = 10, color = "black", hjust = 0.50),
+        strip.background = element_rect(fill = "#FFFFFF", color = NA),    
+        panel.background = element_rect(fill = "#FFFFFF", color = NA),
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        panel.grid.major.y = element_line(color = "#b2b2b2"),
+        panel.spacing.x = unit(1, "cm"),
+        panel.spacing.y = unit(0.5, "cm"),
+        panel.spacing = unit(1, "lines"),
+        axis.ticks = element_blank(),
+        legend.position = 'none',
+        #plot.title = element_text(size = 11),
+        axis.text.y = element_text(size = 10),
+        axis.text.x = element_text(size = 12),
+        axis.title.y = element_text(size = 14),
+        legend.title = element_blank())
+```
+
+```{r}
+rpn_bare_2015.ggbarplot
+```
+
+
+## cca substrate
+
+### Generalized linear model
+
+```{r}
+rpn_cca <- read.csv('rpn_cover.csv') %>%
+  as_tibble() %>%
+  filter(group == "CCA") %>%
+  mutate_at(vars(location, depth, transect, group), factor) %>%
+  mutate(
+  cover = total_count/total_points,
+  failures = total_points - total_count
+    )
+```
+
+```{r}
+cca.glm <- glm(cbind(total_count, failures) ~ location * depth, 
+                    family = binomial(link = "logit"), 
+                    data = rpn_cca)
+```
+
+```{r}
+par(mfrow = c(2, 2))
+plot(cca.glm)
+```
+
+```{r}
+summary(cca.glm)
+```
+
+#### https://www.rpubs.com/daharo_calpoly/502695
+
+```{r}
+rpn_cca$groups <- interaction(rpn_cca$location, rpn_cca$depth)
+```
+
+## Create a post-hoc model
+
+```{r}
+model_cca <- with(rpn_cca, glm(cbind(total_count, failures) ~ groups, family = binomial))
+```
+
+## Determine the post-hoc comparisons of interest
+
+```{r}
+summary(glht(model_cca, 
+             linfct = mcp(groups =
+                     #Is the difference between these groups different from zero?
+                     c("(north.sh) - (west.sh) = 0",
+                       "(north.sh) - (west.dp) = 0",
+                       "(north.sh) - (se.sh) = 0",
+                       "(north.sh) - (se.dp) = 0",
+                       "(north.dp) - (west.sh) = 0",
+                       "(north.dp) - (west.dp) = 0",
+                       "(north.dp) - (se.sh) = 0",
+                       "(north.dp) - (se.dp) = 0",
+                       "(se.sh) - (west.sh) = 0",
+                       "(se.sh) - (west.dp) = 0",
+                       "(se.dp) - (west.sh) = 0",
+                       "(se.dp) - (west.dp) = 0"))),
+        test = adjusted("holm"))
+```
+
+```{r}
+rpn_cca2 <- read.csv('rpn_cover.csv')
+```
+
+```{r}
+rpn_cca2
+```
+
+```{r}
+rpn_cca2 <- read.csv('rpn_cover.csv') %>%
+  as_tibble() %>%
+  filter(group == "CCA") %>%
+  mutate_at(vars(location, depth, transect, group), factor) %>%
+  mutate(
+  cover = total_count/total_points,
+  failures = total_points - total_count
+    ) %>%
+  group_by(location, depth) %>%
+  dplyr::summarize(mean = mean(cover), 
+                   sd = sd(cover), 
+                   n = n(),
+                   se = sd/sqrt(n)
+  ) %>%
+  mutate(se = sd / sqrt(n),
+         lower.ci = mean - qt(1 - (0.05 / 2), n - 1) * se,
+         upper.ci = mean + qt(1 - (0.05 / 2), n - 1) * se)
+```
+
+```{r}
+rpn_cca2
+```
+
+```{r}
+rpn_cca3 <-
+  as_tibble(rpn_cca2)
+```
+
+```{r}
+rpn_cca_summ <-
+    rpn_cca3 %>%
+    add_column(coast = rep(c('North', 'Southeast', 'West'), each = 2)) %>%
+    add_column(depth2 = rep(c('15 m', '8 m'), times = 3)) %>%
+    mutate_at(vars(coast, depth2), factor)
+```
+
+```{r}
+rpn_cca_summ
+```
+
+```{r}
+rpn_cca_summ.gg <- rpn_cca_summ %>%
+  mutate(coast = factor(coast, levels = c("North", "West", "Southeast")),
+          depth2 = factor(depth2, levels = c('8 m', '15 m')
+                                )
+                )
+```
+
+```{r}
+rpn_cca_summ.gg <- rpn_cca_summ %>%
+  mutate(coast = factor(coast, levels = c('North', 'West', 'Southeast')),
+          depth2 = factor(depth2, levels = c('8 m', '15 m')
+                                )
+                )
+```
+
+```{r}
+rpn_cca_summ.gg
+```
+
+```{r}
+x_labels = c("North", "West", "Southeast")
+```
+
+```{r}
+label_names = c("8 m" = "8 m", "15 m" = "15 m")
+```
+
+```{r}
+rpn_cca_2015.ggbarplot <- ggplot(rpn_cca_summ.gg, aes(x = coast, y = mean, fill = coast)) + 
+  scale_x_discrete(expand = c(0, 1), labels = x_labels) + 
+  geom_bar(stat = "identity", width = 0.75, color = "black", linewidth = 0.50, alpha = 0.6) +
+  facet_wrap( ~ depth2, labeller = as_labeller(label_names), dir = "v", ncol = 1)
+```
+
+```{r}
+rpn_cca_2015.ggbarplot <- ggplot(rpn_cca_summ.gg, aes(x = factor(coast, x_labels), y = mean, fill = coast)) +   
+  geom_bar(stat = "identity", width = 0.75, color = "black", linewidth = 0.50, alpha = 0.6) +
+  geom_linerange(aes(ymin = mean, ymax = mean + sd), linewidth = 0.75) +
+  scale_y_continuous(expression(paste("Percent Cover")), limits = c(0, 1.0), 
+                     labels = function(x) paste0(x*100)) + 
+  scale_x_discrete(expand = c(0, 1), labels = x_labels) + 
+  scale_fill_manual(values = c("#FFC74E", "#82A5C0", "#ABC178")) + #
+  facet_wrap( ~ depth2, labeller = as_labeller(label_names), dir = "v", ncol = 1) + 
+  #ggtitle(expression(paste(italic(" ccallopora "), "spp."))) +
+  #geom_text(aes(label = cld, y = upper.ci), vjust = -0.5, size = 10) +
+  #scale_y_log10(expression(paste("Colony Size (", cm^2, ")"), limits = c(0, 100000))) +
+  labs(x = NULL) +
+  theme(strip.text = element_text(size = 10, color = "black", hjust = 0.50),
+        strip.background = element_rect(fill = "#FFFFFF", color = NA),    
+        panel.background = element_rect(fill = "#FFFFFF", color = NA),
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        panel.grid.major.y = element_line(color = "#b2b2b2"),
+        panel.spacing.x = unit(1, "cm"),
+        panel.spacing.y = unit(0.5, "cm"),
+        panel.spacing = unit(1, "lines"),
+        axis.ticks = element_blank(),
+        legend.position = 'none',
+        #plot.title = element_text(size = 11),
+        axis.text.y = element_text(size = 10),
+        axis.text.x = element_text(size = 12),
+        axis.title.y = element_text(size = 14),
+        legend.title = element_blank())
+```
+
+```{r}
+rpn_cca_2015.ggbarplot
+```
+
+
+
+
+
+
 
 
 
