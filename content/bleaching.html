@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="jjh">
-<meta name="dcterms.date" content="2023-04-19">
+<meta name="dcterms.date" content="2023-04-22">
 
 <title>NOAA quarto simple - Percent Cover and Bleaching in 2015</title>
 <style>
@@ -317,7 +317,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">April 19, 2023</p>
+      <p class="date">April 22, 2023</p>
     </div>
   </div>
   
@@ -444,10 +444,6 @@ the `.groups` argument.</code></pre>
 Call:
 glm(formula = cbind(total_count, failures) ~ location * depth, 
     family = binomial(link = "logit"), data = rpn_plob)
-
-Deviance Residuals: 
-     Min        1Q    Median        3Q       Max  
--2.54165  -1.20892  -0.00388   1.28236   2.71923  
 
 Coefficients:
                      Estimate Std. Error z value Pr(&gt;|z|)    
@@ -1105,10 +1101,6 @@ Call:
 glm(formula = cbind(total_count, failures) ~ location * depth, 
     family = binomial(link = "logit"), data = rpn_poci)
 
-Deviance Residuals: 
-     Min        1Q    Median        3Q       Max  
--1.34438  -0.96059  -0.00078   0.72479   1.34520  
-
 Coefficients:
                      Estimate Std. Error z value Pr(&gt;|z|)    
 (Intercept)           -3.2958     0.3395  -9.709  &lt; 2e-16 ***
@@ -1396,10 +1388,6 @@ Call:
 glm(formula = cbind(pb_count, pb) ~ location * depth, family = binomial(link = "logit"), 
     data = plob_bleach)
 
-Deviance Residuals: 
-    Min       1Q   Median       3Q      Max  
--5.5192  -1.2798  -0.0003   1.0681   5.0776  
-
 Coefficients:
                       Estimate Std. Error z value Pr(&gt;|z|)    
 (Intercept)            -1.1048     0.1570  -7.036 1.98e-12 ***
@@ -1519,10 +1507,6 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 Call:
 glm(formula = cbind(p_count, p) ~ location * depth, family = binomial(link = "logit"), 
     data = plob_bleach)
-
-Deviance Residuals: 
-    Min       1Q   Median       3Q      Max  
--5.5666  -2.0023   0.0128   1.5432   4.4335  
 
 Coefficients:
                      Estimate Std. Error z value Pr(&gt;|z|)    
@@ -1645,10 +1629,6 @@ Call:
 glm(formula = cbind(h_count, h) ~ location * depth, family = binomial(link = "logit"), 
     data = plob_bleach)
 
-Deviance Residuals: 
-    Min       1Q   Median       3Q      Max  
--3.3072  -0.6585   0.0047   0.6672   2.0546  
-
 Coefficients:
                      Estimate Std. Error z value Pr(&gt;|z|)    
 (Intercept)           -2.0846     0.2164  -9.631  &lt; 2e-16 ***
@@ -1707,10 +1687,6 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 Call:
 glm(formula = cbind(h_count, h) ~ location + depth, family = binomial(link = "logit"), 
     data = plob_bleach)
-
-Deviance Residuals: 
-     Min        1Q    Median        3Q       Max  
--3.15440  -0.62092   0.05079   0.77454   2.30294  
 
 Coefficients:
              Estimate Std. Error z value Pr(&gt;|z|)    
@@ -1824,20 +1800,14 @@ Call:
 glm(formula = cbind(pb_count, pb) ~ location * depth, family = binomial(link = "logit"), 
     data = poci_bleach)
 
-Deviance Residuals: 
-       1         2         3         4         5         6         7         8  
--0.27079   0.48535   0.00000  -0.00022   2.52677  -2.76404  -1.08056   1.01500  
-       9        10        11        12  
--1.41456   0.88009   0.71184  -1.05251  
-
 Coefficients:
                        Estimate Std. Error z value Pr(&gt;|z|)  
 (Intercept)            -0.69315    0.70711  -0.980   0.3270  
 locationse             -0.09278    0.73514  -0.126   0.8996  
 locationwest           -1.83258    1.01980  -1.797   0.0723 .
-depthsh               -16.87292 3956.18039  -0.004   0.9966  
-locationse:depthsh     14.75273 3956.18041   0.004   0.9970  
-locationwest:depthsh   15.93291 3956.18059   0.004   0.9968  
+depthsh               -16.87292 3956.18038  -0.004   0.9966  
+locationse:depthsh     14.75273 3956.18040   0.004   0.9970  
+locationwest:depthsh   15.93291 3956.18058   0.004   0.9968  
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
@@ -1885,10 +1855,6 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 Call:
 glm(formula = cbind(pb_count, pb) ~ location + depth, family = binomial(link = "logit"), 
     data = poci_bleach)
-
-Deviance Residuals: 
-    Min       1Q   Median       3Q      Max  
--2.6979  -0.8276  -0.1169   0.6541   2.5992  
 
 Coefficients:
              Estimate Std. Error z value Pr(&gt;|z|)    
@@ -1994,12 +1960,6 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 Call:
 glm(formula = cbind(p_count, p) ~ location * depth, family = binomial(link = "logit"), 
     data = poci_bleach)
-
-Deviance Residuals: 
-       1         2         3         4         5         6         7         8  
--0.08462   0.15762   0.00000  -0.00013   0.47159  -0.47587   0.33844  -0.37143  
-       9        10        11        12  
--0.12389   0.11968   1.77660  -1.45605  
 
 Coefficients:
                       Estimate Std. Error z value Pr(&gt;|z|)
@@ -2125,12 +2085,6 @@ Call:
 glm(formula = cbind(h_count, h) ~ location * depth, family = binomial(link = "logit"), 
     data = poci_bleach)
 
-Deviance Residuals: 
-      1        2        3        4        5        6        7        8  
- 0.2573  -0.6864   0.0000   0.0002   2.1109  -3.2485   0.3708  -0.4267  
-      9       10       11       12  
--0.6187   0.5544  -1.8055   1.3747  
-
 Coefficients:
                       Estimate Std. Error z value Pr(&gt;|z|)  
 (Intercept)            -2.0794     1.0607  -1.961   0.0499 *
@@ -2189,10 +2143,6 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 Call:
 glm(formula = cbind(h_count, h) ~ location + depth, family = binomial(link = "logit"), 
     data = poci_bleach)
-
-Deviance Residuals: 
-    Min       1Q   Median       3Q      Max  
--3.3652  -0.4691  -0.0824   0.9802   1.9326  
 
 Coefficients:
              Estimate Std. Error z value Pr(&gt;|z|)  
