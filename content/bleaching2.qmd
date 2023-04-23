@@ -1749,7 +1749,6 @@ rpn_bare_2015.ggbarplot <- ggplot(rpn_bare_summ.gg, aes(x = factor(coast, x_labe
 rpn_bare_2015.ggbarplot
 ```
 
-
 ## cca substrate
 
 ### Generalized linear model
