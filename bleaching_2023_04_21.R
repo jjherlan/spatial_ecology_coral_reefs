@@ -3,6 +3,10 @@ require(cowplot)
 require(ggpubr)
 theme_set(theme_cowplot())
 
+remove.packages("tidyverse")
+install.packages("tidyverse", dependencies = TRUE)
+library(tidyverse)
+
 rpn_plob_2015 <-
 rpn_plob_summ.gg %>%
   add_column(group = rep(c('plob'), times = 6)) %>%
@@ -48,22 +52,46 @@ rpn_cover_groups <-
   rpn_bare_2015,
   rpn_sand_2015)
 
-group_labels = c("plob" = "PLOB", 
-             "poci" = "POCI",
-             "ma" = "MA",
-             "turf" = "Turf",
-             "cca" = "CCA",
-             "bare" = "Bare",
-             "sand" = "Sand")
+label_names <- c("8 m" = "8 m", "15 m" = "15 m")
 
-rpn_2015.ggbarplot <- ggplot(rpn_cover_groups, aes(x = factor(coast, x_labels), y = mean, fill = coast)) +   
+group_labels <- c(plob = "PLOB", 
+             poci = "POCI",
+             ma = "MA",
+             turf = "Turf",
+             cca = "CCA",
+             bare = "Bare",
+             sand = "Sand")
+
+conservation_status <- c('cd'='Conservation Dependent',
+                         'en'='Endangered',
+                         'lc'='Least concern',
+                         'nt'='Near Threatened',
+                         'vu'='Vulnerable',
+                         'domesticated'='Domesticated')
+
+labeller = labeller(group = group_labels)
+
+global_labeller <- labeller(group = group_labels)
+
+rpn_cover_groups.main <-
+  rpn_cover_groups %>%
+  add_column(func.group = rep(c(plob = "PLOB", 
+                                poci = "POCI",
+                                ma = "MA",
+                                turf = "Turf",
+                                cca = "CCA",
+                                bare = "Bare",
+                                sand = "Sand"), each = 6)) %>%
+  mutate_at(vars(func.group), factor)
+
+rpn_2015.ggbarplot <- ggplot(rpn_cover_groups.main, aes(x = factor(coast, x_labels), y = mean, fill = coast)) +   
   geom_bar(stat = "identity", width = 0.75, color = "black", linewidth = 0.50, alpha = 0.6) +
   geom_linerange(aes(ymin = mean, ymax = mean + sd), linewidth = 0.75) +
   scale_y_continuous(expression(paste("Percent Cover")), limits = c(0, 1.0), 
                      labels = function(x) paste0(x*100)) + 
-  scale_x_discrete(expand = c(0, 1), labels = x_labels) + 
+  scale_x_discrete(expand = c(0, 1)) + 
   scale_fill_manual(values = c("#FFC74E", "#82A5C0", "#ABC178")) + #
-  facet_grid(group ~ depth2, margin = FALSE, labeller = labeller(group = group_labels)) + 
+  facet_grid(factor(func.group, group_labels) ~ depth2) + 
   #ggtitle(expression(paste(italic(" Porites "), "spp."))) +
   #geom_text(aes(label = cld, y = upper.ci), vjust = -0.5, size = 10) +
   #scale_y_log10(expression(paste("Colony Size (", cm^2, ")"), limits = c(0, 100000))) +
