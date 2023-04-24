@@ -37,7 +37,6 @@ library(kableExtra)
 library(gt)
 require(MASS)
 require(tinytex)
-
 require(tidyverse)
 require(plyr)
 require(betareg)
@@ -372,4 +371,3 @@ p_cover_mod.beta2_aic <- AIC(p_cover_mod.beta2)
 p_cover_mod.beta1_aic
 p_cover_mod.beta2_aic
 ```
-
