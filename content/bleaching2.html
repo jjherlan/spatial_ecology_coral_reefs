@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="jjh">
-<meta name="dcterms.date" content="2023-04-30">
+<meta name="dcterms.date" content="2023-05-01">
 
 <title>NOAA quarto simple - Percent Cover and Bleaching in 2015</title>
 <style>
@@ -343,7 +343,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">April 30, 2023</p>
+      <p class="date">May 1, 2023</p>
     </div>
   </div>
   
@@ -684,7 +684,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 <span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">labels =</span> x_labels) <span class="sc">+</span> </span>
 <span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"#FFC74E"</span>, <span class="st">"#82A5C0"</span>, <span class="st">"#ABC178"</span>)) <span class="sc">+</span> <span class="co">#</span></span>
 <span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>( <span class="sc">~</span> depth2, <span class="at">labeller =</span> <span class="fu">as_labeller</span>(label_names), <span class="at">dir =</span> <span class="st">"v"</span>, <span class="at">ncol =</span> <span class="dv">1</span>) <span class="sc">+</span> </span>
-<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">#ggtitle(expression(paste(italic(" Pocillopora "), "spp."))) +</span></span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="fu">expression</span>(<span class="fu">paste</span>(<span class="fu">italic</span>(<span class="st">" Pocillopora "</span>), <span class="st">"spp."</span>))) <span class="sc">+</span></span>
 <span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>  <span class="co">#geom_text(aes(label = cld, y = upper.ci), vjust = -0.5, size = 10) +</span></span>
 <span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>  <span class="co">#scale_y_log10(expression(paste("Colony Size (", cm^2, ")"), limits = c(0, 100000))) +</span></span>
 <span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
