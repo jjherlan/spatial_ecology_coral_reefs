@@ -162,7 +162,6 @@ rpn_plob_summ <-
 rpn_plob_summ
 ```
 
-
 ```{r}
 rpn_plob_summ.gg <- rpn_plob_summ %>%
   mutate(coast = factor(coast, levels = c("North", "West", "Southeast")),
@@ -207,7 +206,7 @@ rpn_plob_2015.ggbarplot <- ggplot(rpn_plob_summ.gg, aes(x = factor(coast, x_labe
   scale_x_discrete(expand = c(0, 1), labels = x_labels) + 
   scale_fill_manual(values = c("#FFC74E", "#82A5C0", "#ABC178")) + #
   facet_wrap( ~ depth2, labeller = as_labeller(label_names), dir = "v", ncol = 1) + 
-  #ggtitle(expression(paste(italic(" Pocillopora "), "spp."))) +
+  ggtitle(expression(paste(italic(" Pocillopora "), "spp."))) +
   #geom_text(aes(label = cld, y = upper.ci), vjust = -0.5, size = 10) +
   #scale_y_log10(expression(paste("Colony Size (", cm^2, ")"), limits = c(0, 100000))) +
   labs(x = NULL) +
@@ -1039,7 +1038,6 @@ rpn_poci_2015.ggbarplot <- ggplot(rpn_poci_summ.gg, aes(x = factor(coast, x_labe
 ```{r}
 rpn_poci_2015.ggbarplot
 ```
-
 
 ## Macroalgae
 
@@ -1931,15 +1929,3 @@ rpn_cca_2015.ggbarplot <- ggplot(rpn_cca_summ.gg, aes(x = factor(coast, x_labels
 ```{r}
 rpn_cca_2015.ggbarplot
 ```
-
-
-
-
-
-
-
-
-
-
-
-
