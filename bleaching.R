@@ -365,7 +365,6 @@ rpn_plob_pb.main
 rpn_plob_pale.main
 rpn_plob_healthy.main
 
-
 rpn_plob_bl.summ  <-
   rpn_plob_bl.main %>%
   group_by(location, depth) %>%
@@ -377,9 +376,7 @@ rpn_plob_bl.summ  <-
   mutate(se = sd / sqrt(n),
          lower.ci = mean - qt(1 - (0.05 / 2), n - 1) * se,
          upper.ci = mean + qt(1 - (0.05 / 2), n - 1) * se) %>%
-  add_column(groups = rep(c('bl'), times = 6) %>%
-  add_column(groups = rep(c('bl'), times = 6)           
-  ) %>%
+  add_column(groups = rep(c('bl'), times = 6)) %>%
   mutate_at(vars(location, depth, groups), factor)
 
 rpn_plob_pb.summ  <-
@@ -394,7 +391,7 @@ rpn_plob_pb.summ  <-
          lower.ci = mean - qt(1 - (0.05 / 2), n - 1) * se,
          upper.ci = mean + qt(1 - (0.05 / 2), n - 1) * se) %>%
   add_column(groups = rep(c('pb'), times = 6)) %>%
-  mutate_at(vars(groups), factor)
+  mutate_at(vars(location, depth, groups), factor)
 
 rpn_plob_pale.summ  <-
   rpn_plob_pale.main %>%
@@ -408,7 +405,7 @@ rpn_plob_pale.summ  <-
          lower.ci = mean - qt(1 - (0.05 / 2), n - 1) * se,
          upper.ci = mean + qt(1 - (0.05 / 2), n - 1) * se) %>%
   add_column(groups = rep(c('p'), times = 6)) %>%
-  mutate_at(vars(groups), factor)
+  mutate_at(vars(location, depth, groups), factor)
 
 rpn_plob_healthy.summ  <-
   rpn_plob_healthy.main %>%
@@ -422,7 +419,7 @@ rpn_plob_healthy.summ  <-
          lower.ci = mean - qt(1 - (0.05 / 2), n - 1) * se,
          upper.ci = mean + qt(1 - (0.05 / 2), n - 1) * se) %>%
   add_column(groups = rep(c('h'), times = 6)) %>%
-  mutate_at(vars(groups), factor)
+  mutate_at(vars(location, depth, groups), factor)
 
 rpn_bleach_plob <-
   bind_rows(
@@ -434,24 +431,82 @@ rpn_bleach_plob <-
 rpn_bleach_plob
 
 rpn_plob_bl_summ.gg <- rpn_plob_bl.summ %>%
-  mutate(coast = factor(coast, levels = c('North', 'West', 'Southeast')),
-         depth = factor(depth, levels = c('8 m', '15 m')
+  add_column(coast = rep(c("North", "Southeast", "West"), each = 2, times = 1)) %>%
+  add_column(depth2 = rep(c("sh" = "8 m", "dp" = "15 m"), each = 1, times = 3)) %>%
+  mutate(coast = factor(coast, levels = c("North", "West", "Southeast")),
+         depth2 = factor(depth2, levels = c('8 m', '15 m')
          )
   )
 
 x_labels = c("North", "West", "Southeast")
 
-label_names = c("sh" = "8 m", "dp" = "15 m")
+label_names = c("8 m" = "8 m", "15 m" = "15 m")
 
-rpn_plob_bl_2015.ggbarplot <- ggplot(rpn_plob_bl.summ, aes(x = factor(location, x_labels), y = mean, fill = location)) +   
+rpn_plob_bl_2015.ggbarplot <- ggplot(rpn_plob_bl_summ.gg, aes(x = factor(coast, x_labels), 
+                                                           y = mean, fill = coast)) +   
   geom_bar(stat = "identity", width = 0.75, color = "black", linewidth = 0.50, alpha = 0.6) +
   geom_linerange(aes(ymin = mean, ymax = mean + sd), linewidth = 0.75) +
   scale_y_continuous(expression(paste("Percent Cover")), limits = c(0, 1.0), 
                      labels = function(x) paste0(x*100)) + 
-  scale_x_discrete(expand = c(0, 1), labels = x_labels) + 
-  scale_fill_manual(values = c("#FFC74E", "#82A5C0", "#ABC178")) + #
-  facet_wrap( ~ depth, labeller = as_labeller(label_names), dir = "v", ncol = 1) + 
-  ggtitle(expression(paste(italic(" Porites "), "spp."))) +
+  scale_x_discrete(expand = c(0, 1)) + 
+  scale_fill_manual(values = c("#FFC74E", "#82A5C0", "#ABC178")) + 
+  #facet_grid(groups ~ depth2, margin = FALSE, labeller = labeller(depth2 = label_names)) +
+  #facet_grid(~ depth2, margin = FALSE, labeller = labeller(depth2 = label_names)) +
+  facet_wrap( ~ depth2, labeller = as_labeller(label_names), dir = "v", ncol = 1) +
+  ggtitle(expression(paste(italic(" Porites lobata"), " - Bleached"))) +
+  #geom_text(aes(label = cld, y = upper.ci), vjust = -0.5, size = 10) +
+  #scale_y_log10(expression(paste("Colony Size (", cm^2, ")"), limits = c(0, 100000))) +
+  labs(x = NULL) +
+  theme(strip.text = element_text(size = 10, color = "black", hjust = 0.50),
+        strip.background = element_rect(fill = "#FFFFFF", color = NA),    
+        panel.background = element_rect(fill = "#FFFFFF", color = NA),
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        panel.grid.major.y = element_line(color = "#b2b2b2"),
+        panel.spacing.x = unit(1, "cm"),
+        panel.spacing.y = unit(0.5, "cm"),
+        panel.spacing = unit(1, "lines"),
+        axis.ticks = element_blank(),
+        legend.position = 'right',
+        plot.title = element_text(size = 11),
+        axis.text.y = element_text(size = 10),
+        axis.text.x = element_blank(),
+        axis.title.y = element_text(size = 14),
+        legend.title = element_blank())
+
+rpn_plob_bl_2015.ggbarplot
+
+#rpn_plob_summ.gg$coast = c('North', 'West', 'Southeast')
+leg1 <- get_legend(rpn_plob_2015.ggbarplot)
+leg1 <- as_ggplot(rpn_plob_2015.ggbarplot)
+
+# Partially bleached
+
+rpn_plob_pb_summ.gg <- rpn_plob_pb.summ %>%
+  add_column(coast = rep(c("North", "Southeast", "West"), each = 2, times = 1)) %>%
+  add_column(depth2 = rep(c("sh" = "8 m", "dp" = "15 m"), each = 1, times = 3)) %>%
+  mutate(coast = factor(coast, levels = c("North", "West", "Southeast")),
+         depth2 = factor(depth2, levels = c('8 m', '15 m')
+         )
+  )
+
+x_labels = c("North", "West", "Southeast")
+
+label_names = c("8 m" = "8 m", "15 m" = "15 m")
+
+rpn_plob_pb_2015.ggbarplot <- ggplot(rpn_plob_pb_summ.gg, aes(x = factor(coast, x_labels), 
+                                                              y = mean, fill = coast)) +   
+  geom_bar(stat = "identity", width = 0.75, color = "black", linewidth = 0.50, alpha = 0.6) +
+  geom_linerange(aes(ymin = mean, ymax = mean + sd), linewidth = 0.75) +
+  scale_y_continuous(expression(paste("Percent Cover")), limits = c(0, 1.0), 
+                     labels = function(x) paste0(x*100)) + 
+  scale_x_discrete(expand = c(0, 1)) + 
+  scale_fill_manual(values = c("#FFC74E", "#82A5C0", "#ABC178")) + 
+  #facet_grid(groups ~ depth2, margin = FALSE, labeller = labeller(depth2 = label_names)) +
+  #facet_grid(~ depth2, margin = FALSE, labeller = labeller(depth2 = label_names)) +
+  facet_wrap( ~ depth2, labeller = as_labeller(label_names), dir = "v", ncol = 1) +
+  ggtitle(expression(paste(italic(" Porites lobata"), " - Partially Bleached"))) +
   #geom_text(aes(label = cld, y = upper.ci), vjust = -0.5, size = 10) +
   #scale_y_log10(expression(paste("Colony Size (", cm^2, ")"), limits = c(0, 100000))) +
   labs(x = NULL) +
@@ -473,11 +528,175 @@ rpn_plob_bl_2015.ggbarplot <- ggplot(rpn_plob_bl.summ, aes(x = factor(location, 
         axis.title.y = element_text(size = 14),
         legend.title = element_blank())
 
-rpn_plob_bl_2015.ggbarplot
+rpn_plob_pb_2015.ggbarplot
 
 #rpn_plob_summ.gg$coast = c('North', 'West', 'Southeast')
 leg1 <- get_legend(rpn_plob_2015.ggbarplot)
 leg1 <- as_ggplot(rpn_plob_2015.ggbarplot)
+
+################################################################################
+
+# Pale
+
+rpn_plob_pale_summ.gg <- rpn_plob_pale.summ %>%
+  add_column(coast = rep(c("North", "Southeast", "West"), each = 2, times = 1)) %>%
+  add_column(depth2 = rep(c("sh" = "8 m", "dp" = "15 m"), each = 1, times = 3)) %>%
+  mutate(coast = factor(coast, levels = c("North", "West", "Southeast")),
+         depth2 = factor(depth2, levels = c('8 m', '15 m')
+         )
+  )
+
+x_labels = c("North", "West", "Southeast")
+
+label_names = c("8 m" = "8 m", "15 m" = "15 m")
+
+rpn_plob_pale_2015.ggbarplot <- ggplot(rpn_plob_pale_summ.gg, aes(x = factor(coast, x_labels), 
+                                                              y = mean, fill = coast)) +   
+  geom_bar(stat = "identity", width = 0.75, color = "black", linewidth = 0.50, alpha = 0.6) +
+  geom_linerange(aes(ymin = mean, ymax = mean + sd), linewidth = 0.75) +
+  scale_y_continuous(expression(paste("Percent Cover")), limits = c(0, 1.0), 
+                     labels = function(x) paste0(x*100)) + 
+  scale_x_discrete(expand = c(0, 1)) + 
+  scale_fill_manual(values = c("#FFC74E", "#82A5C0", "#ABC178")) + 
+  #facet_grid(groups ~ depth2, margin = FALSE, labeller = labeller(depth2 = label_names)) +
+  #facet_grid(~ depth2, margin = FALSE, labeller = labeller(depth2 = label_names)) +
+  facet_wrap( ~ depth2, labeller = as_labeller(label_names), dir = "v", ncol = 1) +
+  ggtitle(expression(paste(italic(" Porites lobata"), " - Pale"))) +
+  #geom_text(aes(label = cld, y = upper.ci), vjust = -0.5, size = 10) +
+  #scale_y_log10(expression(paste("Colony Size (", cm^2, ")"), limits = c(0, 100000))) +
+  labs(x = NULL) +
+  theme(strip.text = element_text(size = 10, color = "black", hjust = 0.50),
+        strip.background = element_rect(fill = "#FFFFFF", color = NA),    
+        panel.background = element_rect(fill = "#FFFFFF", color = NA),
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        panel.grid.major.y = element_line(color = "#b2b2b2"),
+        panel.spacing.x = unit(1, "cm"),
+        panel.spacing.y = unit(0.5, "cm"),
+        panel.spacing = unit(1, "lines"),
+        axis.ticks = element_blank(),
+        legend.position = 'right',
+        plot.title = element_text(size = 11),
+        axis.text.y = element_text(size = 10),
+        axis.text.x = element_text(size = 12),
+        axis.title.y = element_text(size = 14),
+        legend.title = element_blank())
+
+rpn_plob_pale_2015.ggbarplot
+
+#rpn_plob_summ.gg$coast = c('North', 'West', 'Southeast')
+leg1 <- get_legend(rpn_plob_2015.ggbarplot)
+leg1 <- as_ggplot(rpn_plob_2015.ggbarplot)
+
+################################################################################
+
+# Not bleached
+
+rpn_plob_healthy_summ.gg <- rpn_plob_healthy.summ %>%
+  add_column(coast = rep(c("North", "Southeast", "West"), each = 2, times = 1)) %>%
+  add_column(depth2 = rep(c("sh" = "8 m", "dp" = "15 m"), each = 1, times = 3)) %>%
+  mutate(coast = factor(coast, levels = c("North", "West", "Southeast")),
+         depth2 = factor(depth2, levels = c('8 m', '15 m')
+         )
+  )
+
+x_labels = c("North", "West", "Southeast")
+
+label_names = c("8 m" = "8 m", "15 m" = "15 m")
+
+rpn_plob_healthy_2015.ggbarplot <- ggplot(rpn_plob_healthy_summ.gg, aes(x = factor(coast, x_labels), 
+                                                                  y = mean, fill = coast)) +   
+  geom_bar(stat = "identity", width = 0.75, color = "black", linewidth = 0.50, alpha = 0.6) +
+  geom_linerange(aes(ymin = mean, ymax = mean + sd), linewidth = 0.75) +
+  scale_y_continuous(expression(paste("Percent Cover")), limits = c(0, 1.0), 
+                     labels = function(x) paste0(x*100)) + 
+  scale_x_discrete(expand = c(0, 1)) + 
+  scale_fill_manual(values = c("#FFC74E", "#82A5C0", "#ABC178")) + 
+  #facet_grid(groups ~ depth2, margin = FALSE, labeller = labeller(depth2 = label_names)) +
+  #facet_grid(~ depth2, margin = FALSE, labeller = labeller(depth2 = label_names)) +
+  facet_wrap( ~ depth2, labeller = as_labeller(label_names), dir = "v", ncol = 1) +
+  ggtitle(expression(paste(italic(" Porites lobata"), " - No bleach"))) +
+  #geom_text(aes(label = cld, y = upper.ci), vjust = -0.5, size = 10) +
+  #scale_y_log10(expression(paste("Colony Size (", cm^2, ")"), limits = c(0, 100000))) +
+  labs(x = NULL) +
+  theme(strip.text = element_text(size = 10, color = "black", hjust = 0.50),
+        strip.background = element_rect(fill = "#FFFFFF", color = NA),    
+        panel.background = element_rect(fill = "#FFFFFF", color = NA),
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        panel.grid.major.y = element_line(color = "#b2b2b2"),
+        panel.spacing.x = unit(1, "cm"),
+        panel.spacing.y = unit(0.5, "cm"),
+        panel.spacing = unit(1, "lines"),
+        axis.ticks = element_blank(),
+        legend.position = 'right',
+        plot.title = element_text(size = 11),
+        axis.text.y = element_text(size = 10),
+        axis.text.x = element_text(size = 12),
+        axis.title.y = element_text(size = 14),
+        legend.title = element_blank())
+
+rpn_plob_healthy_2015.ggbarplot
+
+#rpn_plob_summ.gg$coast = c('North', 'West', 'Southeast')
+#leg1 <- get_legend(rpn_plob_2015.ggbarplot)
+#leg1 <- as_ggplot(rpn_plob_2015.ggbarplot)
+
+rpn_bleach_plob_summ.gg <-
+  bind_rows(
+    rpn_plob_bl_summ.gg,
+    rpn_plob_pb_summ.gg,
+    rpn_plob_pale_summ.gg,
+    rpn_plob_healthy_summ.gg)
+
+rpn_bleach_plob_main.gg <- rpn_bleach_plob_summ.gg %>%
+  add_column(bleach = rep(c("Bleached", "Partially Bleached", "Pale", "Not Bleached"), each = 6, times = 1)) %>%
+  #add_column(depth2 = rep(c("sh" = "8 m", "dp" = "15 m"), each = 1, times = 3)) %>%
+  mutate(bleach = factor(bleach, levels = c("Bleached", "Partially Bleached", "Pale", "Not Bleached")))
+
+x_labels = c("North", "West", "Southeast")
+
+label_names = c("8 m" = "8 m", "15 m" = "15 m")
+
+bleach_labels = c("Bleached" = "Bleached", "Partially Bleached" = "Partially Bleached", 
+                  "Pale" = "Pale", "Not Bleached" = "Not Bleached")
+
+rpn_bleach_plob_main.ggbarplot <- ggplot(rpn_bleach_plob_main.gg, aes(x = factor(coast, x_labels), y = mean, fill = coast)) +   
+  geom_bar(stat = "identity", width = 0.75, color = "black", linewidth = 0.50, alpha = 0.6) +
+  geom_linerange(aes(ymin = mean, ymax = mean + sd), linewidth = 0.75) +
+  scale_y_continuous(expression(paste("Percent Cover")), limits = c(0, 1.0), 
+                     labels = function(x) paste0(x*100)) + 
+  scale_x_discrete(expand = c(0, 1), labels = x_labels) + 
+  scale_fill_manual(values = c("#FFC74E", "#82A5C0", "#ABC178")) + #
+  facet_grid(bleach ~ depth2, margin = FALSE) + 
+  #facet_grid(group ~ depth2, margin = FALSE, labeller = labeller(group = group_labels)) +
+  #ggtitle(expression(paste(italic(" Porites "), "spp."))) +
+  #geom_text(aes(label = cld, y = upper.ci), vjust = -0.5, size = 10) +
+  #scale_y_log10(expression(paste("Colony Size (", cm^2, ")"), limits = c(0, 100000))) +
+  labs(x = NULL) +
+  theme(strip.text = element_text(size = 10, color = "black", hjust = 0.50),
+        strip.background = element_rect(fill = "#FFFFFF", color = NA),    
+        panel.background = element_rect(fill = "#FFFFFF", color = NA),
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        panel.grid.major.y = element_line(color = "#b2b2b2"),
+        panel.spacing.x = unit(1, "cm"),
+        panel.spacing.y = unit(0.5, "cm"),
+        panel.spacing = unit(1, "lines"),
+        axis.ticks = element_blank(),
+        legend.position = 'right',
+        plot.title = element_text(size = 11),
+        axis.text.y = element_text(size = 10),
+        axis.text.x = element_blank(),
+        axis.title.y = element_text(size = 14),
+        legend.title = element_blank())
+
+rpn_bleach_plob_main.ggbarplot
+labeller = labeller(bleach = bleach_labels)
+################################################################################
 
 plot_grid(
   
