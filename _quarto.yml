@@ -65,8 +65,6 @@ website:
         text: Appendix II
       - href: content/soil2.qmd
         text: Soil
-      - href: content/app2_pdf.qmd
-        text: Supplementary Material II
 
 format:
   html:
