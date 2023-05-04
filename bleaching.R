@@ -291,38 +291,59 @@ rpn_cover_groups <-
 
 # par(mfrow = c(3, 4))
 
-plot_grid(
+# plot_grid(
+# 
+# rpn_plob_2015.ggbarplot,
+# rpn_poci_2015.ggbarplot,
+# rpn_ma_2015.ggbarplot,
+# rpn_turf_2015.ggbarplot,
+# rpn_cca_2015.ggbarplot,
+# rpn_bare_2015.ggbarplot,
+# rpn_sand_2015.ggbarplot
+# 
+# #labels = c('A', 'B')
+# 
+# )
 
-rpn_plob_2015.ggbarplot,
-rpn_poci_2015.ggbarplot,
-rpn_ma_2015.ggbarplot,
-rpn_turf_2015.ggbarplot,
-rpn_cca_2015.ggbarplot,
-rpn_bare_2015.ggbarplot,
-rpn_sand_2015.ggbarplot
+rpn_cover_groups.gg <-
+  rpn_cover_groups %>%
+  mutate(group_labels = case_when(
+          group == "plob" ~ "PLOB", 
+          group == "poci" ~ "POCI",
+          group == "ma" ~ "MA",
+          group == "turf" ~ "Turf",
+          group == "cca" ~ "CCA",
+          group == "bare" ~ "Bare",
+          group == "sand" ~ "Sand")
+    ) %>%
+  mutate_at(vars(group_labels), factor) %>%
+  add_column(
+    cld = rep(c('a'), times = 42)) %>%
+  mutate_at(vars(cld), factor)
 
-#labels = c('A', 'B')
+label_names = c("PLOB" = "PLOB",
+                "POCI" = "POCI",
+                "MA" = "MA",
+                "Turf" = "Turf",
+                "CCA" = "CCA",
+                "Bare" = "Bare",
+                "Sand" = "Sand")
 
-)
+x_labels = c("North", "West", "Southeast")
 
-group_labels = c("plob" = "PLOB", 
-             "poci" = "POCI",
-             "ma" = "MA",
-             "turf" = "Turf",
-             "cca" = "CCA",
-             "bare" = "Bare",
-             "sand" = "Sand")
+rpn_cover_groups.gg$group_labels <- factor(rpn_cover_groups.gg$group_labels, 
+                                           levels = c("PLOB", "POCI", "MA", "Turf", "CCA", "Bare", "Sand"))
 
-rpn_2015.ggbarplot <- ggplot(rpn_cover_groups, aes(x = factor(coast, x_labels), y = mean, fill = coast)) +   
+rpn_2015.ggbarplot <- ggplot(rpn_cover_groups.gg, aes(x = factor(coast, x_labels), y = mean, fill = coast)) +   
   geom_bar(stat = "identity", width = 0.75, color = "black", linewidth = 0.50, alpha = 0.6) +
   geom_linerange(aes(ymin = mean, ymax = mean + sd), linewidth = 0.75) +
   scale_y_continuous(expression(paste("Percent Cover")), limits = c(0, 1.0), 
                      labels = function(x) paste0(x*100)) + 
   scale_x_discrete(expand = c(0, 1), labels = x_labels) + 
   scale_fill_manual(values = c("#FFC74E", "#82A5C0", "#ABC178")) + #
-  facet_grid(group ~ depth2, margin = FALSE, labeller = labeller(group = group_labels)) + 
+  facet_grid(group_labels ~ depth2, margin = FALSE) + #, labeller = labeller(group_labels = label_names)) + 
   #ggtitle(expression(paste(italic(" Porites "), "spp."))) +
-  #geom_text(aes(label = cld, y = upper.ci), vjust = -0.5, size = 10) +
+  #geom_text(aes(label = cld, y = upper.ci), vjust = -0.25, size = 2) +
   #scale_y_log10(expression(paste("Colony Size (", cm^2, ")"), limits = c(0, 100000))) +
   labs(x = NULL) +
   theme(strip.text = element_text(size = 10, color = "black", hjust = 0.50),
@@ -344,6 +365,8 @@ rpn_2015.ggbarplot <- ggplot(rpn_cover_groups, aes(x = factor(coast, x_labels), 
         legend.title = element_blank())
 
 rpn_2015.ggbarplot
+
+# Bleaching Plots
 
 rpn_plob_bl.main <- data.frame(
   location = rep(c('north', 'west', 'se'), each = 4, times = 1)) %>%
@@ -695,62 +718,62 @@ rpn_bleach_plob_main.ggbarplot <- ggplot(rpn_bleach_plob_main.gg, aes(x = factor
         legend.title = element_blank())
 
 rpn_bleach_plob_main.ggbarplot
-labeller = labeller(bleach = bleach_labels)
+#labeller = labeller(bleach = bleach_labels)
 ################################################################################
 
-plot_grid(
-  
-  rpn_plob_2015.ggbarplot,
-  rpn_poci_2015.ggbarplot,
-  rpn_ma_2015.ggbarplot,
-  rpn_turf_2015.ggbarplot,
-  rpn_cca_2015.ggbarplot,
-  rpn_bare_2015.ggbarplot,
-  rpn_sand_2015.ggbarplot
-  
-  #labels = c('A', 'B')
-  
-)
-
-group_labels = c("plob" = "PLOB", 
-                 "poci" = "POCI",
-                 "ma" = "MA",
-                 "turf" = "Turf",
-                 "cca" = "CCA",
-                 "bare" = "Bare",
-                 "sand" = "Sand")
-
-rpn_2015.ggbarplot <- ggplot(rpn_cover_groups, aes(x = factor(coast, x_labels), y = mean, fill = coast)) +   
-  geom_bar(stat = "identity", width = 0.75, color = "black", linewidth = 0.50, alpha = 0.6) +
-  geom_linerange(aes(ymin = mean, ymax = mean + sd), linewidth = 0.75) +
-  scale_y_continuous(expression(paste("Percent Cover")), limits = c(0, 1.0), 
-                     labels = function(x) paste0(x*100)) + 
-  scale_x_discrete(expand = c(0, 1), labels = x_labels) + 
-  scale_fill_manual(values = c("#FFC74E", "#82A5C0", "#ABC178")) + #
-  facet_grid(group ~ depth2, margin = FALSE, labeller = labeller(group = group_labels)) + 
-  #ggtitle(expression(paste(italic(" Porites "), "spp."))) +
-  #geom_text(aes(label = cld, y = upper.ci), vjust = -0.5, size = 10) +
-  #scale_y_log10(expression(paste("Colony Size (", cm^2, ")"), limits = c(0, 100000))) +
-  labs(x = NULL) +
-  theme(strip.text = element_text(size = 10, color = "black", hjust = 0.50),
-        strip.background = element_rect(fill = "#FFFFFF", color = NA),    
-        panel.background = element_rect(fill = "#FFFFFF", color = NA),
-        panel.grid.major.x = element_blank(),
-        panel.grid.minor.x = element_blank(),
-        panel.grid.minor.y = element_blank(),
-        panel.grid.major.y = element_line(color = "#b2b2b2"),
-        panel.spacing.x = unit(1, "cm"),
-        panel.spacing.y = unit(0.5, "cm"),
-        panel.spacing = unit(1, "lines"),
-        axis.ticks = element_blank(),
-        legend.position = 'right',
-        plot.title = element_text(size = 11),
-        axis.text.y = element_text(size = 10),
-        axis.text.x = element_blank(),
-        axis.title.y = element_text(size = 14),
-        legend.title = element_blank())
-
-rpn_2015.ggbarplot
+# plot_grid(
+#   
+#   rpn_plob_2015.ggbarplot,
+#   rpn_poci_2015.ggbarplot,
+#   rpn_ma_2015.ggbarplot,
+#   rpn_turf_2015.ggbarplot,
+#   rpn_cca_2015.ggbarplot,
+#   rpn_bare_2015.ggbarplot,
+#   rpn_sand_2015.ggbarplot
+#   
+#   #labels = c('A', 'B')
+#   
+# )
+# 
+# group_labels = c("plob" = "PLOB", 
+#                  "poci" = "POCI",
+#                  "ma" = "MA",
+#                  "turf" = "Turf",
+#                  "cca" = "CCA",
+#                  "bare" = "Bare",
+#                  "sand" = "Sand")
+# 
+# rpn_2015.ggbarplot <- ggplot(rpn_cover_groups, aes(x = factor(coast, x_labels), y = mean, fill = coast)) +   
+#   geom_bar(stat = "identity", width = 0.75, color = "black", linewidth = 0.50, alpha = 0.6) +
+#   geom_linerange(aes(ymin = mean, ymax = mean + sd), linewidth = 0.75) +
+#   scale_y_continuous(expression(paste("Percent Cover")), limits = c(0, 1.0), 
+#                      labels = function(x) paste0(x*100)) + 
+#   scale_x_discrete(expand = c(0, 1), labels = x_labels) + 
+#   scale_fill_manual(values = c("#FFC74E", "#82A5C0", "#ABC178")) + #
+#   facet_grid(group ~ depth2, margin = FALSE, labeller = labeller(group = group_labels)) + 
+#   #ggtitle(expression(paste(italic(" Porites "), "spp."))) +
+#   #geom_text(aes(label = cld, y = upper.ci), vjust = -0.5, size = 10) +
+#   #scale_y_log10(expression(paste("Colony Size (", cm^2, ")"), limits = c(0, 100000))) +
+#   labs(x = NULL) +
+#   theme(strip.text = element_text(size = 10, color = "black", hjust = 0.50),
+#         strip.background = element_rect(fill = "#FFFFFF", color = NA),    
+#         panel.background = element_rect(fill = "#FFFFFF", color = NA),
+#         panel.grid.major.x = element_blank(),
+#         panel.grid.minor.x = element_blank(),
+#         panel.grid.minor.y = element_blank(),
+#         panel.grid.major.y = element_line(color = "#b2b2b2"),
+#         panel.spacing.x = unit(1, "cm"),
+#         panel.spacing.y = unit(0.5, "cm"),
+#         panel.spacing = unit(1, "lines"),
+#         axis.ticks = element_blank(),
+#         legend.position = 'right',
+#         plot.title = element_text(size = 11),
+#         axis.text.y = element_text(size = 10),
+#         axis.text.x = element_blank(),
+#         axis.title.y = element_text(size = 14),
+#         legend.title = element_blank())
+# 
+# rpn_2015.ggbarplot
 
 
 

@@ -102,7 +102,10 @@ model_plob <- with(rpn_plob, glm(cbind(total_count, failures) ~ groups, family =
 summary(glht(model_plob, 
              linfct = mcp(groups =
                      #Is the difference between these groups different from zero?
-                     c("(north.sh) - (west.sh) = 0",
+                     c("(north.sh) - (north.dp) = 0",
+                       "(west.sh) - (west.dp) = 0",
+                       "(se.sh) - (se.dp) = 0",
+                       "(north.sh) - (west.sh) = 0",
                        "(north.sh) - (west.dp) = 0",
                        "(north.sh) - (se.sh) = 0",
                        "(north.sh) - (se.dp) = 0",
@@ -116,6 +119,21 @@ summary(glht(model_plob,
                        "(se.dp) - (west.dp) = 0"))),
         test = adjusted("holm"))
 ```
+
+```{r}
+plob_mult <- summary(glht(model_plob, 
+             linfct = mcp(groups = "Tukey")), test = adjusted("holm"))
+```
+
+```{r}
+letter_display <- cld(plob_mult)
+```
+
+```{r}
+letter_display
+```
+
+# RPN PLOB Bleaching
 
 ```{r}
 rpn_plob_bleach <- rpn_bleach %>%  
@@ -223,6 +241,59 @@ rpn_plob_healthy.main <- rpn_plob_healthy2 %>%
 
 ```{r}
 rpn_plob_healthy.main 
+```
+
+# PLOB Bleaching Stats
+
+```{r}
+plob.glm <- glm(cbind(total_count, failures) ~ location * depth, 
+                    family = binomial(link = "logit"), 
+                    data = rpn_plob)
+```
+
+```{r}
+par(mfrow = c(2, 2))
+plot(plob.glm)
+```
+
+```{r}
+summary(plob.glm)
+```
+
+#### https://www.rpubs.com/daharo_calpoly/502695
+
+```{r}
+rpn_plob$groups <- interaction(rpn_plob$location, rpn_plob$depth)
+```
+
+## Create a post-hoc model
+
+```{r}
+model_plob <- with(rpn_plob, glm(cbind(total_count, failures) ~ groups, family = binomial))
+```
+
+## Determine the post-hoc comparisons of interest
+
+```{r}
+summary(glht(model_plob, 
+             linfct = mcp(groups =
+                     #Is the difference between these groups different from zero?
+                     c("(north.sh) - (north.dp) = 0",
+                       "(west.sh) - (west.dp) = 0",
+                       "(se.sh) - (se.dp) = 0",
+                       "(north.sh) - (west.sh) = 0",
+                       "(north.sh) - (west.dp) = 0",
+                       "(north.sh) - (se.sh) = 0",
+                       "(north.sh) - (se.dp) = 0",
+                       "(north.dp) - (west.sh) = 0",
+                       "(north.dp) - (west.dp) = 0",
+                       "(north.dp) - (se.sh) = 0",
+                       "(north.dp) - (se.dp) = 0",
+                       "(se.sh) - (west.sh) = 0",
+                       "(se.sh) - (west.dp) = 0",
+                       "(se.dp) - (west.sh) = 0",
+                       "(se.dp) - (west.dp) = 0"))),
+        test = adjusted("holm"))
 ```
 
 ## Pocillopora
