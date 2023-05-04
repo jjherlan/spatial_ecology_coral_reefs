@@ -24,7 +24,7 @@ require(psych)
 require(DHARMa)
 ```
 
-## Quadrat Counts
+### Quadrat Counts
 
 ### Southeast - Vaihu
 
