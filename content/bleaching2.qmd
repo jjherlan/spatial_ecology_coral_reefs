@@ -21,6 +21,7 @@ require(VGAM)
 require(Rmisc)
 require(car)
 require(multcomp)
+require(lubridate)
 ```
 
 ```{r, incluse = FALSE}
@@ -1929,3 +1930,85 @@ rpn_cca_2015.ggbarplot <- ggplot(rpn_cca_summ.gg, aes(x = factor(coast, x_labels
 ```{r}
 rpn_cca_2015.ggbarplot
 ```
+
+```{r}
+rpn_crw <- read_delim('rpn_crw.txt', delim = " ")
+```
+
+#```{r}
+#rpn_crw.main <- write_csv(rpn_crw, 'rpn_crw.csv')
+#```
+
+```{r}
+rpn_crw.main <- read_csv('rpn_crw.csv')
+```
+
+```{r}
+rpn_crw.main
+```
+
+```{r}
+rpn_crw.main2 <- 
+  rpn_crw.main %>%
+  mutate(date = make_date(year, month, day)) 
+
+#%>%
+#  filter(date > 2015-01-01)
+```
+
+```{r}
+rpn_crw.main2
+```
+
+```{r}
+rpn_crw.main3 <- 
+  rpn_crw.main2 %>%
+  filter(date >= '2014-01-01',
+         date <= '2015-12-31') %>% 
+  dplyr::select(sst_max, dhw, date) %>%
+  pivot_longer(!date, names_to = "metric", values_to = "value")
+```
+
+```{r}
+rpn_crw.main3
+```
+
+```{r}
+# Using ggplot
+ggplot(data = rpn_crw.main3, aes(x = date, y = value, col = metric)) +
+  geom_line() +
+#  geom_smooth(se = FALSE) +
+  labs(y = "Temperature")
+#  scale_x_datetime(date_breaks = "year", date_labels = "%b-%Y")
+```
+
+
+```{r}
+my_data <- read_tsv("https://coralreefwatch.noaa.gov/product/vs/data/easter_island.txt")
+```
+
+```{r}
+head(my_data)
+```
+
+```{r}
+write_csv(rpn_crw, ".csv")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
