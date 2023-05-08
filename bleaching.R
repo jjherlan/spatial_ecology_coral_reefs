@@ -775,9 +775,11 @@ rpn_bleach_plob_main.ggbarplot
 # 
 # rpn_2015.ggbarplot
 
-
-
-
+tmp6 <- data.frame(Month = c(1,1,2,2,3,3,4,4),
+                   Teams = c("A", "B", "A", "B", "A", "B", "A", "B"),
+                   Total = c(1000, 1200, 1150, 1220, 1300, 1030, 1060, 1380),
+                   Failed = c(6,4,7,8,2,6,9,4))
+tmp6
 
 
 
