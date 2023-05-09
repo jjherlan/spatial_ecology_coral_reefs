@@ -88,6 +88,11 @@ plot(plob.glm)
 summary(plob.glm)
 ```
 
+```{r}
+Anova(plob.glm, type = "III")
+```
+
+
 #### https://www.rpubs.com/daharo_calpoly/502695
 
 ```{r}
