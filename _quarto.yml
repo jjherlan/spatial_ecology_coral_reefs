@@ -63,6 +63,8 @@ website:
         text: Coral Dispersion
       - href: content/app2.qmd
         text: Appendix II
+      - href: content/bleaching_results_material.qmd
+        text: Bleaching Supplemental Material
       - href: content/soil2.qmd
         text: Soil
 

@@ -23,34 +23,34 @@ require(car)
 require(multcomp)
 ```
 
-```{r, incluse = FALSE}
+```{r, include = FALSE}
 rpn_bleach <- read.csv('rpn_bleach_2015.csv') %>%
   as_tibble() %>%
   mutate_at(vars(location, depth, transect, group, status), factor)
 ```
 
-```{r}
+```{r, include = FALSE}
 rpn_bleach
 ```
 
-```{r}
+```{r, include = FALSE}
 rpn_summary <- rpn_bleach %>%  
   group_by(location, depth, transect, group) %>%
   dplyr::summarise(total_count = n())
 ```
 
-```{r}
+```{r, include = FALSE}
 rpn_PLOB <- rpn_bleach %>%  
   filter(group == "PLOB") %>%
   group_by(location, depth, transect) %>%
   dplyr::summarise(total_count = n())
 ```
 
-```{r}
+```{r, include = FALSE}
 rpn_PLOB
 ```
 
-```{r}
+```{r, include = FALSE}
 rpn_plob <- read.csv('rpn_cover.csv') %>%
   as_tibble() %>%
   filter(group == "PLOB") %>%
@@ -83,6 +83,11 @@ plot(plob.glm)
 ```{r}
 summary(plob.glm)
 ```
+
+```{r}
+Anova(plob.glm, type = 'III')
+```
+
 
 #### https://www.rpubs.com/daharo_calpoly/502695
 
@@ -135,14 +140,14 @@ letter_display
 
 # RPN PLOB Bleaching
 
-```{r}
+```{r, include = FALSE}
 rpn_plob_bleach <- rpn_bleach %>%  
   filter(group == 'PLOB' & status == 'BL') %>%
   group_by(location, depth, transect) %>%
   dplyr::summarise(total_count = n())
 ```
 
-```{r}
+```{r, include = FALSE}
 rpn_plob_bleach
 ```
 
@@ -213,22 +218,22 @@ rpn_plob_healthy <- rpn_bleach %>%
   dplyr::summarise(total_count = n())
 ```
 
-```{r}
+```{r, include = TRUE}
 rpn_plob_healthy
 ```
 
-```{r}
+```{r, include = TRUE}
 rpn_plob_healthy2 <-
 as.data.frame(rpn_plob_healthy) %>%
   add_row(location = 'se', depth = 'dp', transect = 'two', total_count = 0) %>%
   add_row(location = 'west', depth = 'sh', transect = 'two', total_count = 0)
 ```
 
-```{r}
+```{r, include = TRUE}
 rpn_plob_healthy2
 ```
 
-```{r}
+```{r, include = TRUE}
 rpn_plob_healthy.main <- rpn_plob_healthy2 %>%
   #as_tibble() %>%
   #filter(group == "PLOB") %>%
@@ -239,43 +244,52 @@ rpn_plob_healthy.main <- rpn_plob_healthy2 %>%
     )
 ```
 
-```{r}
+```{r, include = TRUE}
 rpn_plob_healthy.main 
 ```
 
 # PLOB Bleaching Stats
 
 ```{r}
-plob.glm <- glm(cbind(total_count, failures) ~ location * depth, 
+plob_pale.glm <- glm(cbind(total_count, failures) ~ location * depth, 
                     family = binomial(link = "logit"), 
-                    data = rpn_plob)
+                    data = rpn_plob_pale.main)
 ```
 
 ```{r}
 par(mfrow = c(2, 2))
-plot(plob.glm)
+plot(plob_pale.glm)
 ```
 
 ```{r}
-summary(plob.glm)
+summary(plob_pale.glm)
 ```
 
 #### https://www.rpubs.com/daharo_calpoly/502695
 
 ```{r}
-rpn_plob$groups <- interaction(rpn_plob$location, rpn_plob$depth)
+rpn_plob_pale.main$groups <- interaction(rpn_plob_pale.main$location, rpn_plob_pale.main$depth)
+```
+
+```{r}
+rpn_plob_pale.main$groups
 ```
 
 ## Create a post-hoc model
 
 ```{r}
-model_plob <- with(rpn_plob, glm(cbind(total_count, failures) ~ groups, family = binomial))
+model_plob_pale <- with(rpn_plob_pale.main, glm(cbind(total_count, failures) ~ groups, family = binomial))
 ```
+
+```{r}
+model_plob_pale
+```
+
 
 ## Determine the post-hoc comparisons of interest
 
 ```{r}
-summary(glht(model_plob, 
+summary(glht(model_plob_pale, 
              linfct = mcp(groups =
                      #Is the difference between these groups different from zero?
                      c("(north.sh) - (north.dp) = 0",
