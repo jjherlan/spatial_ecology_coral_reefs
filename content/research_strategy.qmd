@@ -3,7 +3,7 @@ title: "Spatial patterns of competition between coral at Rapa Nui"
 author: "jjh"
 format: 
   revealjs:
-    incremental: false
+    incremental: true
 editor: visual
 ---
 
@@ -15,14 +15,13 @@ require(car)
 ::: incremental
 ## Saptial pattern of reef-bulding corals
 
--   Result of positive and negative interactions between neighboring coral that compete for space on the reef to live 
+-   Result of positive and negative interactions between neighboring coral that compete for space on the reef to live
 
-    - Important for ecological theory
+    -   Important for ecological theory
 
-- Three-dimensional structure that facilitates abundance and diversity of other reef organisms like fish and crustaceans  
+-   Three-dimensional structure that facilitates abundance and diversity of other reef organisms like fish and crustaceans
 
-    - Important food sources to island communities
-      
+    -   Important food sources to island communities
 :::
 
 ------------------------------------------------------------------------
@@ -32,12 +31,11 @@ require(car)
 
 -   Do the frequencies of positive and negative interactions between neighboring coral change over environmental gradients?
 
-    - Important for ecological theory
+    -   Important for ecological theory
 
-- Environmental gradients may affect the three-dimensional structure of a reef and may respond in asymmetric ways to acute disturbances.  
+-   Environmental gradients may affect the three-dimensional structure of a reef and may respond in asymmetric ways to acute disturbances.
 
-    - Important food sources to island communities
-      
+    -   Important food sources to island communities
 :::
 
 ------------------------------------------------------------------------
@@ -45,16 +43,15 @@ require(car)
 ::: incremental
 ## Link between coral interactions and community structure
 
--   Any ecological consequences of coral interactions must be manifested 
+-   Any ecological consequences of coral interactions must be manifested
 
-    - Important for ecological theory
-    
-    - Bradbury & Young (1983)
+    -   Important for ecological theory
 
-- Environmental gradients may affect the three-dimensional structure of a reef and may respond in asymmetric ways to acute disturbances.  
+    -   Bradbury & Young (1983)
 
-    - Important food sources to island communities
-      
+-   Environmental gradients may affect the three-dimensional structure of a reef and may respond in asymmetric ways to acute disturbances.
+
+    -   Important food sources to island communities
 :::
 
 ------------------------------------------------------------------------
@@ -62,21 +59,22 @@ require(car)
 ::: incremental
 ## Methodology
 
--   Large-area imaging (LAI) 
+-   Large-area imaging (LAI)
 
-    - Important for ecological theory
-    
-    
+    -   Important for ecological theory
 
-- Randomization tests for spatially structured ecological data
+-   Randomization tests for spatially structured ecological data
 
-    - Bootstrapping technique
+    -   Bootstrapping technique
 
-    - McTague, S. et al. *in prep*
-    
-        - Bradbury & Young (1983)
-      
+    -   McTague, S. et al. *in prep*
+
+        -   Bradbury & Young (1983)
 :::
+
+------------------------------------------------------------------------
+
+![](rpn_ortho_main.png){fig-align="center" width="1100" height="550"}
 
 ------------------------------------------------------------------------
 
@@ -93,4 +91,3 @@ require(car)
 ------------------------------------------------------------------------
 
 ![](methods2.png){fig-align="center" width="1050" height="450"}
-
