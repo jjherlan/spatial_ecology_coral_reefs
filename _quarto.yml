@@ -65,6 +65,8 @@ website:
         text: Appendix II
       - href: content/bleaching_results_material.qmd
         text: Bleaching Supplemental Material
+      - href: content/research_strategy.qmd
+        text: Research Approach
       - href: content/soil2.qmd
         text: Soil
 

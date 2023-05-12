@@ -111,7 +111,10 @@ model_plob <- with(rpn_plob, glm(cbind(total_count, failures) ~ groups, family =
 summary(glht(model_plob, 
              linfct = mcp(groups =
                      #Is the difference between these groups different from zero?
-                     c("(north.sh) - (west.sh) = 0",
+                     c("(north.sh) - (north.dp) = 0",
+                       "(west.sh) - (west.dp) = 0",
+                       "(se.sh) - (se.dp) = 0",
+                       "(north.sh) - (west.sh) = 0",
                        "(north.sh) - (west.dp) = 0",
                        "(north.sh) - (se.sh) = 0",
                        "(north.sh) - (se.dp) = 0",
@@ -317,7 +320,10 @@ model_poci <- with(rpn_poci, glm(cbind(total_count, failures) ~ groups, family =
 summary(glht(model_poci, 
              linfct = mcp(groups =
                      #Is the difference between these groups different from zero?
-                     c("(north.sh) - (west.sh) = 0",
+                     c("(north.sh) - (north.dp) = 0",
+                       "(west.sh) - (west.dp) = 0",
+                       "(se.sh) - (se.dp) = 0",
+                       "(north.sh) - (west.sh) = 0",
                        "(north.sh) - (west.dp) = 0",
                        "(north.sh) - (se.sh) = 0",
                        "(north.sh) - (se.dp) = 0",

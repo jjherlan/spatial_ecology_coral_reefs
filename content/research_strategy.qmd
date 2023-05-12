@@ -1,0 +1,96 @@
+---
+title: "Spatial patterns of competition between coral at Rapa Nui"
+author: "jjh"
+format: 
+  revealjs:
+    incremental: false
+editor: visual
+---
+
+```{r, include = FALSE}
+require(tidyverse)
+require(car)
+```
+
+::: incremental
+## Saptial pattern of reef-bulding corals
+
+-   Result of positive and negative interactions between neighboring coral that compete for space on the reef to live 
+
+    - Important for ecological theory
+
+- Three-dimensional structure that facilitates abundance and diversity of other reef organisms like fish and crustaceans  
+
+    - Important food sources to island communities
+      
+:::
+
+------------------------------------------------------------------------
+
+::: incremental
+## Saptial pattern of reef-bulding corals
+
+-   Do the frequencies of positive and negative interactions between neighboring coral change over environmental gradients?
+
+    - Important for ecological theory
+
+- Environmental gradients may affect the three-dimensional structure of a reef and may respond in asymmetric ways to acute disturbances.  
+
+    - Important food sources to island communities
+      
+:::
+
+------------------------------------------------------------------------
+
+::: incremental
+## Link between coral interactions and community structure
+
+-   Any ecological consequences of coral interactions must be manifested 
+
+    - Important for ecological theory
+    
+    - Bradbury & Young (1983)
+
+- Environmental gradients may affect the three-dimensional structure of a reef and may respond in asymmetric ways to acute disturbances.  
+
+    - Important food sources to island communities
+      
+:::
+
+------------------------------------------------------------------------
+
+::: incremental
+## Methodology
+
+-   Large-area imaging (LAI) 
+
+    - Important for ecological theory
+    
+    
+
+- Randomization tests for spatially structured ecological data
+
+    - Bootstrapping technique
+
+    - McTague, S. et al. *in prep*
+    
+        - Bradbury & Young (1983)
+      
+:::
+
+------------------------------------------------------------------------
+
+![](neighbor.png){fig-align="center" width="650" height="750"}
+
+------------------------------------------------------------------------
+
+![](methods.png){fig-align="center" width="1150" height="650"}
+
+------------------------------------------------------------------------
+
+![](methods3.png){fig-align="center" width="1100" height="350"}
+
+------------------------------------------------------------------------
+
+![](methods2.png){fig-align="center" width="1050" height="450"}
+

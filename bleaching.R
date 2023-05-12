@@ -689,7 +689,7 @@ bleach_labels = c("Bleached" = "Bleached", "Partially Bleached" = "Partially Ble
 rpn_bleach_plob_main.ggbarplot <- ggplot(rpn_bleach_plob_main.gg, aes(x = factor(coast, x_labels), y = mean, fill = coast)) +   
   geom_bar(stat = "identity", width = 0.75, color = "black", linewidth = 0.50, alpha = 0.6) +
   geom_linerange(aes(ymin = mean, ymax = mean + sd), linewidth = 0.75) +
-  scale_y_continuous(expression(paste("Percent Cover")), limits = c(0, 1.0), 
+  scale_y_continuous(expression(paste("Proportion of Counts (%)")), limits = c(0, 1.0), 
                      labels = function(x) paste0(x*100)) + 
   scale_x_discrete(expand = c(0, 1), labels = x_labels) + 
   scale_fill_manual(values = c("#FFC74E", "#82A5C0", "#ABC178")) + #
@@ -775,14 +775,57 @@ rpn_bleach_plob_main.ggbarplot
 # 
 # rpn_2015.ggbarplot
 
-tmp6 <- data.frame(Month = c(1,1,2,2,3,3,4,4),
-                   Teams = c("A", "B", "A", "B", "A", "B", "A", "B"),
-                   Total = c(1000, 1200, 1150, 1220, 1300, 1030, 1060, 1380),
-                   Failed = c(6,4,7,8,2,6,9,4))
-tmp6
+# tmp6 <- data.frame(Month = c(1,1,2,2,3,3,4,4),
+#                    Teams = c("A", "B", "A", "B", "A", "B", "A", "B"),
+#                    Total = c(1000, 1200, 1150, 1220, 1300, 1030, 1060, 1380),
+#                    Failed = c(6,4,7,8,2,6,9,4))
+# tmp6
 
 
+rpn_bleach_plob_main.gg <- rpn_bleach_plob_summ.gg %>%
+  add_column(bleach = rep(c("Bleached", "Partially Bleached", "Pale", "Not Bleached"), each = 6, times = 1)) %>%
+  #add_column(depth2 = rep(c("sh" = "8 m", "dp" = "15 m"), each = 1, times = 3)) %>%
+  mutate(bleach = factor(bleach, levels = c("Bleached", "Partially Bleached", "Pale", "Not Bleached")))
 
+x_labels = c("North", "West", "Southeast")
+
+label_names = c("8 m" = "8 m", "15 m" = "15 m")
+
+bleach_labels = c("Bleached" = "Bleached", "Partially Bleached" = "Partially Bleached", 
+                  "Pale" = "Pale", "Not Bleached" = "Not Bleached")
+
+rpn_bleach_plob_main.ggbarplot <- ggplot(rpn_bleach_plob_main.gg, aes(x = factor(coast, x_labels), y = mean, fill = coast)) +   
+  geom_bar(stat = "identity", width = 0.75, color = "black", linewidth = 0.50, alpha = 0.6) +
+  geom_linerange(aes(ymin = mean, ymax = mean + sd), linewidth = 0.75) +
+  scale_y_continuous(expression(paste("Proportion of Counts (%)")), limits = c(0, 1.0), 
+                     labels = function(x) paste0(x*100)) + 
+  scale_x_discrete(expand = c(0, 1), labels = x_labels) + 
+  scale_fill_manual(values = c("#FFC74E", "#82A5C0", "#ABC178")) + #
+  facet_grid(bleach ~ depth2, margin = FALSE) + 
+  #facet_grid(group ~ depth2, margin = FALSE, labeller = labeller(group = group_labels)) +
+  #ggtitle(expression(paste(italic(" Porites "), "spp."))) +
+  #geom_text(aes(label = cld, y = upper.ci), vjust = -0.5, size = 10) +
+  #scale_y_log10(expression(paste("Colony Size (", cm^2, ")"), limits = c(0, 100000))) +
+  labs(x = NULL) +
+  theme(strip.text = element_text(size = 10, color = "black", hjust = 0.50),
+        strip.background = element_rect(fill = "#FFFFFF", color = NA),    
+        panel.background = element_rect(fill = "#FFFFFF", color = NA),
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        panel.grid.major.y = element_line(color = "#b2b2b2"),
+        panel.spacing.x = unit(1, "cm"),
+        panel.spacing.y = unit(0.5, "cm"),
+        panel.spacing = unit(1, "lines"),
+        axis.ticks = element_blank(),
+        legend.position = 'right',
+        plot.title = element_text(size = 11),
+        axis.text.y = element_text(size = 10),
+        axis.text.x = element_blank(),
+        axis.title.y = element_text(size = 14),
+        legend.title = element_blank())
+
+rpn_bleach_plob_main.ggbarplot
 
 
 
