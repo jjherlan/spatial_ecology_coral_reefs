@@ -13,7 +13,7 @@ require(car)
 ```
 
 ::: incremental
-## Saptial pattern of reef-bulding corals
+## Spatial pattern of reef-bulding corals
 
 -   Result of positive and negative interactions between neighboring coral that compete for space on the reef to live
 
@@ -27,7 +27,7 @@ require(car)
 ------------------------------------------------------------------------
 
 ::: incremental
-## Saptial pattern of reef-bulding corals
+## Spatial pattern of reef-bulding corals
 
 -   Do the frequencies of positive and negative interactions between neighboring coral change over environmental gradients?
 
