@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="jjh">
-<meta name="dcterms.date" content="2023-05-09">
+<meta name="dcterms.date" content="2023-05-12">
 
 <title>NOAA quarto simple - Percent Cover and Bleaching in 2015</title>
 <style>
@@ -243,6 +243,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../content/research_strategy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Research Approach</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../content/soil2.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Soil</span></a>
   </div>
@@ -342,7 +348,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">May 9, 2023</p>
+      <p class="date">May 12, 2023</p>
     </div>
   </div>
   
@@ -450,19 +456,22 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">glht</span>(model_plob, </span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">linfct =</span> <span class="fu">mcp</span>(<span class="at">groups =</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>                     <span class="co">#Is the difference between these groups different from zero?</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>                     <span class="fu">c</span>(<span class="st">"(north.sh) - (west.sh) = 0"</span>,</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"(north.sh) - (west.dp) = 0"</span>,</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"(north.sh) - (se.sh) = 0"</span>,</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"(north.sh) - (se.dp) = 0"</span>,</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"(north.dp) - (west.sh) = 0"</span>,</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"(north.dp) - (west.dp) = 0"</span>,</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"(north.dp) - (se.sh) = 0"</span>,</span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"(north.dp) - (se.dp) = 0"</span>,</span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"(se.sh) - (west.sh) = 0"</span>,</span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"(se.sh) - (west.dp) = 0"</span>,</span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"(se.dp) - (west.sh) = 0"</span>,</span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"(se.dp) - (west.dp) = 0"</span>))),</span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">test =</span> <span class="fu">adjusted</span>(<span class="st">"holm"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>                     <span class="fu">c</span>(<span class="st">"(north.sh) - (north.dp) = 0"</span>,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"(west.sh) - (west.dp) = 0"</span>,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"(se.sh) - (se.dp) = 0"</span>,</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"(north.sh) - (west.sh) = 0"</span>,</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"(north.sh) - (west.dp) = 0"</span>,</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"(north.sh) - (se.sh) = 0"</span>,</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"(north.sh) - (se.dp) = 0"</span>,</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"(north.dp) - (west.sh) = 0"</span>,</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"(north.dp) - (west.dp) = 0"</span>,</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"(north.dp) - (se.sh) = 0"</span>,</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"(north.dp) - (se.dp) = 0"</span>,</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"(se.sh) - (west.sh) = 0"</span>,</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"(se.sh) - (west.dp) = 0"</span>,</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"(se.dp) - (west.sh) = 0"</span>,</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"(se.dp) - (west.dp) = 0"</span>))),</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">test =</span> <span class="fu">adjusted</span>(<span class="st">"holm"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
      Simultaneous Tests for General Linear Hypotheses
@@ -473,19 +482,22 @@ Multiple Comparisons of Means: User-defined Contrasts
 Fit: glm(formula = cbind(total_count, failures) ~ groups, family = binomial)
 
 Linear Hypotheses:
-                            Estimate Std. Error z value Pr(&gt;|z|)    
-(north.sh) - (west.sh) == 0 -0.07377    0.19208  -0.384    0.795    
-(north.sh) - (west.dp) == 0  0.15943    0.18835   0.846    0.795    
-(north.sh) - (se.sh) == 0    2.14346    0.20771  10.319  &lt; 2e-16 ***
-(north.sh) - (se.dp) == 0    1.73807    0.20078   8.657  &lt; 2e-16 ***
-(north.dp) - (west.sh) == 0  1.00357    0.22777   4.406 3.16e-05 ***
-(north.dp) - (west.dp) == 0  1.23676    0.22464   5.506 1.47e-07 ***
-(north.dp) - (se.sh) == 0    3.22079    0.24110  13.359  &lt; 2e-16 ***
-(north.dp) - (se.dp) == 0    2.81541    0.23515  11.973  &lt; 2e-16 ***
-(se.sh) - (west.sh) == 0    -2.21723    0.20893 -10.612  &lt; 2e-16 ***
-(se.sh) - (west.dp) == 0    -1.98403    0.20551  -9.654  &lt; 2e-16 ***
-(se.dp) - (west.sh) == 0    -1.81184    0.20204  -8.968  &lt; 2e-16 ***
-(se.dp) - (west.dp) == 0    -1.57865    0.19850  -7.953 8.88e-15 ***
+                             Estimate Std. Error z value Pr(&gt;|z|)    
+(north.sh) - (north.dp) == 0 -1.07733    0.22666  -4.753 1.20e-05 ***
+(west.sh) - (west.dp) == 0    0.23319    0.18970   1.229    0.657    
+(se.sh) - (se.dp) == 0       -0.40539    0.21695  -1.869    0.247    
+(north.sh) - (west.sh) == 0  -0.07377    0.19208  -0.384    0.795    
+(north.sh) - (west.dp) == 0   0.15943    0.18835   0.846    0.795    
+(north.sh) - (se.sh) == 0     2.14346    0.20771  10.319  &lt; 2e-16 ***
+(north.sh) - (se.dp) == 0     1.73807    0.20078   8.657  &lt; 2e-16 ***
+(north.dp) - (west.sh) == 0   1.00357    0.22777   4.406 5.27e-05 ***
+(north.dp) - (west.dp) == 0   1.23676    0.22464   5.506 2.58e-07 ***
+(north.dp) - (se.sh) == 0     3.22079    0.24110  13.359  &lt; 2e-16 ***
+(north.dp) - (se.dp) == 0     2.81541    0.23515  11.973  &lt; 2e-16 ***
+(se.sh) - (west.sh) == 0     -2.21723    0.20893 -10.612  &lt; 2e-16 ***
+(se.sh) - (west.dp) == 0     -1.98403    0.20551  -9.654  &lt; 2e-16 ***
+(se.dp) - (west.sh) == 0     -1.81184    0.20204  -8.968  &lt; 2e-16 ***
+(se.dp) - (west.dp) == 0     -1.57865    0.19850  -7.953 1.42e-14 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 (Adjusted p values reported -- holm method)</code></pre>
@@ -885,19 +897,22 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">glht</span>(model_poci, </span>
 <span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">linfct =</span> <span class="fu">mcp</span>(<span class="at">groups =</span></span>
 <span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>                     <span class="co">#Is the difference between these groups different from zero?</span></span>
-<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a>                     <span class="fu">c</span>(<span class="st">"(north.sh) - (west.sh) = 0"</span>,</span>
-<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"(north.sh) - (west.dp) = 0"</span>,</span>
-<span id="cb60-6"><a href="#cb60-6" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"(north.sh) - (se.sh) = 0"</span>,</span>
-<span id="cb60-7"><a href="#cb60-7" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"(north.sh) - (se.dp) = 0"</span>,</span>
-<span id="cb60-8"><a href="#cb60-8" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"(north.dp) - (west.sh) = 0"</span>,</span>
-<span id="cb60-9"><a href="#cb60-9" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"(north.dp) - (west.dp) = 0"</span>,</span>
-<span id="cb60-10"><a href="#cb60-10" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"(north.dp) - (se.sh) = 0"</span>,</span>
-<span id="cb60-11"><a href="#cb60-11" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"(north.dp) - (se.dp) = 0"</span>,</span>
-<span id="cb60-12"><a href="#cb60-12" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"(se.sh) - (west.sh) = 0"</span>,</span>
-<span id="cb60-13"><a href="#cb60-13" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"(se.sh) - (west.dp) = 0"</span>,</span>
-<span id="cb60-14"><a href="#cb60-14" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"(se.dp) - (west.sh) = 0"</span>,</span>
-<span id="cb60-15"><a href="#cb60-15" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"(se.dp) - (west.dp) = 0"</span>))),</span>
-<span id="cb60-16"><a href="#cb60-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">test =</span> <span class="fu">adjusted</span>(<span class="st">"holm"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a>                     <span class="fu">c</span>(<span class="st">"(north.sh) - (north.dp) = 0"</span>,</span>
+<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"(west.sh) - (west.dp) = 0"</span>,</span>
+<span id="cb60-6"><a href="#cb60-6" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"(se.sh) - (se.dp) = 0"</span>,</span>
+<span id="cb60-7"><a href="#cb60-7" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"(north.sh) - (west.sh) = 0"</span>,</span>
+<span id="cb60-8"><a href="#cb60-8" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"(north.sh) - (west.dp) = 0"</span>,</span>
+<span id="cb60-9"><a href="#cb60-9" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"(north.sh) - (se.sh) = 0"</span>,</span>
+<span id="cb60-10"><a href="#cb60-10" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"(north.sh) - (se.dp) = 0"</span>,</span>
+<span id="cb60-11"><a href="#cb60-11" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"(north.dp) - (west.sh) = 0"</span>,</span>
+<span id="cb60-12"><a href="#cb60-12" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"(north.dp) - (west.dp) = 0"</span>,</span>
+<span id="cb60-13"><a href="#cb60-13" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"(north.dp) - (se.sh) = 0"</span>,</span>
+<span id="cb60-14"><a href="#cb60-14" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"(north.dp) - (se.dp) = 0"</span>,</span>
+<span id="cb60-15"><a href="#cb60-15" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"(se.sh) - (west.sh) = 0"</span>,</span>
+<span id="cb60-16"><a href="#cb60-16" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"(se.sh) - (west.dp) = 0"</span>,</span>
+<span id="cb60-17"><a href="#cb60-17" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"(se.dp) - (west.sh) = 0"</span>,</span>
+<span id="cb60-18"><a href="#cb60-18" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"(se.dp) - (west.dp) = 0"</span>))),</span>
+<span id="cb60-19"><a href="#cb60-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">test =</span> <span class="fu">adjusted</span>(<span class="st">"holm"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
      Simultaneous Tests for General Linear Hypotheses
@@ -908,19 +923,22 @@ Multiple Comparisons of Means: User-defined Contrasts
 Fit: glm(formula = cbind(total_count, failures) ~ groups, family = binomial)
 
 Linear Hypotheses:
-                            Estimate Std. Error z value Pr(&gt;|z|)    
-(north.sh) - (west.sh) == 0  -3.6329     1.0192  -3.564  0.00117 ** 
-(north.sh) - (west.dp) == 0  -3.4052     1.0225  -3.330  0.00173 ** 
-(north.sh) - (se.sh) == 0    -5.6686     1.0099  -5.613 1.19e-07 ***
-(north.sh) - (se.dp) == 0    -5.5342     1.0107  -5.476 2.18e-07 ***
-(north.dp) - (west.sh) == 0  -1.4033     0.3874  -3.622  0.00117 ** 
-(north.dp) - (west.dp) == 0  -1.1756     0.3959  -2.970  0.00298 ** 
-(north.dp) - (se.sh) == 0    -3.4389     0.3622  -9.495  &lt; 2e-16 ***
-(north.dp) - (se.dp) == 0    -3.3046     0.3643  -9.072  &lt; 2e-16 ***
-(se.sh) - (west.sh) == 0      2.0357     0.2254   9.030  &lt; 2e-16 ***
-(se.sh) - (west.dp) == 0      2.2634     0.2397   9.444  &lt; 2e-16 ***
-(se.dp) - (west.sh) == 0      1.9013     0.2288   8.311  &lt; 2e-16 ***
-(se.dp) - (west.dp) == 0      2.1290     0.2428   8.769  &lt; 2e-16 ***
+                             Estimate Std. Error z value Pr(&gt;|z|)    
+(north.sh) - (north.dp) == 0  -2.2296     1.0579  -2.108  0.10521    
+(west.sh) - (west.dp) == 0     0.2277     0.2763   0.824  0.81982    
+(se.sh) - (se.dp) == 0         0.1344     0.1828   0.735  0.81982    
+(north.sh) - (west.sh) == 0   -3.6329     1.0192  -3.564  0.00219 ** 
+(north.sh) - (west.dp) == 0   -3.4052     1.0225  -3.330  0.00434 ** 
+(north.sh) - (se.sh) == 0     -5.6686     1.0099  -5.613 1.79e-07 ***
+(north.sh) - (se.dp) == 0     -5.5342     1.0107  -5.476 3.48e-07 ***
+(north.dp) - (west.sh) == 0   -1.4033     0.3874  -3.622  0.00205 ** 
+(north.dp) - (west.dp) == 0   -1.1756     0.3959  -2.970  0.01193 *  
+(north.dp) - (se.sh) == 0     -3.4389     0.3622  -9.495  &lt; 2e-16 ***
+(north.dp) - (se.dp) == 0     -3.3046     0.3643  -9.072  &lt; 2e-16 ***
+(se.sh) - (west.sh) == 0       2.0357     0.2254   9.030  &lt; 2e-16 ***
+(se.sh) - (west.dp) == 0       2.2634     0.2397   9.444  &lt; 2e-16 ***
+(se.dp) - (west.sh) == 0       1.9013     0.2288   8.311  &lt; 2e-16 ***
+(se.dp) - (west.dp) == 0       2.1290     0.2428   8.769  &lt; 2e-16 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 (Adjusted p values reported -- holm method)</code></pre>
@@ -3752,7 +3770,7 @@ dbl (7): year, month, day, sst_min, sst_max, sst, dhw
 <div class="cell">
 <div class="sourceCode cell-code" id="cb348"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb348-1"><a href="#cb348-1" aria-hidden="true" tabindex="-1"></a>my_data <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(<span class="st">"https://coralreefwatch.noaa.gov/product/vs/data/easter_island.txt"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Rows: 14021 Columns: 1
+<pre><code>Rows: 14023 Columns: 1
 ── Column specification ────────────────────────────────────────────────────────
 Delimiter: "\t"
 chr (1): Name:
