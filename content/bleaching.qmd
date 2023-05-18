@@ -88,7 +88,6 @@ summary(plob.glm)
 Anova(plob.glm, type = 'III')
 ```
 
-
 #### https://www.rpubs.com/daharo_calpoly/502695
 
 ```{r}
@@ -284,7 +283,6 @@ model_plob_pale <- with(rpn_plob_pale.main, glm(cbind(total_count, failures) ~ g
 ```{r}
 model_plob_pale
 ```
-
 
 ## Determine the post-hoc comparisons of interest
 

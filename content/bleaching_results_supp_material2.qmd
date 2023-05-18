@@ -22,6 +22,7 @@ require(Rmisc)
 require(car)
 require(multcomp)
 require(lubridate)
+require(gtsummary)
 ```
 
 ```{r, include = FALSE}
@@ -90,6 +91,10 @@ summary(plob.glm)
 ```
 
 ```{r}
+anova(plob.glm, test = "Chisq")
+```
+
+```{r}
 Anova(plob.glm, type = 'III')
 ```
 
@@ -148,6 +153,30 @@ rpn_plob2 <- read.csv('rpn_cover.csv') %>%
 
 ```{r}
 rpn_plob2
+```
+
+```{r}
+broom::tidy(plob.glm, conf.int = TRUE, exponentiate = TRUE)
+```
+
+```{r}
+plob_regression_1 <- tbl_regression(plob.glm, exponentiate = TRUE)
+```
+
+```{r}
+plob_regression_1
+```
+
+```{r}
+plob_regression_2 <- plob.glm %>%
+  tbl_regression(
+    label = "{P. lobata}",
+    exponentiate = TRUE) %>%
+  add_global_p()
+```
+
+```{r}
+plob_regression_2
 ```
 
 ```{r}
@@ -440,6 +469,10 @@ summary(glht(model_poci,
                        "(se.dp) - (west.sh) = 0",
                        "(se.dp) - (west.dp) = 0"))),
         test = adjusted("holm"))
+```
+
+```{r}
+anova(poci.glm, test = "Chisq")
 ```
 
 ```{r}
@@ -1112,6 +1145,11 @@ summary(glht(model_ma,
 ```
 
 ```{r}
+anova(ma.glm, test = "Chisq")
+```
+
+
+```{r}
 rpn_ma2 <- read.csv('rpn_cover.csv') %>%
   as_tibble() %>%
   filter(group == "MA") %>%
@@ -1284,6 +1322,10 @@ summary(glht(model_turf,
                        "(se.dp) - (west.sh) = 0",
                        "(se.dp) - (west.dp) = 0"))),
         test = adjusted("holm"))
+```
+
+```{r}
+anova(turf.glm, test = "Chisq")
 ```
 
 ```{r}
@@ -1462,6 +1504,10 @@ summary(glht(model_sand,
 ```
 
 ```{r}
+anova(sand.glm, test = "Chisq")
+```
+
+```{r}
 rpn_sand2 <- read.csv('rpn_cover.csv') %>%
   as_tibble() %>%
   filter(group == "SAND") %>%
@@ -1634,6 +1680,10 @@ summary(glht(model_bare,
                        "(se.dp) - (west.sh) = 0",
                        "(se.dp) - (west.dp) = 0"))),
         test = adjusted("holm"))
+```
+
+```{r}
+anova(bare.glm, test = "Chisq")
 ```
 
 ```{r}
@@ -1820,6 +1870,10 @@ summary(glht(model_cca,
 ```
 
 ```{r}
+anova(cca.glm, test = "Chisq")
+```
+
+```{r}
 rpn_cca2 <- read.csv('rpn_cover.csv')
 ```
 
@@ -1943,9 +1997,7 @@ rpn_cca_2015.ggbarplot
 rpn_crw <- read_delim('rpn_crw.txt', delim = " ")
 ```
 
-#```{r}
-#rpn_crw.main <- write_csv(rpn_crw, 'rpn_crw.csv')
-#```
+\#`{r} #rpn_crw.main <- write_csv(rpn_crw, 'rpn_crw.csv') #`
 
 ```{r}
 rpn_crw.main <- read_csv('rpn_crw.csv')
@@ -1992,11 +2044,17 @@ rpn_crw.main4
 ```
 
 <!-- #```{r} -->
+
 <!-- # Using ggplot -->
+
 <!-- #ggplot(data = rpn_crw.main4, aes(x = date, y = sst_max)) + -->
+
 <!-- #  geom_line() + -->
+
 <!-- #  geom_smooth(se = FALSE) + -->
+
 <!-- #  labs(y = "Temperature") %>% -->
+
 <!-- #  scale_x_datetime(date_breaks = "year", date_labels = "%b-%Y") -->
 
 <!-- #    geom_line(aes(y = dhw)) + -->
@@ -2004,10 +2062,13 @@ rpn_crw.main4
 <!--   scale_y_continuous( -->
 
 <!--     # Features of the first axis -->
+
 <!--     name = "Temperature", -->
 
 <!--     # Add a second axis and specify its features -->
+
 <!--     sec.axis = ggplot2::sec_axis(dhw) -->
+
 <!--   ) -->
 
 <!-- ``` -->
@@ -2017,7 +2078,6 @@ rpn_crw.main4
 iris$Species = paste(iris$Species, 
                      "random text to make the labels much much longer than the original labels")
 ```
-
 
 ```{r}
 rpn_crw.main.gg <- ggplot(data = rpn_crw.main4, aes(x = date, y = sst_max)) +
@@ -2072,7 +2132,6 @@ pkpd <- ggplot(data = rpn_crw.main4, aes(x = date, y = sst_max)) +
 
 print(pkpd)
 ```
-
 
 ```{r}
 #-----------------------------------------------------------------------------
@@ -2134,21 +2193,3 @@ head(my_data)
 ```{r}
 write_csv(rpn_crw, ".csv")
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
