@@ -168,11 +168,10 @@ plob_regression_1
 ```
 
 ```{r}
-plob_regression_2 <- plob.glm %>%
-  tbl_regression(
-    label = "{P. lobata}",
-    exponentiate = TRUE) %>%
-  add_global_p()
+ plob_regression_2 <- plob.glm %>%
+   tbl_regression(
+     exponentiate = TRUE) %>%
+   add_global_p()
 ```
 
 ```{r}
