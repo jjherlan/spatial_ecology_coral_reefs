@@ -827,6 +827,38 @@ rpn_bleach_plob_main.ggbarplot <- ggplot(rpn_bleach_plob_main.gg, aes(x = factor
 
 rpn_bleach_plob_main.ggbarplot
 
+rpn_crw.main.gg <- ggplot(data = rpn_crw.main4, aes(x = date, y = sst_max)) +
+  geom_line(aes(color = "SST Max (°C)")) +
+  #  ylim(0, 30) +
+  #  scale_fill_discrete(name = "Dose", labels = c("A", "B")) +
+  geom_line(aes(y = dhw, color = "Degree Heating Week")) +
+  scale_y_continuous(limits = c(0, 30), breaks = c(0, 5, 10, 15, 20, 25, 30)) +
+  scale_x_continuous(expand = c(0, 0)) +
+  scale_x_date(date_breaks = "3 month", date_labels = "%b %y") +
+  scale_color_manual(values = c("red2", "blue"))+
+  labs(x = NULL) +
+  theme(#strip.text = element_text(size = 10, color = "black", hjust = 0.50),
+    #strip.background = element_rect(fill = "#FFFFFF", color = NA),    
+    #panel.background = element_rect(fill = "#FFFFFF", color = NA),
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    panel.grid.minor.y = element_blank(),
+    panel.grid.major.y = element_line(color = "#b2b2b2"),
+    #panel.spacing.x = unit(1, "cm"),
+    #panel.spacing.y = unit(0.5, "cm"),
+    #panel.spacing = unit(1, "lines"),
+    #axis.ticks.x = element_line(linewidth = 0),
+    axis.ticks.y = element_blank(),
+    legend.position = 'right',
+    #plot.title = element_text(size = 11),
+    axis.text.y = element_text(size = 10),
+    #axis.text.x = element_text(size = 12),
+    axis.text.x = element_text(size = 8),
+    axis.title.y = element_blank(),
+    legend.title = element_blank())
+
+rpn_crw.main.gg
+
 
 
 

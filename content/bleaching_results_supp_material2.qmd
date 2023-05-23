@@ -98,6 +98,19 @@ anova(plob.glm, test = "Chisq")
 Anova(plob.glm, type = 'III')
 ```
 
+```{r}
+coef(plob.glm)
+```
+
+```{r}
+exp(coef(plob.glm))
+```
+
+```{r}
+exp(confint(plob.glm))
+```
+
+
 #### https://www.rpubs.com/daharo_calpoly/502695
 
 ```{r}
@@ -308,6 +321,16 @@ rpn_plob_pb.main
 ```
 
 ```{r}
+plob_pb.glm <- glm(cbind(total_count, failures) ~ location * depth, 
+                    family = binomial(link = "logit"), 
+                    data = rpn_plob_pb.main)
+```
+
+```{r}
+anova(plob_pb.glm, test = "Chisq")
+```
+
+```{r}
 rpn_plob_pale <- rpn_bleach %>%  
   filter(group == 'PLOB' & status == 'P') %>%
   group_by(location, depth, transect) %>%
@@ -331,6 +354,16 @@ rpn_plob_pale.main <- rpn_plob_pale %>%
 
 ```{r}
 rpn_plob_pale.main
+```
+
+```{r}
+plob_p.glm <- glm(cbind(total_count, failures) ~ location * depth, 
+                    family = binomial(link = "logit"), 
+                    data = rpn_plob_pale.main)
+```
+
+```{r}
+anova(plob_p.glm, test = "Chisq")
 ```
 
 ```{r}
@@ -368,6 +401,16 @@ rpn_plob_healthy.main <- rpn_plob_healthy2 %>%
 
 ```{r}
 rpn_plob_healthy.main 
+```
+
+```{r}
+plob_h.glm <- glm(cbind(total_count, failures) ~ location * depth, 
+                    family = binomial(link = "logit"), 
+                    data = rpn_plob_healthy.main)
+```
+
+```{r}
+anova(plob_h.glm, test = "Chisq")
 ```
 
 ## Pocillopora
@@ -411,7 +454,7 @@ rpn_poci <- read.csv('rpn_cover.csv') %>%
 ```
 
 ```{r, inlcude = FALSE}
-rpn_plob
+rpn_poci
 ```
 
 ## Pocillopora
@@ -629,6 +672,18 @@ rpn_poci_bleach.main <- rpn_poci_bleach2 %>%
 rpn_poci_bleach.main 
 ```
 
+
+
+```{r}
+poci_bl.glm <- glm(cbind(total_count, failures) ~ location * depth, 
+                    family = binomial(link = "logit"), 
+                    data = rpn_poci_bleach.main)
+```
+
+```{r}
+anova(poci_bl.glm, test = "Chisq")
+```
+
 ```{r}
 rpn_poci_pb <- rpn_bleach %>%  
   filter(group == 'POCI' & status == 'PB') %>%
@@ -669,6 +724,16 @@ rpn_poci_pb.main
 ```
 
 ```{r}
+poci_pb.glm <- glm(cbind(total_count, failures) ~ location * depth, 
+                    family = binomial(link = "logit"), 
+                    data = rpn_poci_pb.main)
+```
+
+```{r}
+anova(poci_pb.glm, test = "Chisq")
+```
+
+```{r}
 rpn_poci_pale <- rpn_bleach %>%  
   filter(group == 'POCI' & status == 'P') %>%
   group_by(location, depth, transect) %>%
@@ -706,6 +771,16 @@ rpn_poci_pale.main
 ```
 
 ```{r}
+poci_p.glm <- glm(cbind(total_count, failures) ~ location * depth, 
+                    family = binomial(link = "logit"), 
+                    data = rpn_poci_pale.main)
+```
+
+```{r}
+anova(poci_p.glm, test = "Chisq")
+```
+
+```{r}
 rpn_poci_healthy <- rpn_bleach %>%  
   filter(group == 'POCI' & status == 'H') %>%
   group_by(location, depth, transect) %>%
@@ -739,7 +814,15 @@ rpn_poci_healthy.main <- rpn_poci_healthy2 %>%
 rpn_poci_healthy.main
 ```
 
-### 
+```{r}
+poci_h.glm <- glm(cbind(total_count, failures) ~ location * depth, 
+                    family = binomial(link = "logit"), 
+                    data = rpn_poci_healthy.main)
+```
+
+```{r}
+anova(poci_h.glm, test = "Chisq")
+```
 
 ### Generalized linear model
 
@@ -2073,12 +2156,6 @@ rpn_crw.main4
 <!-- ``` -->
 
 ```{r}
-# Create long labels to be wrapped
-iris$Species = paste(iris$Species, 
-                     "random text to make the labels much much longer than the original labels")
-```
-
-```{r}
 rpn_crw.main.gg <- ggplot(data = rpn_crw.main4, aes(x = date, y = sst_max)) +
   geom_line(aes(color = "SST Max (°C)")) +
 #  ylim(0, 30) +
@@ -2086,7 +2163,7 @@ rpn_crw.main.gg <- ggplot(data = rpn_crw.main4, aes(x = date, y = sst_max)) +
   geom_line(aes(y = dhw, color = "Degree Heating Week")) +
   scale_y_continuous(limits = c(0, 30), breaks = c(0, 5, 10, 15, 20, 25, 30)) +
   #scale_x_continuous(breaks = seq(0, 336, 24)) +
-  scale_x_date(date_labels = "%b %y") +
+  scale_x_date(date_breaks = "3 month", date_labels = "%b %y") +
   scale_color_manual(values = c("red2", "blue"))+
   labs(x = NULL) +
   theme(#strip.text = element_text(size = 10, color = "black", hjust = 0.50),
@@ -2105,7 +2182,7 @@ rpn_crw.main.gg <- ggplot(data = rpn_crw.main4, aes(x = date, y = sst_max)) +
         #plot.title = element_text(size = 11),
         axis.text.y = element_text(size = 10),
         #axis.text.x = element_text(size = 12),
-        axis.text.x = element_text(angle = 60, hjust = 0.25, size = 8),
+        axis.text.x = element_text(angle = 60, hjust = 0.40, size = 8),
         axis.title.y = element_blank(),
         legend.title = element_blank())
 ```
