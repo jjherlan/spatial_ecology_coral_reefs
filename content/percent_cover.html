@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.353">
+<meta name="generator" content="quarto-1.3.433">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="jjh">
-<meta name="dcterms.date" content="2023-05-19">
+<meta name="dcterms.date" content="2023-07-02">
 
 <title>NOAA quarto simple - Percent Cover</title>
 <style>
@@ -95,7 +95,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script>
 
@@ -119,7 +120,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../content/percent_cover.html">Percent Cover</a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
-      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
@@ -134,8 +135,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <img src="https://raw.githubusercontent.com/nmfs-opensci/assets/main/logo/nmfs-opensci-logo3.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
       </a>
       <div class="sidebar-tools-main tools-wide">
-    <a href="https://nmfs-opensci.github.io" title="NMFS Open Science" class="quarto-navigation-tool px-1" aria-label="NMFS Open Science"><i class="bi bi-globe"></i></a>
-    <a href="https://github.com/nmfs-opensci" title="NMFS OpenSci" class="quarto-navigation-tool px-1" aria-label="NMFS OpenSci"><i class="bi bi-github"></i></a>
+    <a href="https://nmfs-opensci.github.io" rel="" title="NMFS Open Science" class="quarto-navigation-tool px-1" aria-label="NMFS Open Science"><i class="bi bi-globe"></i></a>
+    <a href="https://github.com/nmfs-opensci" rel="" title="NMFS OpenSci" class="quarto-navigation-tool px-1" aria-label="NMFS OpenSci"><i class="bi bi-github"></i></a>
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
       </div>
@@ -302,7 +303,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">May 19, 2023</p>
+      <p class="date">July 2, 2023</p>
     </div>
   </div>
   
@@ -783,8 +784,8 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <p>Then <span class="math inline">\(exp(\beta_1)\)</span> is the factor increase/decrease in odds of proportion cover for group 2 compared to group 1, where <span class="math inline">\(exp(\beta_1)&gt;1\)</span> is an increase and <span class="math inline">\(exp(\beta_1)&lt;1\)</span> is a decrease, and <span class="math inline">\(exp(\beta_1) \approx 1\)</span> means essentially no change.</p>
 <p><strong>Beta Regression I:</strong> <span class="math inline">\(\phi\)</span> does not vary</p>
 
-<!-- html table generated in R 4.3.0 by xtable 1.8-4 package -->
-<!-- Fri May 19 22:21:05 2023 -->
+<!-- html table generated in R 4.3.1 by xtable 1.8-4 package -->
+<!-- Sun Jul  2 20:14:34 2023 -->
 
 <table border="1">
 <caption align="bottom">
@@ -966,8 +967,8 @@ Sitevhu            3.9190715  4.2794876
 </div>
 <div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">xtable</span>(<span class="fu">summary</span>(p_cover_mod.glm1), <span class="at">digits =</span> <span class="dv">3</span>, <span class="at">caption =</span> <span class="st">" . "</span>), <span class="at">type =</span> <span class="st">"html"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>&lt;!-- html table generated in R 4.3.0 by xtable 1.8-4 package --&gt;
-&lt;!-- Fri May 19 22:21:05 2023 --&gt;
+<pre><code>&lt;!-- html table generated in R 4.3.1 by xtable 1.8-4 package --&gt;
+&lt;!-- Sun Jul  2 20:14:34 2023 --&gt;
 &lt;table border=1&gt;
 &lt;caption align="bottom"&gt;  .  &lt;/caption&gt;
 &lt;tr&gt; &lt;th&gt;  &lt;/th&gt; &lt;th&gt; Estimate &lt;/th&gt; &lt;th&gt; Std. Error &lt;/th&gt; &lt;th&gt; z value &lt;/th&gt; &lt;th&gt; Pr(&amp;gt;|z|) &lt;/th&gt;  &lt;/tr&gt;
