@@ -137,6 +137,10 @@ letter_display <- cld(plob_mult)
 letter_display
 ```
 
+```{r}
+with(rpn_plob, interaction.plot(location, depth, cover))
+```
+
 # RPN PLOB Bleaching
 
 ```{r, include = FALSE}
