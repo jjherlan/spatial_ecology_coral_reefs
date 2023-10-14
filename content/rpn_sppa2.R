@@ -150,7 +150,10 @@ se_Q <- quadratcount(se_corals, nx = 10, ny = 25)
 #Plot
 
 plot(se_corals, cex = 1, main = 'Southeast')
+
 plot(se_Q, add = TRUE, cex = 1)
+
+plot(se_corals, cex = 1.0, pch = 19, main = 'Southeast')
 
 #Chi-sq test for complete spatial randomness, CSR
 
