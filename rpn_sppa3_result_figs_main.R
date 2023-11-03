@@ -206,9 +206,14 @@ Xreg_L <- Lest(Xreg, correction = "none")
 
 Xreg_L_plot <- plot(Xreg_L, legend = F, main = "Xreg: L")
 
+Xreg_L_plot <- plot(Xreg_L, legend = F, main = NULL)
+
+
 Xreg_g <- pcf(Xreg, correction = "none")
 
 Xreg_g_plot <- plot(Xreg_g, legend = F, main = "Xreg: g")
+
+Xreg_g_plot <- plot(Xreg_g, legend = F, main = NULL)
 
 
 # Clustered Pattern Simulation
@@ -226,11 +231,14 @@ Xclus_L <- Lest(Xclus, correction = "none")
 
 Xclus_L_plot <- plot(Xclus_L, legend = F, main = "Xclus: L")
 
+Xclus_L_plot <- plot(Xclus_L, legend = F, main = NULL)
+
+
 Xclus_g <- pcf(Xclus, correction = "none")
 
 Xclus_g_plot <- plot(Xclus_g, legend = F, main = "Xclus: g")
 
-
+Xclus_g_plot <- plot(Xclus_g, legend = F, main = NULL)
 
 
 
