@@ -323,11 +323,11 @@ L_csr.g_west <- envelope(west_corals, rmax = 5.0, Lest, nsim = 99, rank = 1, cor
 
 #-   Plot point-wise envelope
 
-plot(L_csr_west, . - r ~ r, shade = c("hi", "lo"), legend = F, main = "Southeast: stand. L (Monte Carlo, CSR env)")
+plot(L_csr_west, . - r ~ r, shade = c("hi", "lo"), legend = F, main = "West: stand. L (Monte Carlo, CSR env)")
 
 #-   Plot global envelope
 
-plot(L_csr.g_west, . - r ~ r, shade = c("hi", "lo"), legend = F, main = "Southeast: stand. L (Monte Carlo, CSR env)")
+plot(L_csr.g_west, . - r ~ r, shade = c("hi", "lo"), legend = F, main = "West: stand. L (Monte Carlo, CSR env)")
 
 ### North - Anakena
 
@@ -445,7 +445,7 @@ abline(h=1, lty=1)
 Penv_west <- envelope(west_corals, r = NULL, pcf, nsim = 99, rank = 1, correction =
                        "translate", global = FALSE)
 
-plot(Penv_west, shade = c("hi", "lo"), legend = FALSE, main = "Southeast: pair correlation function, g")
+plot(Penv_west, shade = c("hi", "lo"), legend = FALSE, main = "West: pair correlation function, g")
 
 ### North - Anakena
 
