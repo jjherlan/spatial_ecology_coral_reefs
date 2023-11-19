@@ -1,0 +1,137 @@
+library(tidyverse)
+
+Fcn.CreateSummary.betareg <- function(object.betareg){
+  OUT <- summary(object.betareg)
+  tab <- rbind(OUT$coefficients$mean,OUT$coefficients$precision)
+  return(tab)
+}
+
+p_cover = read_csv('rpn_poci.csv')
+
+p_cover = read_csv('rpn_poci.csv') %>% 
+  select(plot_id, Site, pland) %>%
+  group_by(Site) %>%
+  mutate(
+    poci_cover = pland*0.01
+  ) %>%
+  mutate_at(vars(Site, plot_id), factor)
+
+ggplot(p_cover, aes(x = poci_cover)) +
+  geom_histogram(fill = "#333399") + 
+  #below here is ylabel, xlabel, and main title
+  ylab("Frequency") +
+  xlab(NULL) +
+  ggtitle(expression("Coral Cover (%)")) +
+  theme_bw() +
+  facet_wrap(~ Site, ncol = 1) +
+  #theme sets sizes, text, etc
+  theme(axis.title.x = element_text(size = 14), 
+        axis.title.y = element_text(size = 14), 
+        axis.text.y  = element_text(size= 10),
+        axis.text.x  = element_text(size = 12), 
+        legend.text = element_text(size = 12),
+        legend.title = element_text(size = 12),
+        plot.title = element_text(hjust = 0.5, size = 14),
+        # change plot background, grid lines, etc (just examples so you can see)
+        panel.background = element_rect(fill = "white"),
+        panel.grid.minor.y = element_blank(),
+        panel.grid.major = element_blank(),
+        plot.background = element_rect(fill = "white"),
+        legend.background = element_rect(fill = "white"),
+        strip.text.x = element_text(size = 12, colour = "#FFFFFF"),
+        strip.background = element_rect(fill = '#000066')
+  )
+
+p_cover.mean <-
+  p_cover %>%
+  group_by(Site) %>%
+  dplyr::summarise(mean = mean(poci_cover))
+
+poci_cover_summary <-
+  p_cover %>%
+  as_tibble() %>%
+  #  mutate(size_cm = area*10000) %>%
+  group_by(Site) %>%
+  dplyr::summarize(mean = mean(poci_cover), 
+                   sd = sd(poci_cover), 
+                   n = n(),
+                   se = sd/sqrt(n)
+  ) %>%
+  mutate(se = sd / sqrt(n),
+         lower.ci = mean - qt(1 - (0.05 / 2), n - 1) * se,
+         upper.ci = mean + qt(1 - (0.05 / 2), n - 1) * se) %>%
+  mutate_at(vars(Site), factor) %>%
+  add_column(
+    location = c('Anakena', 'Manavai', 'Southeast')
+  ) %>%
+  mutate_at(vars(location), factor)
+
+
+poci_cover2 <- 
+  poci_cover_summary %>%
+  add_column(
+    cld = c('a', 'b', 'c')
+  ) %>%
+  mutate_at(vars(cld), factor)
+
+poci_cover2
+
+x_labels = c("North", "West", "Southeast")
+
+poci_cover.ggbarplot <- ggplot(poci_cover2, aes(x = location, y = mean, fill = x_labels)) +   
+  geom_bar(stat = "identity", width = 0.75, color = "black", linewidth = 0.50, alpha = 0.6) +
+  geom_linerange(aes(ymin = lower.ci, ymax = upper.ci), size = 0.75) +
+  scale_y_continuous(expression(paste("Mean Percent Cover (%)")), limits = c(0, 1)) + 
+  scale_x_discrete(expand = c(0, 1), labels = x_labels) + 
+  scale_fill_manual(values = c("#FFC74E", "#82A5C0", "#ABC178")) +
+  #  facet_wrap( ~ depth2, labeller = as_labeller(label_names), dir = "v", ncol = 1) + 
+  ggtitle(expression(paste(italic(" Pocillopora "), "spp."))) +
+  geom_text(aes(label = cld, y = upper.ci), vjust = -0.5) +
+  #scale_y_log10(expression(paste("Colony Size (", cm^2, ")"), limits = c(0, 100000))) +
+  labs(x = NULL) +
+  theme(strip.text = element_text(size = 10, color = "black", hjust = 0.50),
+        strip.background = element_rect(fill = "#FFFFFF", color = NA),    
+        panel.background = element_rect(fill = "#FFFFFF", color = NA),
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        panel.grid.major.y = element_line(color = "#b2b2b2"),
+        panel.spacing.x = unit(1, "cm"),
+        panel.spacing.y = unit(0.5, "cm"),
+        panel.spacing = unit(1, "lines"),
+        axis.ticks = element_blank(),
+        legend.position = 'none',
+        plot.title = element_text(size = 11),
+        axis.title.y = element_text(size = 11),
+        legend.title = element_blank())
+
+poci_cover.ggbarplot
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
