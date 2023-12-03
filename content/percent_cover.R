@@ -1,4 +1,8 @@
 library(tidyverse)
+library(ggplot2)
+library(tidyr)
+library(patchwork)
+library(ggpubr)
 
 Fcn.CreateSummary.betareg <- function(object.betareg){
   OUT <- summary(object.betareg)
@@ -168,7 +172,8 @@ bare_cover_summary <-
          upper.ci = mean + qt(1 - (0.05 / 2), n - 1) * se) %>%
   mutate_at(vars(Site), factor) %>%
   add_column(
-    location = c('Anakena', 'Manavai', 'Southeast')
+    location = c('Anakena', 'Manavai', 'Southeast'),
+    group = c('bare', 'bare', 'bare')
   ) %>%
   mutate_at(vars(location), factor)
 
@@ -191,7 +196,7 @@ bare_cover.ggbarplot <- ggplot(bare_cover2, aes(x = location, y = mean, fill = x
   scale_x_discrete(expand = c(0, 1), labels = x_labels) + 
   scale_fill_manual(values = c("#FFC74E", "#82A5C0", "#ABC178")) +
   #  facet_wrap( ~ depth2, labeller = as_labeller(label_names), dir = "v", ncol = 1) + 
-  ggtitle(expression(paste(italic(" barellopora "), "spp."))) +
+  ggtitle(expression(paste(" Bare Substrate "))) +
   geom_text(aes(label = cld, y = upper.ci), vjust = -0.5) +
   #scale_y_log10(expression(paste("Colony Size (", cm^2, ")"), limits = c(0, 100000))) +
   labs(x = NULL) +
@@ -214,20 +219,20 @@ bare_cover.ggbarplot <- ggplot(bare_cover2, aes(x = location, y = mean, fill = x
 bare_cover.ggbarplot
 
 ##################################
-#Bare Substrate###################
+#Porites lobata###################
 ##################################
 
-bare_cover = read_csv('rpn_bare.csv')
+plob_cover = read_csv('rpn_plob.csv')
 
-bare_cover = read_csv('rpn_bare.csv') %>% 
+plob_cover = read_csv('rpn_plob.csv') %>% 
   select(plot_id, Site, pland) %>%
   group_by(Site) %>%
   mutate(
-    bare_cover = pland*0.01
+    plob_cover = pland*0.01
   ) %>%
   mutate_at(vars(Site, plot_id), factor)
 
-ggplot(bare_cover, aes(x = bare_cover)) +
+ggplot(plob_cover, aes(x = plob_cover)) +
   geom_histogram(fill = "#333399") + 
   #below here is ylabel, xlabel, and main title
   ylab("Frequency") +
@@ -253,18 +258,18 @@ ggplot(bare_cover, aes(x = bare_cover)) +
         strip.background = element_rect(fill = '#000066')
   )
 
-bare_cover.mean <-
-  bare_cover %>%
+plob_cover.mean <-
+  plob_cover %>%
   group_by(Site) %>%
-  dplyr::summarise(mean = mean(bare_cover))
+  dplyr::summarise(mean = mean(plob_cover))
 
-bare_cover_summary <-
-  bare_cover %>%
+plob_cover_summary <-
+  plob_cover %>%
   as_tibble() %>%
   #  mutate(size_cm = area*10000) %>%
   group_by(Site) %>%
-  dplyr::summarize(mean = mean(bare_cover), 
-                   sd = sd(bare_cover), 
+  dplyr::summarize(mean = mean(plob_cover), 
+                   sd = sd(plob_cover), 
                    n = n(),
                    se = sd/sqrt(n)
   ) %>%
@@ -273,30 +278,31 @@ bare_cover_summary <-
          upper.ci = mean + qt(1 - (0.05 / 2), n - 1) * se) %>%
   mutate_at(vars(Site), factor) %>%
   add_column(
-    location = c('Anakena', 'Manavai', 'Southeast')
+    location = c('Anakena', 'Manavai', 'Southeast'),
+    group = c("plob", "plob", "plob")
   ) %>%
   mutate_at(vars(location), factor)
 
 
-bare_cover2 <- 
-  bare_cover_summary %>%
+plob_cover2 <- 
+  plob_cover_summary %>%
   add_column(
     cld = c('a', 'b', 'c')
   ) %>%
   mutate_at(vars(cld), factor)
 
-bare_cover2
+plob_cover2
 
 x_labels = c("North", "West", "Southeast")
 
-bare_cover.ggbarplot <- ggplot(bare_cover2, aes(x = location, y = mean, fill = x_labels)) +   
+plob_cover.ggbarplot <- ggplot(plob_cover2, aes(x = location, y = mean, fill = x_labels)) +   
   geom_bar(stat = "identity", width = 0.75, color = "black", linewidth = 0.50, alpha = 0.6) +
   geom_linerange(aes(ymin = lower.ci, ymax = upper.ci), size = 0.75) +
   scale_y_continuous(expression(paste("Mean Percent Cover (%)")), limits = c(0, 1)) + 
   scale_x_discrete(expand = c(0, 1), labels = x_labels) + 
   scale_fill_manual(values = c("#FFC74E", "#82A5C0", "#ABC178")) +
-  #  facet_wrap( ~ depth2, labeller = as_labeller(label_names), dir = "v", ncol = 1) + 
-  ggtitle(expression(paste("Bare Substrate"))) +
+  #facet_wrap( ~ depth2, labeller = as_labeller(label_names), dir = "v", ncol = 1) + 
+  ggtitle(expression(paste(italic(" Porites lobata ")))) +
   geom_text(aes(label = cld, y = upper.ci), vjust = -0.5) +
   #scale_y_log10(expression(paste("Colony Size (", cm^2, ")"), limits = c(0, 100000))) +
   labs(x = NULL) +
@@ -316,18 +322,30 @@ bare_cover.ggbarplot <- ggplot(bare_cover2, aes(x = location, y = mean, fill = x
         axis.title.y = element_text(size = 11),
         legend.title = element_blank())
 
-bare_cover.ggbarplot
+plob_cover.ggbarplot
 
-x_labels = c("Pocillopora", "Porites", "Bare)
+##################################
+#Groups ##########################
+##################################
 
-cover_main.ggbarplot <- ggplot(bare_cover2, aes(x = location, y = mean, fill = x_labels)) +   
-  geom_bar(stat = "identity", width = 0.75, color = "black", linewidth = 0.50, alpha = 0.6) +
+groups_percent_cover <- bind_rows(poci_cover2, plob_cover2, bare_cover2)
+groups_percent_cover
+
+group = c("Pocillopora", "Porites", "Bare")
+
+cover_main.ggbarplot <- ggplot(groups_percent_cover, aes(x = Site, y = mean, fill = location)) +   
+  # geom_col(aes(fill = supp), position = position_dodge(0.8), width = 0.7) +
+  geom_bar(stat = "identity", position = position_dodge(0.8), 
+           width = 0.75, color = "black", linewidth = 0.50, alpha = 0.6) +
   geom_linerange(aes(ymin = lower.ci, ymax = upper.ci), size = 0.75) +
   scale_y_continuous(expression(paste("Mean Percent Cover (%)")), limits = c(0, 1)) + 
-  scale_x_discrete(expand = c(0, 1), labels = x_labels) + 
+  #scale_x_discrete(expand = c(0, 1), labels = Site) + 
   scale_fill_manual(values = c("#FFC74E", "#82A5C0", "#ABC178")) +
-  #  facet_wrap( ~ depth2, labeller = as_labeller(label_names), dir = "v", ncol = 1) + 
-  ggtitle(expression(paste("Bare Substrate"))) +
+  facet_wrap( ~ group, 
+              #labeller = as_labeller(label_names), 
+              dir = "v", 
+              ncol = 1) + 
+  #ggtitle(expression(paste("Bare Substrate"))) +
   geom_text(aes(label = cld, y = upper.ci), vjust = -0.5) +
   #scale_y_log10(expression(paste("Colony Size (", cm^2, ")"), limits = c(0, 100000))) +
   labs(x = NULL) +
@@ -342,13 +360,63 @@ cover_main.ggbarplot <- ggplot(bare_cover2, aes(x = location, y = mean, fill = x
         panel.spacing.y = unit(0.5, "cm"),
         panel.spacing = unit(1, "lines"),
         axis.ticks = element_blank(),
-        legend.position = 'none',
+        legend.position = 'right',
         plot.title = element_text(size = 11),
         axis.title.y = element_text(size = 11),
         legend.title = element_blank())
 
-bare_cover.ggbarplot
+cover_main.ggbarplot
 
+ggplot(df.summary2, aes(dose, len)) +
+  geom_col(aes(fill = supp), position = position_dodge(0.8), width = 0.7)+
+  geom_errorbar(
+    aes(ymin = len, ymax = len+sd, group = supp),
+    width = 0.2, position = position_dodge(0.8)
+  )+
+  scale_fill_manual(values = c("grey80", "grey30"))
+ 
+poci_size3 <- 
+  poci_size2 %>%
+  add_column(
+    cld = c('a', 'b', 'c')
+  ) %>%
+  mutate_at(vars(cld), factor)
+
+poci_size3
+
+x_labels = c("North", "West", "Southeast")
+# label_names = c("8 m" = "8 m", "15 m" = "15 m", "25 m" = "25 m")
+
+poci_size.gg.barplot <- ggplot(poci_size3, aes(x = location, y = mean, fill = x_labels)) +   
+  geom_bar(stat = "identity", width = 0.75, color = "black", size = 0.50, alpha = 0.6) +
+  geom_linerange(aes(ymin = lower.ci, ymax = upper.ci), size = 0.75) +
+  scale_y_continuous(expression(paste("Mean Colony Size ("," ", cm^2, ")")), limits = c(0, 300)) + 
+  scale_x_discrete(expand = c(0, 1), labels = x_labels) + 
+  scale_fill_manual(values = c("#FFC74E", "#82A5C0", "#ABC178")) +
+  # facet_wrap( ~ depth2, labeller = as_labeller(label_names), dir = "v", ncol = 1) + 
+  ggtitle(expression(paste(italic(" Pocillopora "), "spp."))) +
+  geom_text(aes(label = cld, y = upper.ci), vjust = -0.5) +
+  #scale_y_log10(expression(paste("Colony Size (", cm^2, ")"), limits = c(0, 100000))) +
+  labs(x = NULL) +
+  theme(strip.text = element_text(size = 10, color = "black", hjust = 0.50),
+        strip.background = element_rect(fill = "#FFFFFF", color = NA),    
+        panel.background = element_rect(fill = "#FFFFFF", color = NA),
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        panel.grid.major.y = element_line(color = "#b2b2b2"),
+        panel.spacing.x = unit(1, "cm"),
+        panel.spacing.y = unit(0.5, "cm"),
+        panel.spacing = unit(1, "lines"),
+        axis.ticks = element_blank(),
+        legend.position = "none",
+        plot.title = element_text(size = 11),
+        axis.title.y = element_text(size = 11),
+        legend.title = element_blank())
+
+poci_size.gg.barplot
+
+plob_cover.ggbarplot + bare_cover.ggbarplot + poci_cover.ggbarplot + poci_size.gg.barplot
 
 
 
