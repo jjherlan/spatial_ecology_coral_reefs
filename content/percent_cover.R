@@ -113,7 +113,7 @@ poci_cover.ggbarplot <- ggplot(poci_cover2, aes(x = location, y = mean, fill = x
 poci_cover.ggbarplot
 
 ##################################
-#Porites lobata###################
+#Bare Substrate###################
 ##################################
 
 bare_cover = read_csv('rpn_bare.csv')
@@ -216,7 +216,7 @@ bare_cover.ggbarplot <- ggplot(bare_cover2, aes(x = location, y = mean, fill = x
         axis.title.y = element_text(size = 11),
         legend.title = element_blank())
 
-bare_cover.ggbarplot
+# bare_cover.ggbarplot
 
 ##################################
 #Porites lobata###################
@@ -225,7 +225,7 @@ bare_cover.ggbarplot
 plob_cover = read_csv('rpn_plob.csv')
 
 plob_cover = read_csv('rpn_plob.csv') %>% 
-  select(plot_id, Site, pland) %>%
+  dplyr::select(plot_id, Site, pland) %>%
   group_by(Site) %>%
   mutate(
     plob_cover = pland*0.01
@@ -418,7 +418,7 @@ poci_size.gg.barplot
 
 plob_cover.ggbarplot + bare_cover.ggbarplot + poci_cover.ggbarplot + poci_size.gg.barplot
 
-
+inv.logit(3.1694)
 
 
 
