@@ -1,0 +1,40 @@
+data{
+  lim[1] <- 1e-16
+  lim[2] <- 0.01
+  lim[3] <- 0.05
+  lim[4] <- 0.25
+  lim[5] <- 0.5
+  lim[6] <- 0.75
+  lim[7] <- 0.95
+  
+  lim.0[1] <- 0
+  lim.0[8] <- 1
+ 
+ Daub[1]<- 0.001
+ Daub[2] <-  0.025
+ Daub[3] <- 0.15
+ Daub[4] <- 0.375
+ Daub[5] <- 0.625
+ Daub[6] <- 0.85
+ Daub[7] <- 0.975
+
+  for(i in 2:7){
+    lim.0[i] <- lim[i]
+  }
+}
+model{
+  for(i in 1:N.beta){
+    y.beta[i] ~ dinterval(y.latent[i],lim)
+    y.latent[i]  ~ dbeta(a[i],b[i])
+    a[i] <- 1e-4 + phi*mu[i]           
+    b[i] <- 1e-4 + phi*(1-mu[i])
+    logit(mu[i]) <- inprod(X.beta[i,],beta)
+
+  }
+  for(p in 1:P.beta){
+    beta[p] ~ dnorm(0,1e-4)
+        }
+  phi ~ dgamma(.1,.1)
+
+  }
+

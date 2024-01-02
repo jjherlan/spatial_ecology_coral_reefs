@@ -320,7 +320,7 @@ plob_cover_mod.beta1_aic
 plob_cover_mod.beta2_aic
 ```
 
-## Interpreting results for pocilloporid corals
+## Interpreting results for poritid corals
 
 In order to choose between the beta regression model with a common $\phi$ versus different $\phi$, I used **AIC** but a *likelihood ratio* or *wald test* could be used. Using **AIC**, the model with varying $\phi$ values had a lower AIC (-1518.568 compared to -1494.524) and therefore more support. We interpret the output from beta regression with the following:
 
@@ -582,7 +582,7 @@ lmtest::lrtest(plob_cover.bm1, plob_cover.bmnull)
 AIC(plob_cover.bm1, plob_cover.lm1, plob_cover.bmnull)
 ```
 
-According to the likelihood-ratio test there is a significant difference between the null model and the treatment model. The AIC analysis supports this conclusion, but also highlights the improved model fit with beta regression relative to normal ANOVA (`lm1`). From this initial analysis we would tentatively conclude that using beta regresson improves our ability to model the algal cover, but that there is no effect of grazer manipulation treatment.
+According to the likelihood-ratio test there is a significant difference between the null model and the treatment model. The AIC analysis supports this conclusion, but also highlights the improved model fit with beta regression relative to normal ANOVA (`lm1`). From this initial analysis we would tentatively conclude that using beta regression improves our ability to model the algal cover, but that there is no effect of grazer manipulation treatment.
 
 It is useful to plot the predictions derived from the model and compare them to the observed data. First we define two new functions to allow us to use the `dbeta` and `rbeta` functions with the $\mu$ and $\phi$ parameterization.
 
@@ -676,7 +676,7 @@ lmtest::lrtest(plob_cover.bmnull, plob_cover.bm1, plob_cover.bm2)
 
 The likelihood ratio tests indicate that the model with varying $\phi$ is significantly better than both the previous fixed $\phi$ model, and the null model. In this case the conclusion is that including the model for $\phi$ led to a better fitting model than both the fixed $\phi$ model and the null model.
 
-It is possible to apply post-hoc tests to identify which pariwise contrasts of treatments levels are significant.
+It is possible to apply post-hoc tests to identify which pairwise contrasts of treatments levels are significant.
 
 ```{r}
 test(pairs(emmeans(plob_cover.bm2, ~ Site, mode = "link")))

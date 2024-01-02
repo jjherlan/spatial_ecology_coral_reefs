@@ -3,6 +3,7 @@ library(tidyverse)
 #library(tidyr)
 library(patchwork)
 library(ggpubr)
+library(cowplot)
 
 Fcn.CreateSummary.betareg <- function(object.betareg){
   OUT <- summary(object.betareg)
@@ -83,14 +84,21 @@ poci_cover2
 
 x_labels = c("North", "West", "Southeast")
 
+#poci_cover2$location <- factor(poci_cover2$location, levels=c("North", "West", "Southeast"))
+
 poci_cover.ggbarplot <- ggplot(poci_cover2, aes(x = location, y = mean, fill = x_labels)) +   
   geom_bar(stat = "identity", width = 0.75, color = "black", linewidth = 0.50, alpha = 0.6) +
   geom_linerange(aes(ymin = lower.ci, ymax = upper.ci), size = 0.75) +
-  scale_y_continuous(expression(paste("Mean Percent Cover (%)")), limits = c(0, 1)) + 
+  scale_y_continuous(expression(paste("Mean Percent Cover (%)")), limits = c(0, 1), 
+                     labels = function(x) paste0(x*100)) + 
   scale_x_discrete(expand = c(0, 1), labels = x_labels) + 
-  scale_fill_manual(values = c("#FFC74E", "#82A5C0", "#ABC178")) +
+  scale_fill_manual(limits = c("North", "West", "Southeast"),
+                                  values = c("#FFC74E", "#ABC178", "#82A5C0")) +
+  #scale_fill_discrete(values = c("#FFC74E", "#82A5C0", "#ABC178"), 
+  #                               limits = c("North", "West", "Southeast")) +
   #  facet_wrap( ~ depth2, labeller = as_labeller(label_names), dir = "v", ncol = 1) + 
-  ggtitle(expression(paste(italic(" Pocillopora "), "spp."))) +
+  #ggtitle(expression(paste(italic(" Pocillopora "), "spp."))) +
+  ggtitle(expression(paste(" Pocilloporid "))) +
   geom_text(aes(label = cld, y = upper.ci), vjust = -0.5) +
   #scale_y_log10(expression(paste("Colony Size (", cm^2, ")"), limits = c(0, 100000))) +
   labs(x = NULL) +
@@ -105,8 +113,9 @@ poci_cover.ggbarplot <- ggplot(poci_cover2, aes(x = location, y = mean, fill = x
         panel.spacing.y = unit(0.5, "cm"),
         panel.spacing = unit(1, "lines"),
         axis.ticks = element_blank(),
-        legend.position = 'none',
+        legend.position = 'bottom',
         plot.title = element_text(size = 11),
+        axis.text.x = element_blank(),
         axis.title.y = element_text(size = 11),
         legend.title = element_blank())
 
@@ -192,7 +201,8 @@ x_labels = c("North", "West", "Southeast")
 bare_cover.ggbarplot <- ggplot(bare_cover2, aes(x = location, y = mean, fill = x_labels)) +   
   geom_bar(stat = "identity", width = 0.75, color = "black", linewidth = 0.50, alpha = 0.6) +
   geom_linerange(aes(ymin = lower.ci, ymax = upper.ci), size = 0.75) +
-  scale_y_continuous(expression(paste("Mean Percent Cover (%)")), limits = c(0, 1)) + 
+  scale_y_continuous(expression(paste("Mean Percent Cover (%)")), limits = c(0, 1),
+                     labels = function(x) paste0(x*100)) + 
   scale_x_discrete(expand = c(0, 1), labels = x_labels) + 
   scale_fill_manual(values = c("#FFC74E", "#82A5C0", "#ABC178")) +
   #  facet_wrap( ~ depth2, labeller = as_labeller(label_names), dir = "v", ncol = 1) + 
@@ -211,12 +221,13 @@ bare_cover.ggbarplot <- ggplot(bare_cover2, aes(x = location, y = mean, fill = x
         panel.spacing.y = unit(0.5, "cm"),
         panel.spacing = unit(1, "lines"),
         axis.ticks = element_blank(),
-        legend.position = 'none',
+        legend.position = 'bottom',
         plot.title = element_text(size = 11),
+        axis.text.x = element_blank(),
         axis.title.y = element_text(size = 11),
         legend.title = element_blank())
 
-# bare_cover.ggbarplot
+bare_cover.ggbarplot
 
 ##################################
 #Porites lobata###################
@@ -298,11 +309,12 @@ x_labels = c("North", "West", "Southeast")
 plob_cover.ggbarplot <- ggplot(plob_cover2, aes(x = location, y = mean, fill = x_labels)) +   
   geom_bar(stat = "identity", width = 0.75, color = "black", linewidth = 0.50, alpha = 0.6) +
   geom_linerange(aes(ymin = lower.ci, ymax = upper.ci), size = 0.75) +
-  scale_y_continuous(expression(paste("Mean Percent Cover (%)")), limits = c(0, 1)) + 
+  scale_y_continuous(expression(paste("Mean Percent Cover (%)")), limits = c(0, 1),
+                     labels = function(x) paste0(x*100)) + 
   scale_x_discrete(expand = c(0, 1), labels = x_labels) + 
   scale_fill_manual(values = c("#FFC74E", "#82A5C0", "#ABC178")) +
   #facet_wrap( ~ depth2, labeller = as_labeller(label_names), dir = "v", ncol = 1) + 
-  ggtitle(expression(paste(italic(" Porites lobata ")))) +
+  ggtitle(expression(paste(" Poritid "))) +
   geom_text(aes(label = cld, y = upper.ci), vjust = -0.5) +
   #scale_y_log10(expression(paste("Colony Size (", cm^2, ")"), limits = c(0, 100000))) +
   labs(x = NULL) +
@@ -317,8 +329,9 @@ plob_cover.ggbarplot <- ggplot(plob_cover2, aes(x = location, y = mean, fill = x
         panel.spacing.y = unit(0.5, "cm"),
         panel.spacing = unit(1, "lines"),
         axis.ticks = element_blank(),
-        legend.position = 'none',
+        legend.position = 'bottom',
         plot.title = element_text(size = 11),
+        axis.text.x = element_blank(),
         axis.title.y = element_text(size = 11),
         legend.title = element_blank())
 
@@ -394,7 +407,7 @@ poci_size.gg.barplot <- ggplot(poci_size3, aes(x = location, y = mean, fill = x_
   scale_x_discrete(expand = c(0, 1), labels = x_labels) + 
   scale_fill_manual(values = c("#FFC74E", "#82A5C0", "#ABC178")) +
   # facet_wrap( ~ depth2, labeller = as_labeller(label_names), dir = "v", ncol = 1) + 
-  ggtitle(expression(paste(italic(" Pocillopora "), "spp."))) +
+  ggtitle(expression(paste(" Pocilloporid "))) +
   geom_text(aes(label = cld, y = upper.ci), vjust = -0.5) +
   #scale_y_log10(expression(paste("Colony Size (", cm^2, ")"), limits = c(0, 100000))) +
   labs(x = NULL) +
@@ -409,8 +422,9 @@ poci_size.gg.barplot <- ggplot(poci_size3, aes(x = location, y = mean, fill = x_
         panel.spacing.y = unit(0.5, "cm"),
         panel.spacing = unit(1, "lines"),
         axis.ticks = element_blank(),
-        legend.position = "none",
+        legend.position = "bottom",
         plot.title = element_text(size = 11),
+        axis.text.x = element_blank(),
         axis.title.y = element_text(size = 11),
         legend.title = element_blank())
 
@@ -420,7 +434,48 @@ plob_cover.ggbarplot + bare_cover.ggbarplot + poci_cover.ggbarplot + poci_size.g
 
 inv.logit(3.1694)
 
+ggarrange(
+  plob_cover.ggbarplot, 
+  bare_cover.ggbarplot,
+  poci_cover.ggbarplot, 
+  poci_size.gg.barplot, 
+  ncol = 2,
+  nrow = 2,
+  widths = c(0.25, 0.25, 0.25, 0.25),
+  labels = c("A", "B", "C", "D"),
+  common.legend = TRUE, 
+  legend = "bottom"
+)
 
+legend_b <- get_legend(
+  poci_cover.ggbarplot + 
+    guides(color = guide_legend(nrow = 1)) +
+    theme(legend.position = "bottom")
+)
+
+# arrange the three plots in a single row
+prow <- plot_grid(
+  plob_cover.ggbarplot + theme(legend.position = "none"),
+  bare_cover.ggbarplot + theme(legend.position = "none"),
+  poci_cover.ggbarplot + theme(legend.position = "none"),
+  poci_size.gg.barplot + theme(legend.position = "none"),
+  scale = c(0.8, 0.8, 0.8, 0.8),
+  align = 'vh',
+  labels = c("A", "B", "C", "D"),
+  hjust = -1,
+  nrow = 2
+  #ncol = 1
+)
+
+prow
+
+plot_grid(prow, 
+          legend_b,
+          ncol = 1,
+          rel_heights = c(1, 0.1)
+          #labels = "AUTO", 
+          #scale = c(0.9, 0.9, 0.9, 0.9)
+          )
 
 
 

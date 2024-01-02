@@ -1,0 +1,1102 @@
+
+\documentclass{article}
+\usepackage[margin=0.5in]{geometry}
+
+
+\usepackage{alltt}
+\usepackage[style=authoryear, backend=bibtex, maxbibnames=99, maxcitenames=2,dashed=false, giveninits=true]{biblatex}
+%\smartqed  % flush right qed marks, e.g. at end of proof
+% Sys.setenv(PATH=paste(Sys.getenv("PATH"),"C:/Program Files/MiKTeX 2.9/miktex/bin/x64/",sep=";"))
+
+%%Format the references section a la Ecology Stat Report
+\renewbibmacro{in:}{} %%remove In: from references section
+%\DeclareFieldFormat[article]{volume}{\textbf{#1}} %bolded journal volume
+\DeclareFieldFormat{pages}{#1} %no "pp." in the pages
+\DeclareFieldFormat[article]{title}{#1} %no quotes around article titles
+
+\renewbibmacro*{volume+number+eid}{%add colon after volume. delete number
+  \printfield{volume}%
+  \addcolon
+%  \setunit*{\adddot}% no period after journal volume
+%  \setunit*{\addnbspace}
+%  \printfield{number}% delete the journal number
+%  \setunit{\addcomma\space}%
+  \printfield{eid}}
+
+%%no parentheses around year and add a period
+\renewbibmacro*{date+extrayear}{%
+    \iffieldundef{year}{%
+      }{%
+      \addperiod\space
+      \printtext{\printdateextra}%
+    }%
+}
+
+\renewcommand*{\bibpagespunct}{} %remove the space before page numbers
+
+\DeclareFieldFormat{journaltitle}{#1} %no italics on the journal title
+\DeclareFieldFormat[book]{title}{#1} %no italics for book titles
+  
+%   \renewcommand{\bibopenparen}{\addcomma\addspace}
+% \renewcommand{\bibcloseparen}{\addcomma\addspace}
+
+
+\appto{\bibsetup}{\raggedright}
+\AtBeginBibliography{\small}
+\bibliography{Refs.bib}
+
+\usepackage{setspace}
+\doublespacing
+
+\renewcommand{\thefigure}{B\arabic{figure}}
+\renewcommand{\thetable}{B\arabic{table}}
+
+\begin{document}
+
+
+<<Packages,warning=FALSE,eval=TRUE, message=FALSE, echo=FALSE, results='asis'>>=
+  library(ggplot2)
+library(plyr)
+library(xtable)
+library(tidyr)
+
+library(ordinal)
+
+library(betareg)
+library(VGAM)
+
+library(rjags) ; load.module('glm') ; load.module('dic')    # need a separate working JAGS installation. 
+library(mosaic)  
+
+
+library(arm)
+library(cowplot)
+library(qqtest)  #for uncertainty intervals in qqplot
+
+
+setwd("D:/Current Papers/Plant Cover Review Paper/R2 Journal of Ecology/Supplements")
+ 
+#opts_chunk$set(cache=TRUE)
+
+#my coding conventions
+# fcn.ActionWord <- functions are action words
+#objects are nouns: mod= model object, dat=datafile, tab=table format
+
+@
+
+
+\title{Appendix B. Worked Examples for Plant Cover Data Analysis}
+\author{Written by Kathryn M. Irvine, US Geological Survey, kirvine@usgs.gov}
+
+\maketitle
+
+This appendix is written in an .RNW file format that can be opened and viewed within R studio \autocite{Rsoft}. The R code requires loading the following R packages from CRAN: ggplot2 \autocite{ggplot2}, plyr \autocite{plyr}, xtable \autocite{xtable}, tidyr \autocite{tidyr}, ordinal \autocite{ordinal}, betareg \autocite{betareg}, VGAM \autocite{VGAM}, rjags \autocite{rjags}, mosaic \autocite{mosaic}. The rjags package requires a working installation of JAGS (Just Another Gibbs Sampler) \autocite{JAGS}. The R code that is not mirrored in the compiled .pdf contains the code to manipulate the data and the code to re-create all the displayed tables and figures. This document is fully reproducible, if the user can negotiate the R software.
+
+The datasets analyzed herein are available for download at https://doi.org/10.5066/P9OHMLL1 along with this file.
+
+\section{Sago pondweed (\textit{Stuckenia pectinata}) Example: Line-intercept or visually estimated cover in an areal plot}
+
+Field methods that employ a line intercept or visually estimating cover within an areal plot result in a response variable that is a continuous proportion. In the main text, we presented a field study interested in whether there was evidence of a difference in mean plant cover after the water was removed within a wetland unit. Seventy 1-m x 1-m plots were randomly placed throughout the wetland unit located at Bowdoin National Wildlife Refuge (Montana, USA) in summer of 2015 and the following summer (2016) after the water was removed, 62 plots were surveyed. These data were collected by Bowdoin Refuge Wildlife Biologist Jessica Larson as part of a larger inventory and monitoring project within the US Fish and Wildlife Service. 
+
+ For analysis, one could use a beta regression model (betareg function in betareg R package) or logit-transformed response and apply linear regression options (lm function in stats R package). For some situations, the assumptions of the linear regression model are violated and they should be checked. The betareg model objects and the lm model objects both allow for the plot function to create diagnostic plots to evaluate model assumptions. For brevity, we display only one set of diagnostic plots for a beta regression model (code for other fitted model objects is included in .Rnw file for reference). Data may display non-constant variance, outliers, etc and just using a transformation is insufficient. In our example, there were a large number of plots with zero recorded cover. One option is to transform the zero values to trace (= 0.005) and 1 to slightly less than 1 (= 0.995) and then fit the models (beta regression versus linear model). A better option as discussed in the text is to use a zero-one augmented beta model, which we also demonstrate. Basically a three-part model, the zero and/or one values are modeled separately using binary logistic regression and the continuous cover values that are not 0 or 1 are modeled using beta regression.
+
+
+
+\subsection{Data Visualization for Sago Pondweed Example}
+
+
+The histograms show the empirical distribution on the raw proportion scale and the logit-transformed scale (Fig. B1). In this example,  we replaced zero values with a trace (=0.005) and one values with 0.995. The histogram is the same, if we had used 0 or 1 values. The data appear L-shaped in 2015 and then U-shaped in distribution in 2016 (Fig. B1 top row). This shape remains even after the logit-transformation (Fig. B1 bottom row). These data are typical in that they have a lot of zero values recorded for one species (Table B1). 
+
+<<Data-Manipulations,warning=FALSE,eval=TRUE,  message=FALSE, echo=FALSE, results='verbatim',fig.cap="Plot of Empirical Densities for sago pondweed by year",fig.width=5,fig.height=5>>=
+
+# load dataset STPE15 is the species code for sago pondweed
+
+dat.BDW<-read.csv("BowdoinData.csv")
+
+ 
+dat.BDW$yrunit<-as.factor(dat.BDW$yrunit)
+ 
+#converting to a proportion from a percentage
+
+dat.BDW$prop.STPE15<-dat.BDW$STPE15/100
+
+ levels(dat.BDW$yrunit)<-c("2015","2016")
+
+
+#One option to deal with 0 and 100 percent cover is to add and subtract a small amount to those values 
+ num.plots<-length(dat.BDW$prop.STPE15)
+ 
+ for(i in 1:num.plots){
+   if(dat.BDW$prop.STPE15[i]==0) dat.BDW$prop.STPE15.t[i]=0.005 else
+     if(dat.BDW$prop.STPE15[i]==1) dat.BDW$prop.STPE15.t[i]=0.995 else
+       dat.BDW$prop.STPE15.t[i]=dat.BDW$prop.STPE15[i]
+ }
+ 
+  dat.BDW$Sago.logit<- logit(dat.BDW$prop.STPE15.t)
+  dat.BDW$Sago.Indzero <- ifelse(dat.BDW$prop.STPE15==0,1,0)
+  dat.BDW$Sago.Indone <- ifelse(dat.BDW$prop.STPE15==1,1,0)
+  dat.BDW$Ind2016<-ifelse(dat.BDW$yrunit=='2016',1,0)
+
+#create an abundance dataset only for SAGO
+  
+dat.BDW$Y.ord<-cut(dat.BDW$STPE15,c(-.0001,0,5,25,50,75,95,99,100))
+#table(dat.BDW$Y.ord,dat.BDW$yrunit)
+
+
+dat.BDW$Y.ord<-as.factor(dat.BDW$Y.ord)
+
+  Dat.Abundance1<-subset(dat.BDW,prop.STPE15>0)
+  Dat.Abundance<-subset(Dat.Abundance1,prop.STPE15<1)  #should only have 35 observations
+
+
+     
+
+@
+
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrrr}
+  \hline
+ Total Sample Size & Number of Zeros & Number of Ones \\
+ 132& 87 & 10\\
+   \hline
+     \hline
+ \end{tabular}
+ \caption{Summary of Observations from Plot based visual estimates of Sago Pondweed} 
+\end{table}
+
+ 
+<<SimFunc, echo=FALSE>>=
+
+#wrote a function to create a table from betreg object that can be used in xtable()
+
+Fcn.CreateSummary.betareg<-function(object.betareg){
+  OUT<-summary(object.betareg)
+ tab<-rbind(OUT$coefficients$mean,OUT$coefficients$precision)
+      return(tab)
+   }
+@
+   
+
+
+
+
+<<Fig-hists,echo=FALSE,fig.cap="Comparison of non-Logit vesus logit transformed Sago Pondweed percent cover with 0 and 1 values replaced with 0.005 and 0.995, respectively.",fig.height=7,fig.width=7>>=
+
+  dat.BDW2015<-subset(dat.BDW,yrunit=="2015")
+ dat.BDW2016<-subset(dat.BDW,yrunit=="2016")
+ 
+par(mfrow=c(2,2))
+hist(dat.BDW2015$prop.STPE15.t,nclass=55,xlab="Proportion cover ",main="2015",col="black")
+hist(dat.BDW2016$prop.STPE15.t, nclass=55,xlab="Proportion cover",main="2016",col="black")
+hist(dat.BDW2015$Sago.logit,nclass=55,xlab="Logit-transformed proportions",main="",col="black")
+hist(dat.BDW2016$Sago.logit,nclass=55,xlab="Logit-transformed proportions",main="",col="black")
+
+@
+
+
+
+
+\subsection{Methods for Analyzing Sago Pondweed}
+
+As described in the main text, one option for dealing with the 0 and 1 values is to transform them to be slightly less than one or more than zero. This approach assumes that the data are consistent with a common beta distribution. We fit five models to the datase: three variations on the beta model and two linear model approaches. 
+
+A beta regression assuming a common spatial aggregation $\delta$ or precision parameter ($\phi$) (object named: mod.beta1). Notice that $\delta= \frac{1}{1+\phi}$ and $\phi=\frac{(1-\delta)}{\delta}$. A beta regression assuming each year had a different $\phi$ parameter (object named: mod.beta2). 
+
+Another option for modeling the data is to use a zero-one augmented beta model. Currently, the betareg package does not implement this model directly. Therefore, we follow the theoretical results shown in Ospina and Ferrari (2010) that suggest a three-part model can be fit to the data. Basically, we use logistic regression with response an indicator variable for whether or not the plot had zero recorded cover, another logistic regression with response an indicator for whether or not the plot had 100$\%$ recorded percent cover, and then the beta regression is used to model the continuous percent cover observations ranging from greater than 0 and less than 1.
+
+Other options based on assuming that the residuals are normally distributed is to use a linear model with a logit-transformed response (object named: mod.lmlogit) or a linear model with response untransformed proportions (object named: mod.lmraw).
+
+<<FitModel-Beta1,eval=TRUE,warning=FALSE,echo=TRUE,results='asis',>>=
+#this is using the betareg function within the package betareg in R
+
+mod.beta1<-betareg(prop.STPE15.t~yrunit,data=dat.BDW, link = c("logit"), link.phi = NULL,
+                   type = c("ML"))
+
+
+
+# allowing for the phi parameter to among years
+mod.beta2<-betareg(prop.STPE15.t~yrunit|yrunit,data=dat.BDW,link = c("logit"), link.phi = NULL,
+                   type = c("ML"))
+
+
+# For comparison this applies a logit-transformation to the empirical proportions and
+# then uses a standard linear regression model.
+
+mod.lmlogit<-lm(Sago.logit~yrunit,data=dat.BDW)
+
+#this is code for applying a naive linear model applied to the raw proportions as done 
+#in the simulation study
+
+mod.lmraw<-lm(prop.STPE15.t~yrunit,data=dat.BDW)
+
+
+
+@
+
+<<AICcomp,eval=TRUE,warning=FALSE,echo=TRUE,results='asis'>>=
+
+#Demonstration on how to extract AIC from beta regression models
+aic.betamodel1<- AIC(mod.beta1)
+aic.betamodel2<- AIC(mod.beta2)
+
+@
+
+
+<<FitModel-BetaZ10,eval=TRUE,warning=FALSE,echo=FALSE,results='asis'>>=
+
+#this is using the betareg function within the package betareg in R to model the continuous portion
+
+mod.beta3<-betareg(prop.STPE15~yrunit,data=Dat.Abundance, link = c("logit"), link.phi = NULL, type = c("ML"))
+
+
+mod.beta4<-betareg(prop.STPE15~yrunit|yrunit,data=Dat.Abundance,link = c("logit"), link.phi = NULL, type = c("ML"))
+
+#AIC(mod.beta3)
+#AIC(mod.beta4)
+
+#modeling the probability of zero and one separate from the continuous portion.
+
+mod.logis0<-glm(Sago.Indzero~ yrunit, family=binomial, data =dat.BDW)
+mod.logis1<-glm(Sago.Indone~ yrunit, family=binomial, data =dat.BDW)
+
+
+@
+
+
+\subsection{Interpreting Results for Sago Pondweed}
+
+In order to choose between the beta regression model with a common $\phi$ (Table B2) versus different $\phi$ (Table B3), I used AIC but a likelihood ratio or wald test could be used. Using AIC, the model with varying $\phi$ values had a lower AIC (-464 compared to -432) and therefore more support. We consider our simple two year or group case to explain how to interpret the output from beta regression. 
+
+The model we fit assumes $$logit(\mu_j)=\beta_0+\beta_1 Ind_{grp2},$$ where $Ind_{grp2}$ is an indicator for group 2 and $j$ denotes the group membership so $j=1$ or $j=2$. We have $logit(\mu_2)-logit(\mu_1)=\beta_1$, which is equivalent to $$log(\frac{\mu_2}{1-\mu_2})-log(\frac{\mu_1}{1-\mu_1})= \beta_1.$$
+
+The $\frac{\mu_j}{1-\mu_j}$ is interpreted as the odds of proportion cover in group $j$. Therefore, 
+
+$$log(\frac{\mu_2}{1-\mu_2}/\frac{\mu_1}{1-\mu_1})=\beta_1$$
+is the log- odds ratio of cover in group 2 compared to group 1, 
+$$(\frac{\mu_2}{1-\mu_2}/\frac{\mu_1}{1-\mu_1})=exp(\beta_1).$$
+
+Then $exp(\beta_1)$ is the factor increase/decrease in odds of proportion cover for group 2 compared to group 1, where $exp(\beta_1)>1$ is an increase and $exp(\beta_1)<1$ is a decrease, and $exp(\beta_1) \approx 1$ means essentially no change.
+
+
+Interpreting the beta regression coefficient labeled as \textit{yrunit2016} in Table B3 suggests that the odds of proportion sago pondweed cover increased by a factor of $5.9 = exp(1.776)$ in 2016 from 2015. Alternatively, the logit-linear model suggested that odds of sago cover increased by a factor of $17 =exp(2.866)$ in 2016 from 2015 (Table B4). The linear model on raw proportions suggested that sago cover increased by 0.293 in 2016 from 2015 (Table B5). These estimates all suggest an increase, however, the magnitude of the effect is quite different.
+
+The residual diagnostic plots suggest that modeling the zeros separate from the non-zeros fit the observed data the best (Fig. B3). The results from fiting the zero-one augmented beta model suggest that a common $\phi$ is better supported with $AIC= -16.8155$ (Table B6) versus allowing $\phi$ to vary among years $AIC= -14.9304$ (Table B7). Based on the zero-one augmented beta model, the odds of sago proportion cover increase by a factor of 4 ($exp(1.44)$) in 2016 compared to 2015 (Table B6). The odds of zero cover decreased by a factor of 0.33 ($exp(-1.08)$) in 2016 (Table B8). Notice the model fit to just the ones versus non-ones did not fit the data well, likely due to the fact there were zero plots in 2015 observed with 100$\%$ sago pondweed and only 10 in 2016 (Table B9). To address this issue, we fit a beta model to the observations greater than 0 and changed the one values to 0.995. The interpretation was essentially the same, odds of proportion sago increased by a factor of 7 in 2016 compared to 2015 (model output not shown).    
+
+
+
+<<tab-betareg,echo=FALSE,eval=T,results='asis'>>=
+tab.mod<-Fcn.CreateSummary.betareg(mod.beta1)
+
+print(xtable(tab.mod,digits=3,caption="Results from using betareg package in R by transforming the 0 and 1's. These are on the logit-scale for $\\mu$ with a common $\\phi$ parameter"))
+
+@
+
+
+<<tab-betareg2,echo=FALSE,results='asis',eval=F,cache=FALSE>>=
+
+tab.mod2<-Fcn.CreateSummary.betareg(mod.beta2)
+print(xtable(tab.mod2,digits=3,caption="Results from using betareg package in R by transforming the 0 and 1's. Allowing for $\\phi$ to vary by year"))
+
+#my function doesn't work with phi varying, so just fixed labels manually for pdf version of appendix B
+@
+
+% latex table generated in R 3.4.1 by xtable 1.8-2 package
+% Wed Sep 05 14:30:57 2018
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrrr}
+  \hline
+ & Estimate & Std. Error & z value & Pr($>$$|$z$|$) \\ 
+  \hline
+(Intercept) & -2.186 & 0.200 & -10.940 & 0.000 \\ 
+  yrunit2016 & 1.776 & 0.266 & 6.677 & 0.000 \\ 
+  phi (Intercept) 2015 & 1.009 & 0.211 & 4.785 & 0.000 \\ 
+  phi (yrunit2016) 2016 & -1.580 & 0.252 & -6.266 & 0.000 \\ 
+   \hline
+\end{tabular}
+\caption{Results from using betareg package in R by transforming the 0 and 1's. Allowing for $\phi$ to vary by unit.  These are on the logit-scale for $\mu$ and log-scale for $\phi$} 
+\end{table}
+
+<<tab-results-lm,echo=FALSE,eval=TRUE, results="asis">>=
+print(xtable(summary(mod.lmlogit),digits=3,caption="Results from using lm package in R with logit-transformed percent cover for sago pondweed both years"))
+
+@
+
+
+
+<<tab-results-lm2,echo=FALSE, eval=TRUE,results="asis">>=
+print(xtable(summary(mod.lmraw),digits=3,caption="Results from using lm package in R with raw percent cover for sago pondweed both years"))
+
+@
+
+
+<<tab-betareg3,eval=TRUE, echo=FALSE,results='asis'>>=
+tab.mod1<-Fcn.CreateSummary.betareg(mod.beta3)
+
+print(xtable(tab.mod1,digits=3,caption="Results from using betareg package in R for continuous portion of model. These are on the logit-scale for $\\mu$"))
+
+@
+
+
+
+<<tab-betareg4,echo=FALSE,eval=FALSE,results='asis'>>=
+tab.mod2<-Fcn.CreateSummary.betareg(mod.beta4)
+
+print(xtable(tab.mod2,digits=3,caption="Results from using betareg package in R for for continuous portion of model. Varying $\\phi$. These are on the logit-scale for $\\mu$. These are on the logit-scale for $\\mu$ and log-scale for $\\phi$"))
+
+@
+
+% latex table generated in R 3.5.1 by xtable 1.8-3 package
+% Thu Jan 24 16:53:24 2019
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrrr}
+  \hline
+ & Estimate & Std. Error & z value & Pr($>$$|$z$|$) \\ 
+  \hline
+(Intercept)& -0.841 & 0.327 & -2.574 & 0.010 \\ 
+  yrunit2016 & 1.429 & 0.429 & 3.330 & 0.001 \\ 
+ phi (Intercept) 2015 & 0.348 & 0.312 & 1.113 & 0.266 \\ 
+ phi (yrunit2016) 2016 & 0.141 & 0.418 & 0.338 & 0.735 \\ 
+   \hline
+\end{tabular}
+\caption{Results from using betareg package in R for for continuous portion of model. Varying $\phi$. These are on the logit-scale for $\mu$. These are on the logit-scale for $\mu$ and log-scale for $\phi$} 
+\end{table}
+
+
+<<FitModel-zeroone,eval=TRUE, echo=FALSE,results='asis'>>=
+
+#this is using the betareg function within the package betareg in R
+
+print(xtable(summary(mod.logis0),caption="Results for fitting logistic regression model for probability of zero sago pondweed after water was removed. "))
+
+print(xtable(summary(mod.logis1),caption="Results for fitting logistic regression model for probability of complete cover of sago pondweed after water was removed. "))
+
+@
+
+
+
+\clearpage
+
+<<Fig1, eval=TRUE, echo=FALSE,fig.cap='Example diagnostic plots for beta regression (R code presented in .Rnw version)',fig.width=7,fig.height=7>>=
+#built-in diagnostic plots for beta regression models
+par(mfrow=c(3,2),pty='m')
+plot(mod.beta1)
+plot(mod.beta1, which = 5, type = "sweighted2", sub.caption = "")
+plot(mod.beta1, which = 5, type = "pearson", sub.caption = "")
+@
+
+
+   
+<<FitModel-Beta2,eval=FALSE,warning=FALSE,echo=FALSE,results='asis',fig.cap='Diagnostic plots for beta regression with $phi$ varying',fig.width=7,fig.height=7>>=
+#this is using the betareg function within the package betareg in R
+
+par(mfrow=c(3,2),pty='m')
+plot(mod.beta2)
+plot(mod.beta2, which = 5, type = "sweighted2")
+plot(mod.beta2, which = 5, type = "pearson")
+
+@
+
+<<FitModel-trans,eval=FALSE,echo=FALSE,results='asis',fig.cap='Diagnostic plots for logit-transformation and applying linear regression', fig.width=7,fig.height=7>>=
+
+
+#built-in diagnostic plots for linear regression models
+par(mfrow=c(3,2),pty='m')
+plot(mod.lmlogit)
+
+plot(cooks.distance(mod.lmlogit))
+
+@
+
+
+
+
+
+<<FitModel-LM-notrans,eval=FALSE,echo=FALSE,results='asis',fig.cap='Diagnostic plots for applying linear regression to raw proportions', fig.width=7,fig.height=7>>=
+
+#built-in diagnostic plots for linear regression models
+par(mfrow=c(3,2),pty='m')
+
+plot(mod.lmraw)
+plot(cooks.distance(mod.lmraw))
+
+@
+
+
+<<Fig-compresids,eval=FALSE, echo=FALSE,fig.cap="Comparison of qqplots for beta and linear models. Beta models use weighted residuals 2 as recommended in Espinheira et al. (2008) and linear model are the response residuals. Using the qqtest function that displays uncertainty intervals for easier interpretation", fig.width=7,fig.height=7>>=
+
+# not shown but another option for residual diagnostics to compare model fit
+
+par(mfrow=c(2,2),pty='m')
+qqtest(residuals(mod.beta1, type = "sweighted2"),dist = 'normal',main= "Beta Common Delta")
+qqtest(residuals(mod.beta2, type = "sweighted2"),dist = 'normal',main= "Beta Separate Delta")
+qqtest(residuals(mod.lmlogit, type = "response"),dist = 'normal',main= "Linear Model with Logit-transform")
+qqtest(residuals(mod.lmraw, type = "response"),dist = 'normal',main= "Linear Model with Raw Proportions")
+
+
+@
+
+
+<<Fig-compresids2,eval=TRUE, echo=FALSE,fig.cap="Comparison of default qqplots for beta and linear models. Beta models use weighted residuals 2 recommended in \\cite{Espinheira} and linear model are the response residuals.", fig.width=7,fig.height=7>>=
+par(mfrow=c(3,2),pty='m')
+
+plot(mod.beta1, which=5,type = "sweighted2",main="Beta Common Delta")
+plot(mod.beta2, which=5,type = "sweighted2",main="Beta Separate Delta")
+plot(mod.lmlogit, which=2,main="Linear Model with logit-transform")
+plot(mod.lmraw, which=2,main="Linear Model Raw Proportions")
+plot(mod.beta3, which=5,type = "sweighted2",main="Beta (no zero or one values) Common Delta")
+plot(mod.beta4, which=5,type = "sweighted2",main="Beta (no zero or one values) Separate Delta")
+
+
+par(mfrow=c(3,1),pty='m',cex=1)
+
+plot(mod.beta2, which=5,type = "sweighted2",main="")
+plot(mod.lmlogit, which=2,main="")
+plot(mod.beta3, which=5,type = "sweighted2",main="")
+
+@
+
+ 
+\clearpage
+
+
+\section{Pin-point or point-intercept datasets} 
+Assuming recorded data is number of times a pin hit the species of interest with a known number of pins as arises with pin-point or point intercept data collection.
+
+I simulated data assuming one site was repeatedly measured for 7 years and there were 100 plots or lines within each year. For analysis, one could use a beta-binomial with the VGAM package or R-INLA, we demonstrate using the VGAM package(object named: mod.betabinom). The VGAM package uses 'rho' as the spatial aggregation parameter we refer to as $\delta$ . A logistic regression for binomial counts is an option, but a check for over-dispersion should be done as empirical plant cover data are subject to spatial aggregation that may manifest in overdispersed binomial counts (object named: mod.glm). Alternatively, a logit-transformed response can be used in linear regression options (object named: mod.lm). For some situations, the assumptions for the linear regression models are violated and they should be checked as we show below. Data may display non-constant variance, outliers, etc and just using a transformation is insufficient.
+
+<<Simdata,echo=FALSE, fig.width=7,fig.height=5,results='asis'>>=
+n<-100
+YR<-c(-3:3)
+b0<-.5
+b1<-.2  #22% increase
+  
+phi <-2
+mu<-exp(b0+b1*YR)/(1+exp(b0+b1*YR))
+
+alpha <- phi*mu
+beta <- phi*(1-mu)
+
+rho <- 1/(1+alpha+beta)
+
+  
+#mu<-exp(2)/(1+exp(2))
+
+
+
+lim.0<-c(0,0.001,0.05,0.25,0.5,0.75,0.95,1)  #cut-points included for zero class
+
+y.beta<-numeric()
+  
+  for(i in 1:length(alpha)){
+     y.beta<-c(y.beta,rbeta(n,alpha[i],beta[i]))
+}
+
+Y.bb<- rbinom(length(y.beta),30,prob=y.beta)
+Y.ord <- cut(y.beta,lim.0)
+levels(Y.ord) <- c(0,1,2,3,4,5,6)
+
+dat.betatrend<-data.frame(Y=y.beta,Year=rep(YR,each=n),Y.betabin=Y.bb, Y.ord=Y.ord)
+
+Fcn.logit<-function(y.in){
+if(y.in==0) y.in<- y.in+.001 else
+    if(y.in==1) y.in<- y.in-.001 else y.in<-y.in
+   return(log(y.in/(1-y.in)))}
+
+dat.betatrend$logit.bin<-aaply(dat.betatrend$Y.betabin/30,1,Fcn.logit)
+
+par(mfrow=c(1,2),pty='s')
+
+# hist(y.beta,breaks=c(lim.0))
+# with(dat.betatrend,scatter.smooth(Year,Y,xlab="Year",ylab="Beta Random Variable"))
+
+print(xtable(data.frame("delta"=rho[1],"beta_0"=b0,"beta_1"=b1,"phi"=phi),
+             caption="True Beta Parameter Values Used to Simulate Data"),
+      include.rownames=FALSE,
+     include.colnames=TRUE, 
+      caption.placement="bottom")
+
+@
+
+<<betabinom,eval=FALSE,results='asis',echo=TRUE,message=FALSE>>=
+
+#This is fitting a beta-binomial model using the VGAM package and the vglm function.
+
+mod.betabinom <- vglm(cbind(Y.betabin, c(rep(30,700)-Y.betabin)) ~ Year, betabinomial(zero = "rho"),
+           data = dat.betatrend, trace = TRUE)
+@
+
+<<vgam-results,eval=FALSE,echo=FALSE,results='asis'>>=
+
+#this just creates a pretty output table from vglm.
+
+  CIs<-confintvglm(mod.betabinom,method="wald")
+
+   coefs<-c(coef(mod.betabinom, matrix = TRUE)[1,2], coef(mod.betabinom, matrix = TRUE)[,1])
+    tab<-cbind(coefs,rbind(CIs[2,],CIs[1,],CIs[3,]))
+     
+    colnames(tab)<-c("Coefficients","Lower 95% CI", "Upper 95% CI")
+    row.names(tab)<-c("logit(delta)","beta_0","beta_1")
+    
+print(xtable(tab,caption="Estimated Values and Wald Confidence Intervals for Beta-Binomial with VGAM pkg"),include.rownames=TRUE, include.colnames=TRUE)
+
+
+
+@
+
+% latex table generated in R 3.5.1 by xtable 1.8-3 package
+% Tue Jan 29 13:06:42 2019
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrr}
+  \hline
+ & Coefficients & Lower 95\% CI & Upper 95\% CI \\ 
+  \hline
+logit(delta) & -0.66 & -0.77 & -0.55 \\ 
+  beta\_0 & 0.51 & 0.42 & 0.60 \\ 
+  beta\_1 & 0.17 & 0.12 & 0.21 \\ 
+   \hline
+\end{tabular}
+\caption{Estimated Values and Wald Confidence Intervals for Beta-Binomial with VGAM pkg} 
+\end{table}
+
+<<logit.emp,results='asis',echo=TRUE>>=
+# for comparison for pin-point data, a logistic regression for binomial counts is fit using
+# glm function in Base R.
+
+mod.glm<-glm(cbind(Y.betabin, c(rep(30,700)-Y.betabin)) ~ Year,
+             data=dat.betatrend,family=binomial(link=logit))
+
+# Another approach is to use logit-transformation and then apply a standard linear regression model.
+
+mod.lm<-lm(logit.bin~Year,data=dat.betatrend)
+@
+
+
+<<diag.logitbinom, results='asis',fig.cap='Diagnostic plot for logistic regression for binomial counts',echo=TRUE>>=
+
+#built-in diagnostic plots for glm models
+par(mfrow=c(2,2),pty='m')
+
+plot(mod.glm)
+
+@
+
+<<diag.lmblogit, results='asis',fig.cap='Diagnostic plot for logit-transformation of empirical proportions and applying linear regression',echo=TRUE>>=
+
+#built-in diagnostic plots for lm models
+
+par(mfrow=c(2,2),pty='m')
+
+plot(mod.lm)
+
+@
+
+<<glm-lm-results,echo=FALSE,results='asis'>>=
+
+print(xtable(summary(mod.glm),caption="Results for fitting binomial logistic regression model for trend "))
+
+print(xtable(summary(mod.lm),caption="Results for fitting linear model for trend with logit-transformed proportions"))
+
+@
+
+\pagebreak
+
+\section{Ordinal data trend analysis:  cheatgrass (\textit{Bromus tectorum}) example}
+
+For plant abundance that is measured by visually estimating the top cover within an areal plot and then placing in a cover class based on a pre-defined scheme. A commonly used cover class scheme is based on a modified Daubenmire scale:
+
+\begin{center}
+\begin{tabular}{ |c|l|r| } 
+ \hline
+ Cover Class & Range & Midpoint \\
+
+ \hline 
+0 & 0 & 0\\ 
+1 & $> 0-5 \%$ & 2.5 $\%$ \\ 
+2 &  $> 5-25 \%$  & 15 $\%$ \\ 
+3 &  $> 25-50 \%$  & 37.5 $\%$ \\ 
+4 &  $> 50-75 \%$  & 62.5 $\%$\\ 
+5 &  $> 75-95 \%$  & 85 $\%$\\ 
+6 & $> 95 \%$ & 97.5 $\%$\\ 
+ 
+ \hline
+\end{tabular}
+\end{center}
+
+The following example analysis is based on data recorded as ordinal cover classes of cheatgrass (\textit{Bromus tectorum}), a nonnative invasive grass. The data were collected every year from 2011 until 2017 at the Clarno unit of the John Day Fossil Beds National Monument. The areal plots were placed following a random selection of locations based on the GRTS algorithm \autocite{Yeo}. There was a fire documented in 2011 and interest is in assessing whether there is evidence of cheatgrass distribution or abundance increasing in the monument post-fire. 
+
+
+\subsection{Exploratory Data Analysis}
+
+A bar plot is a useful graphics to explore empirical proportions for cover classes versus either a factor or continuous covariate. A barplot reflects the true ordinal categorical nature of cover classes. In this example the explanatory variable of interest was the year of survey, but a discretized version of a continuous variable would work as well as (see Irvine \textit{et al.}, 2016, Figure 1).
+
+
+<<StackedBar,caption="Stacked Bar Plot by Year",fig.align='center',warning=FALSE,fig.width=5,fig.height=5, message=FALSE, echo=FALSE, result='asis',cache=TRUE>>=
+
+#reading in the ordinal data example and creating a graphic to visualize the data.
+
+dat.ordinal<-read.csv("OrdinalTrendDataExample.csv")
+
+dat.ordinal$Year <- dat.ordinal$Year-4
+dat.ordinal$CoverClass<-as.factor(dat.ordinal$Y.ord)
+
+ggplot(dat.ordinal, aes(x=Year))+
+         geom_bar(aes(fill=CoverClass), position=position_fill(reverse = TRUE))+ylab("Cumulative Empirical Proportions")+xlab("Survey Year centered at 2014")
+
+# ggplot(dat.ordinal, aes(x=Year))+geom_bar(aes(fill=CoverClass),position=position_fill())+ylab("Cumulative Empirical Proportions")+xlab("Survey Year centered at 2014")
+
+@
+
+
+
+<<tab.values, warning=FALSE, message=FALSE, echo=FALSE, results='asis'>>=
+
+tab2<-cbind(table(dat.ordinal$CoverClass))
+colnames(tab2)<-c("Count")
+
+ xtable(tab2,caption="category values",include.rownames=FALSE, include.colnames=TRUE)
+
+@
+
+\pagebreak
+\subsection{Proportional Odds Model}
+
+The proportional odds model (POM) can be fit using the ordinal package in R or JAGS, WinBUGS, Stan for Bayesian inferences. I include code and results for using ordinal and JAGS. 
+
+Using the clm function parameterizes the model as 
+$$logit(P(Y_i \leq c)) = \theta_c -\beta_1 Year_i$$ for plot $i = 1, \cdots , n$ and $c = 1, \cdots , C-1$.
+So the interpretation becomes in terms of the odds of moving into a higher category across years. However, with a quadratic term this means basically a $\cup$ or $\cap$ shape to the temporal trajectory. In my opinion, graphics are critical in this case. 
+
+Following our advice in \cite{Irvine}, we use a diagnostic plot to see if we need to separately model the zero class from the non-zero classes. This plot displays the different cumulative logits. Notice if there are very few observations in some categories the uncertainty will be very large. This plot can help determine if the proportional odds assumption is violated if the coefficients are not similar across the different cumulative logits (Fig. B6).
+
+<<POLR_example_ordinal, warning=TRUE, message=TRUE, echo=FALSE, results='asis'>>=
+
+#wrote a function to create a table from clm object that can be used in xtable()
+
+Fcn.CreateSummary.clm<-function(object.clm){
+  coefs<-object.clm$coefficients
+  std.errors<-sqrt(diag(solve(object.clm$Hessian)))
+  z.val<- coefs/std.errors
+  p.val<- 2*(1-pnorm(abs(z.val)))
+  
+    tab<-cbind(coefs,std.errors,z.val,p.val)
+     
+    colnames(tab)<-c("Coefficients","Std. Errors", "z value","Pr(>|z|)")
+    return(tab)
+   }
+
+
+@
+
+<<POLR_Cheat, warning=TRUE, message=TRUE, echo=TRUE, results='asis'>>=
+
+ #using a cumulative logit model for the cover class data
+ 
+mod.POM <- clm(CoverClass~ Year, data = dat.ordinal)
+
+@
+
+<<tab1,warning=FALSE, message=FALSE, echo=FALSE, results='asis'>>=
+tab.cheat<-Fcn.CreateSummary.clm(mod.POM)
+
+print(xtable(tab.cheat,caption="POM for Annual Trend in Ordinal Cover Classes. Year is the estimated trend parameter and $c|c+1$ parameters are the corresponding threshold or cut-point parameters.",digits=3), 
+      include.rownames=TRUE, 
+      include.colnames=TRUE, 
+      caption.placement="bottom")
+
+@
+
+
+<<PO-plot,echo=FALSE,fig.align='center',fig.width=5,fig.height=5,fig.cap="Diagnostic Plot to assess proportional odds assumption Pr(C$>$j). This plot suggests the need to separate the zero class from the non-zero classes.",warning=FALSE>>=
+
+
+#creating a diagnostic plot to assess whether or not the proportional odds assumption is appropriate for the data.
+
+dat.ordinal$ind.C1<- ifelse(as.numeric(dat.ordinal$Y.ord)>1,1,0)
+dat.ordinal$ind.C2 <- ifelse(as.numeric(dat.ordinal$Y.ord)>2,1,0)
+dat.ordinal$ind.C3 <- ifelse(as.numeric(dat.ordinal$Y.ord)>3,1,0)
+dat.ordinal$ind.C4 <- ifelse(as.numeric(dat.ordinal$Y.ord)>4,1,0)
+dat.ordinal$ind.C5 <- ifelse(as.numeric(dat.ordinal$Y.ord)>5,1,0)
+dat.ordinal$Detection <- ifelse(dat.ordinal$Y.ord!=0,1,0)
+
+mod.C0 <-  glm(Detection~ Year, family=binomial, data =dat.ordinal)
+mod.C1<- glm(ind.C1~ Year, family=binomial, data =dat.ordinal)
+mod.C2<- glm(ind.C2~ Year, family=binomial, data =dat.ordinal)
+mod.C3<- glm(ind.C3~ Year, family=binomial, data =dat.ordinal)
+mod.C4<- glm(ind.C4~ Year, family=binomial, data =dat.ordinal)
+mod.C5<- glm(ind.C5~ Year, family=binomial, data =dat.ordinal)
+
+i<-2
+Yr1.coef<-c(coef(mod.C0)[i],coef(mod.C1)[i],coef(mod.C2)[i],coef(mod.C3)[i],coef(mod.C4)[i],coef(mod.C5)[i])
+
+se.yr1<-c(summary(mod.C0)$coefficients[2,2],summary(mod.C1)$coefficients[2,2],summary(mod.C2)$coefficients[2,2],summary(mod.C3)$coefficients[2,2],summary(mod.C4)$coefficients[2,2],summary(mod.C5)$coefficients[2,2])
+
+dat.plot.PO <-data_frame(Yr1.coef, se.yr1, model.type = c("C>0","C>1","C>2","C>3","C>4","C>5"))
+
+ggplot(dat.plot.PO,aes(x=model.type))+geom_point(aes(y=Yr1.coef))+geom_errorbar(aes(ymin=Yr1.coef-1.96*se.yr1,ymax=Yr1.coef+1.96*se.yr1))+geom_hline(yintercept=0)+ylab("Linear Year Coefficient")+xlab("Binary Models for each Cumulative Cover Class")+ylim(-1,1)
+
+@
+
+
+
+<<POLR-example-jags, warning=TRUE, message=TRUE, echo=TRUE, results='asis',cache=TRUE>>=
+
+# Ordinal data with observed categories of {0,...,6} recoded to {1,...,7}.
+
+#save the POM.jags, OZAB.jags, and datafile to the same working directory space
+
+ #If this model doesn't compile double-check that the data take on the following values 
+   
+   #table(dat.JAGS$yo)
+   
+# Table output from call above
+#   1   2   3   4   5   6   7 
+#  57 403 337 287 196 104   6 
+#  
+
+
+#############################################################
+###### 1. POM model using latent variable construction
+##### 
+
+
+
+  #create X-matrix for predictors of interest
+  X.beta<-model.matrix(~ (-1)+Year, dat.ordinal)
+
+
+  #create dataset for JAGS
+  dat.JAGS<-list("yo"=as.numeric(dat.ordinal$Y.ord)+1,"X"=X.beta, "N"=dim(dat.ordinal)[1],
+               "P"=dim(X.beta)[2],"J"=length(unique(dat.ordinal$Y.ord)))
+
+  #jags model call: Make sure you save the POM.jags file so you can call it next
+  
+   jm.PO<- jags.model('POM.jags' ,  dat.JAGS , n.chains = 4  ,
+                   inits = function(dat =  dat.JAGS , ...){
+                     zz <- sort(runif(dat$J-1))
+                     z0 <- c(0 , zz)
+                     y.l <- (z0 + diff(c(z0,1))/2)[dat$yo]
+                     list(
+                       beta = rnorm(dat$P , 0 , 5),
+                       zeta0.l = zz ,
+                       y.latent = logit(y.l)
+                     )
+                   },
+                   quiet=TRUE)
+
+   #If this model doesn't compile double-check that the data take on the following values 
+   
+   #table(dat.JAGS$yo)
+   
+# Table output from call above
+#   1   2   3   4   5   6   7 
+#  57 403 337 287 196 104   6 
+#  
+ 
+update(jm.PO , 5000)
+
+# 5000 iterations with thinning by 4; returns an mcmc.list object
+
+#sage.PO.jags <- coda.samples(jm.PO , c('beta','zeta.est','llike','Dev') , 5000 , 4)
+
+sage.PO.jags <- coda.samples(jm.PO , c('beta','zeta.est') , 5000 , 4)
+
+
+#take a look MCMC chains and posteriors for parameters set in previous coda.samples call
+# WARNING: notice these look pretty bad as we would expect due to the zeros being included !
+# included for illustration only
+@
+
+<<POM-cheat-results, eval=FALSE, warning=TRUE, message=TRUE, echo=FALSE, results='asis'>>=
+xtable(gelman.diag(sage.PO.jags)$psrf, caption="Gelman Diagnostic")
+#these don't look good!  
+xtable(as.matrix(effectiveSize(sage.PO.jags)),caption="Effective Sample Size for each Parameter")
+
+xtable(round(summary(sage.PO.jags)[[2]],4),caption="Posterior Summaries for each Parameter fitting Bayesian POM")
+plot(sage.PO.jags)
+
+#################################################################
+#Calculating DIC for POM model with latent variable specification
+################################################################
+
+#the indexing depends on the output in the summary: 
+#this was fit to all the predictors of interest (i.e., different than results in paper, just for illustration)
+
+# Mns.Zeta<-c(-1e16,summary(sage.PO.jags)[[1]][7:12,1],1e16)
+# Mns.beta<-summary(sage.PO.jags)[[1]][2:5,1]
+# Mn.Dev<- summary(sage.PO.jags)[[1]][1,1]
+# n.obs<-length(dataS$ARTTRID)
+# 
+# out.DIC.POM<-Fnc.DIC.PO(Mns.Zeta,Mns.beta,dataS$ARTTRID+1,dataJAGS$X,Mn.Dev,n.obs)
+# 
+# out.DIC.POM
+
+
+
+
+@
+% latex table generated in R 3.4.1 by xtable 1.8-2 package
+% Tue Aug 28 12:31:35 2018
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrr}
+  \hline
+ & Point est. & Upper C.I. \\ 
+  \hline
+beta & 1.00 & 1.00 \\ 
+  zeta.est[1] & 1.05 & 1.14 \\ 
+  zeta.est[2] & 1.37 & 1.97 \\ 
+  zeta.est[3] & 1.60 & 2.36 \\ 
+  zeta.est[4] & 1.15 & 1.39 \\ 
+  zeta.est[5] & 1.08 & 1.22 \\ 
+  zeta.est[6] & 1.00 & 1.00 \\ 
+   \hline
+\end{tabular}
+\caption{Gelman Diagnostic} 
+\end{table}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{rr}
+  \hline
+ & x \\ 
+  \hline
+beta & 4741.14 \\ 
+  zeta.est[1] & 71.69 \\ 
+  zeta.est[2] & 31.48 \\ 
+  zeta.est[3] & 28.76 \\ 
+  zeta.est[4] & 25.88 \\ 
+  zeta.est[5] & 55.44 \\ 
+  zeta.est[6] & 638.39 \\ 
+   \hline
+\end{tabular}
+\caption{Effective Sample Size for each Parameter} 
+\end{table}
+ 
+
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrrrr}
+  \hline
+ & 2.5\% & 25\% & 50\% & 75\% & 97.5\% \\ 
+  \hline
+beta & 0.04 & 0.07 & 0.09 & 0.10 & 0.14 \\ 
+  zeta.est[1] & -3.40 & -3.24 & -3.15 & -3.07 & -2.93 \\ 
+  zeta.est[2] & -0.80 & -0.74 & -0.71 & -0.68 & -0.64 \\ 
+  zeta.est[3] & 0.21 & 0.27 & 0.30 & 0.33 & 0.38 \\ 
+  zeta.est[4] & 1.18 & 1.24 & 1.28 & 1.32 & 1.40 \\ 
+  zeta.est[5] & 2.28 & 2.38 & 2.43 & 2.49 & 2.64 \\ 
+  zeta.est[6] & 4.67 & 5.09 & 5.33 & 5.59 & 6.17 \\ 
+   \hline
+\end{tabular}
+\caption{Posterior Summaries for each Parameter fitting Bayesian Proportional Odds Model. Beta is the estimated linear trend parameter and zeta.est parameters are the cut-point or threshold parametrs ($\theta_C$ in model equation.)} 
+\end{table}
+
+
+\subsection{Ordinal Hurdle Models: Dealing with zero cover class in cover class datasets}
+
+These models allow for the zeros to be modeled with different predictors/covariates than the non-zeros or abundance cover classes (see Irvine \textit{et al}. 2016 for more detials). I specify a linear trend for the zero vs non-zeros and similarly a linear trend for the cumulative logits of the non-zeros. This can be done using the ordinal package and removing the zero class. And then a separate logistic regression for estimating probability of  non-zero classes or probability of detecting cheatgrass. I only inlude the MLE version, but could be done with Bayesian estimation.
+
+<<OrdinalHurdle, warning=TRUE,cache=TRUE, message=TRUE, echo=TRUE, results='asis'>>=
+
+########### Cheatgrass Ordinal Hurdle Model
+######################
+
+dat.sub.ordinal<- subset(dat.ordinal, subset=Y.ord!=0)
+mod.nozero <- clm(CoverClass~ Year, data = dat.sub.ordinal)
+
+#zeros only
+mod.PA <- glm(Detection~ Year, family=binomial, data =dat.ordinal)
+
+@
+
+
+<<tab3,warning=FALSE, message=FALSE, echo=FALSE, results='asis'>>=
+
+tab.sub.cheat <- Fcn.CreateSummary.clm(mod.nozero)
+
+
+print(xtable(tab.sub.cheat,caption="POM for Annual Trend in Ordinal abundance only model"), 
+      include.rownames=TRUE, 
+      include.colnames=TRUE, 
+      caption.placement="bottom")
+
+xtable(summary(mod.PA),caption = "Annual Trend for Detection with Logistic regression for zeros vs. non-zeros")
+
+
+@
+
+
+
+\subsection{Ordinal Zero-Augmented Beta Model: Another Option for Modeling Zero Cover Class in Daubenmire scale datasets }
+
+These models specify the latent distribution as beta and was introduced in Irvine \textit{et al}. (2016). I fit a OZAB (ordinal zero-augmented beta model) which specifies the zeros separately.
+This method is useful when there is a meaningful zero class in the measurement scheme. In this two-part model, the parameter estimates can be interpreted as follows. For a given predictor $k$ included in the beta model, the interpretation of $exp(\beta_k)$ is in terms of a multiplicative change in the odds of the proportion of a plot covered by a species with a unit-change in $X_k$, given all other predictors are held at a fixed value. For a given predictor $l$ that is related to the presence or absence of a species, the interpretation of $exp(\gamma_l)$ is the effect of a one-unit change in $W_l$ on the odds of a zero class, given all other predictors are held at a fixed value. 
+
+Importantly, for a more intuitive interpretation, the inverse logit transformation of $\text{\textbf{X}}_i\boldsymbol{\beta}$ provides inferences regarding the mean of the latent abundance process or the proportion of a plot covered (e.g., percent areal cover/100). Similarly, the probability of absence (zero class) can be explored using the inverse logit transformation of $\text{\textbf{W}}_i\boldsymbol{\gamma}$. Larger values for the precision parameter, $\phi$, produce less variability in percent cover values and is related to the spatial aggregation parameter $\delta$ by $\delta=\frac{1}{1+\phi}$.
+
+
+<<OZAB-example-jags, eval=TRUE,warning=TRUE, message=TRUE, cache=TRUE, echo=TRUE, results='asis'>>=
+
+##############################################################################
+################
+################ 2. Fitting OZAB (ordinal zero-augmented beta model)
+################
+##########################################
+
+#nozeros refers to the subset of data with cover class > 0
+#separate estimation for abundance and detection-process
+
+# creating dataset for JAGS
+
+X.beta<-model.matrix(~ (-1)+Year,dat.sub.ordinal)
+X.bern<-model.matrix(~Year,dat.ordinal)
+
+OZAB.dat<-
+  list("y.beta"=as.numeric(dat.sub.ordinal$Y.ord),"X.beta"=X.beta, 
+       "N.beta"=dim(dat.sub.ordinal)[1],"P.beta"=dim(X.beta)[2],
+       "y.bern"=dat.ordinal$Detection,"N.bern"=length(dat.ordinal$Detection),"X.bern"=X.bern, 
+       "K"=dim(X.bern)[2])
+
+#compiling takes awhile...
+
+#The values for y.beta should be 1 to 6
+
+#set a list of initial values to assist with error messages, I used the MLE estimates 
+#as starting values sometimes, but could generate from random starting values
+
+#
+ initsList<-
+   list(list("beta"=c(.06),"phi"=1,"alpha"=c(2,.26),
+             "y.latent"=c(.025 , .15 , .375 , .625 , .85 , .975)[OZAB.dat$y.beta]),
+        list("beta"=c(0),"phi"=3,"alpha"=c(0,0),
+             "y.latent"=c(.025 , .15 , .375 , .625 , .85 , .975)[OZAB.dat$y.beta]),
+        list("beta"=c(-.05),"phi"=4,"alpha"=c(-1,-.25),
+             "y.latent"=c(.025 , .15 , .375 , .625 , .85 , .975)[OZAB.dat$y.beta]))
+
+
+jm.sage.new <- jags.model('OZAB.jags' , OZAB.dat , n.chains=3 , n.adapt = 5000 , 
+                      quiet=TRUE ,inits = initsList)
+
+
+
+update(jm.sage.new , 5000)
+
+# 5000 iterations with thinning by 4; returns an mcmc.list object
+
+#OZAB.sage.jags <- coda.samples(jm.sage , c('alpha','beta','phi','dev.Beta','dev.0') , 5000 , 4)
+OZAB.sage.jagsnew <- coda.samples(jm.sage.new , c('alpha','beta','phi') , 5000 , 4)
+
+@
+
+<<Cheat-OZAB-results, warning=TRUE, message=TRUE, echo=FALSE, results='asis'>>=
+#take a look at the results from the model
+
+xtable(gelman.diag(OZAB.sage.jagsnew)$psrf,caption="Gelman Diagnostic for OZAB")  
+
+#should look better and these are with a reduced mean structure for the model
+xtable(as.matrix(effectiveSize(OZAB.sage.jagsnew)),caption="Effective sample size for each Parameter OZAB")
+xtable(round(summary(OZAB.sage.jagsnew)[[2]],4),caption="Posterior Summaries for each Parameter in OZAB. Alpha parameters correspond to estimating probability of detection. Beta is linear coefficient on year term on logit-scale for percent cover and phi is dispersion parameter that is related to spatial aggregation parameter.")
+
+plot(OZAB.sage.jagsnew)
+@
+
+\subsection{Ordinal Beta Model }
+
+I created an artificial ``trace" category to incorporate the zeros into the beta model. These results were basically the same as separating out the zeros for the abundance portion of the OZAB model.
+
+<<OBM-example-jags, eval=TRUE,warning=TRUE, cache=TRUE,message=TRUE, echo=TRUE, results='asis'>>=
+#just create a small threshold for 0's so add to the beta portion of the model
+# I used 1% for the zero class
+
+
+X.beta<-model.matrix(~ (-1)+Year,dat.ordinal)
+
+OBM.dat<-
+  list("y.beta"=as.numeric(dat.ordinal$Y.ord)+1,"X.beta"=X.beta, 
+       "N.beta"=dim(dat.ordinal)[1],"P.beta"=dim(X.beta)[2])
+
+#Here y.beta needs to be coded as 1 to 7 to merge the zeros into a trace category
+
+ initsList<- 
+   list(list("beta"=c(-0.049 ),"phi"=1,
+             "y.latent"=c(.01, .025 , .15 , .375 , .625 , .85 , .975)[OBM.dat$y.beta]),
+        list("beta"=c(0),"phi"=3,
+             "y.latent"=c(.01,.025 , .15 , .375 , .625 , .85 , .975)[OBM.dat$y.beta]),
+        list("beta"=c(.05),"phi"=4,
+             "y.latent"=c(.01,.025 , .15 , .375 , .625 , .85 , .975)[OBM.dat$y.beta]))
+
+
+jm.sage.new1 <- jags.model('OrdBeta.jags' , OBM.dat , n.chains=3 , n.adapt = 5000 , 
+                      quiet=TRUE ,inits = initsList)
+
+
+update(jm.sage.new1 , 5000)
+
+OHM.sage.jagsnew1 <- coda.samples(jm.sage.new1 , c('beta','phi') , 5000 , 4)
+
+
+@
+
+<<Cheat-OBM-results, warning=TRUE, message=TRUE, echo=FALSE, results='asis'>>=
+#take a look at the results
+
+xtable(gelman.diag(OHM.sage.jagsnew1)$psrf,caption="Gelman Diagnostic for Ordinal Beta Model") 
+
+#should look better and these are with a reduced mean structure for the model
+xtable(as.matrix(effectiveSize(OHM.sage.jagsnew1)),caption="Effective sample size for each Parameter Ordinal Beta Model")
+xtable(round(summary(OHM.sage.jagsnew1)[[2]],4),caption="Posterior Summaries for each Parameter in Ordinal Beta Model. Beta is linear coefficient on year term on logit-scale for percent cover and phi is dispersion parameter that is related to spatial aggregation parameter.")
+
+plot(OHM.sage.jagsnew1)
+@
+
+\subsection{Analyzing Ordinal data as midpoint values using naive linear model}
+
+This approach is included as a comparison. It is not recommended for many reasons that are related to the bounded nature of ordinal data. For example, the model could predict outside of the range possible values for the response variable. As mentioned in the text, percent cover and cover class data are inherently heteroskedastic (nonconstant variance) in that there is more variation for moderate values and less towards the boundaries of 0 or 1.   
+
+<<Midpt-Model, warning=TRUE, message=TRUE, echo=FALSE, results='asis'>>=
+
+
+#zero class as a trace value
+dat.ordinal$midpt.trace<-c(.01,.025 , .15 , .375 , .625 , .85 , .975)[dat.ordinal$Y.ord+1]
+
+dat.ordinal$midpt.zeros <-c(0,.025 , .15 , .375 , .625 , .85 , .975)[dat.ordinal$Y.ord+1]
+
+mid.mod<-lm(midpt.zeros~Year,data=dat.ordinal)
+out.mid<-summary(mid.mod)
+xtable(out.mid,caption="Model summary based on fitting linear model to midpoint values")
+
+@
+
+
+<<Data-plot,echo=FALSE,fig.cap="Plot of Midpoints versus year centered at 2014 (black=trace value for zeros). Included as a comparison to show how little information is conveyed versus the stacked barplot in main text Fig. 5.", fig.width=5,fig.height=5>>=
+
+plot(midpt.trace~Year,data=dat.ordinal,pch=16,ylab="Mid-Point Values")
+points(midpt.zeros~Year,data=dat.ordinal,pch=21,col="red")
+
+@
+
+
+
+
+<<DIAG-Midpt,echo=FALSE,fig.align='center',fig.cap='Diagnostic plots for applying linear regression to midpoints', fig.width=7,fig.height=7>>=
+par(mfrow=c(2,2),pty='m')
+plot(mid.mod)
+
+@
+
+Notice that the normal qq-plot in Figure B8 shows outliers (labeled with the corresponding observation number), left-skewness in the lower tail of the distribution, and striping reflects the inherent categorical nature of the data.
+
+
+\clearpage
+
+\printbibliography[title={Literature Cited},segment=\therefsegment]
+
+
+
+\end{document}

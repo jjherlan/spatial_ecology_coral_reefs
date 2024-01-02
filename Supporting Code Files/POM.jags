@@ -1,0 +1,35 @@
+
+#model code for "POM.jags [save in a separate file or sink]"
+
+
+model{
+  for(i in 1:N){
+    yo[i] ~ dinterval(y.latent[i] , zeta)
+    y.latent[i] ~ dlogis(mu[i],1)
+    mu[i] <- inprod(X[i,],beta)
+   # deltaF[i] <- plogis(logit(zeta.star0[yo[i]+1]) , mu[i] , 1) -
+    #  plogis(logit(zeta.star0[yo[i]]), mu[i] , 1)
+    #plike[i] <- log(deltaF[i])
+  }
+
+
+#Dev and llike for DIC calculations
+
+ # llike <- sum(plike)
+ # Dev <- -2*llike
+
+  for(p in 1:P){
+    beta[p] ~ dnorm(0,1e-4)
+  }
+  zeta0[1] <- -1e16
+  for(j in 2:J){
+    zeta.star0[j] <- zeta0.l[j-1]
+    zeta0.l[j-1] ~ dunif(0,1)
+    zeta0[j] <- logit( zeta0.l[j-1] )
+  }
+  zeta.star0[1] <- 0
+  zeta.star0[J+1] <- 1
+  zeta<- sort(zeta0)
+  zeta.est <- zeta[2:J]
+}
+
