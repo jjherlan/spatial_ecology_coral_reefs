@@ -456,8 +456,8 @@ legend_b <- get_legend(
 # arrange the three plots in a single row
 prow <- plot_grid(
   plob_cover.ggbarplot + theme(legend.position = "none"),
-  bare_cover.ggbarplot + theme(legend.position = "none"),
   poci_cover.ggbarplot + theme(legend.position = "none"),
+  bare_cover.ggbarplot + theme(legend.position = "none"),
   poci_size.gg.barplot + theme(legend.position = "none"),
   scale = c(0.8, 0.8, 0.8, 0.8),
   align = 'vh',
@@ -476,7 +476,6 @@ plot_grid(prow,
           #labels = "AUTO", 
           #scale = c(0.9, 0.9, 0.9, 0.9)
           )
-
 
 
 

@@ -163,6 +163,10 @@ tukey <- TukeyHSD(model_1.aov)
 ```
 
 ```{r}
+tukey
+```
+
+```{r}
 # compact letter display
 cld <- multcompLetters4(model_1.aov, tukey)
 ```

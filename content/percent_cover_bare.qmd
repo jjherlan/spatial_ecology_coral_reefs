@@ -1,5 +1,5 @@
 ---
-title: "Percent Cover Poritid"
+title: "Percent Cover Bare"
 author: "jjh"
 date: "Last compiled on `r format(Sys.time(), '%d %B, %Y %H:%M')`"
 editor: visual
@@ -55,60 +55,47 @@ Fcn.CreateSummary.betareg <- function(object.betareg){
    }
 ```
 
-# ```{r, include = FALSE}
-# #p_cover = read_csv('LSMclassGrid.csv') %>% 
-# #  group_by(Site) %>%
-# #  mutate(
-# #    pland_decimal = pland*0.01
-# #  ) %>%
-# #  mutate_at(vars(Site, cover, plot_id), factor)
-# ```
+# `{r, include = FALSE} # #p_cover = read_csv('LSMclassGrid.csv') %>%  # #  group_by(Site) %>% # #  mutate( # #    pland_decimal = pland*0.01 # #  ) %>% # #  mutate_at(vars(Site, cover, plot_id), factor) #`
 
-# ```{r, include = TRUE}
-# p_cover = read_csv('rpn_percent_cover.csv') %>% 
-#   group_by(Site) %>%
-#   mutate(
-#     pland_decimal = pland*0.01
-#   ) %>%
-#   mutate_at(vars(Site, cover, plot_id), factor)
-# ```
+# `{r, include = TRUE} # p_cover = read_csv('rpn_percent_cover.csv') %>%  #   group_by(Site) %>% #   mutate( #     pland_decimal = pland*0.01 #   ) %>% #   mutate_at(vars(Site, cover, plot_id), factor) #`
+
 # 
-# ```{r}
-# p_cover
-# ```
+
+# `{r} # p_cover #`
+
 # 
-# ```{r}
-# head(p_cover)
-# ```
+
+# `{r} # head(p_cover) #`
 
 ```{r}
-plob_cover = read_csv('rpn_plob.csv')
+bare_cover = read_csv('rpn_bare.csv')
 ```
 
 ```{r}
-plob_cover
+bare_cover
 ```
+
 ```{r}
-plob_percent_cover = read_csv('rpn_plob.csv') %>% 
+bare_percent_cover = read_csv('rpn_bare.csv') %>% 
   dplyr::select(plot_id, Site, pland) %>%
   group_by(Site) %>%
   mutate(
-    plob_cover = pland*0.01
+    bare_cover = pland*0.01
   ) %>%
   mutate_at(vars(Site, plot_id), factor)
 ```
 
 ```{r}
-plob_percent_cover
+bare_percent_cover
 ```
 
 ```{r}
-ggplot(plob_percent_cover, aes(x = plob_cover)) +
+ggplot(bare_percent_cover, aes(x = bare_cover)) +
   geom_histogram(fill = "#333399") + 
   #below here is ylabel, xlabel, and main title
   ylab("Frequency") +
   xlab(NULL) +
-  ggtitle(expression("Coral Cover (%)")) +
+  ggtitle(expression("Bare Substrate Cover (%)")) +
   theme_bw() +
   facet_wrap(~ Site, ncol = 1) +
   #theme sets sizes, text, etc
@@ -132,50 +119,47 @@ ggplot(plob_percent_cover, aes(x = plob_cover)) +
 
 ::: {.fold .s}
 ```{r}
-plot(plob_cover ~ Site, data = plob_percent_cover)
+plot(bare_cover ~ Site, data = bare_percent_cover)
 ```
 :::
 
 ```{r}
-plob_cover.mean <-
-  plob_percent_cover %>%
+bare_cover.mean <-
+  bare_percent_cover %>%
   group_by(Site) %>%
-  dplyr::summarise(mean = mean(plob_cover))
+  dplyr::summarise(mean = mean(bare_cover))
 ```
 
 ```{r}
-plob_cover.mean
+bare_cover.mean
 ```
-
-
 
 **Raw data - no transformation**
 
 ```{r}
-plob_cover_mod.aov1 <- aov(plob_cover ~ Site, data = plob_percent_cover)
-summary(plob_cover_mod.aov1)
+bare_cover_mod.aov1 <- aov(bare_cover ~ Site, data = bare_percent_cover)
+summary(bare_cover_mod.aov1)
 ```
 
 ```{r}
-plob_cover_mod.lm1 <- lm(plob_cover ~ Site, data = plob_percent_cover)
+bare_cover_mod.lm1 <- lm(bare_cover ~ Site, data = bare_percent_cover)
 ```
 
 ```{r}
-summary(plob_cover_mod.lm1)
+summary(bare_cover_mod.lm1)
 ```
 
 ```{r}
 par(mfrow = c(2, 2))
-plot(plob_cover_mod.lm1)
+plot(bare_cover_mod.lm1)
 ```
 
 ```{r}
-Anova(plob_cover_mod.lm1, type = "III")
+Anova(bare_cover_mod.lm1, type = "III")
 ```
 
-
 ```{r}
-plob_percent_cover$plob_cover_scaled <- transform01(plob_percent_cover$plob_cover)
+bare_percent_cover$bare_cover_scaled <- transform01(bare_percent_cover$bare_cover)
 ```
 
 **Logit-transformation**
@@ -185,55 +169,53 @@ plob_percent_cover$plob_cover_scaled <- transform01(plob_percent_cover$plob_cove
 ```
 
 ```{r}
-plob_cover_mod.lm2 <- lm(logit(plob_cover_scaled) ~ Site, data = plob_percent_cover) 
+bare_cover_mod.lm2 <- lm(logit(bare_cover_scaled) ~ Site, data = bare_percent_cover) 
 ```
 
 ```{r}
-summary(plob_cover_mod.lm2)
+summary(bare_cover_mod.lm2)
 ```
 
 ```{r}
 par(mfrow = c(2, 2))
-plot(plob_cover_mod.lm2)
+plot(bare_cover_mod.lm2)
 ```
 
 ```{r}
-Anova(plob_cover_mod.lm2, type = "III")
+Anova(bare_cover_mod.lm2, type = "III")
 ```
 
 **Generalized-linear model**
 
 ```{r}
-plob_cover_mod.glm1 <- glm(plob_cover ~ Site, family = binomial, data = plob_percent_cover)
-summary(plob_cover_mod.glm1)
+bare_cover_mod.glm1 <- glm(bare_cover ~ Site, family = binomial, data = bare_percent_cover)
+summary(bare_cover_mod.glm1)
 ```
 
 ```{r}
 par(mfrow = c(2, 2))
-plot(plob_cover_mod.glm1)
+plot(bare_cover_mod.glm1)
 ```
 
 ```{r}
-Anova(plob_cover_mod.glm1, type = "III")
+Anova(bare_cover_mod.glm1, type = "III")
 ```
 
-# df has subjects (S), one factor (X) w/levels (a,b,c), and continuous response (Y) library(multcomp) # for glht, mcp , 
+# df has subjects (S), one factor (X) w/levels (a,b,c), and continuous response (Y) library(multcomp) \# for glht, mcp ,
 
-test=adjusted(type="holm")) # the following also performs the equivalent contrast tests library(emmeans) # for emm, emmeans summary(glht(m, emm(pairwise ~ X)), test=adjusted(type="holm")) # or, using the Tukey HSD correction instead of Holm's summary(emmeans(m, pairwise ~ X, adjust="tukey", mode="linear.predictor", type="Score"))
-
-```{r}
-summary(glht(plob_cover_mod.glm1, mcp(Site = "Tukey")), test = adjusted(type = "holm"))
-```
+test=adjusted(type="holm")) \# the following also performs the equivalent contrast tests library(emmeans) \# for emm, emmeans summary(glht(m, emm(pairwise \~ X)), test=adjusted(type="holm")) \# or, using the Tukey HSD correction instead of Holm's summary(emmeans(m, pairwise \~ X, adjust="tukey", mode="linear.predictor", type="Score"))
 
 ```{r}
-summary(glht(plob_cover_mod.glm1, emm(pairwise ~ Site)), test=adjusted(type="holm"))
+summary(glht(bare_cover_mod.glm1, mcp(Site = "Tukey")), test = adjusted(type = "holm"))
 ```
 
 ```{r}
-summary(emmeans(plob_cover_mod.glm1, pairwise ~ Site, adjust="tukey", mode="linear.predictor", type="Score"))
+summary(glht(bare_cover_mod.glm1, emm(pairwise ~ Site)), test=adjusted(type="holm"))
 ```
 
-
+```{r}
+summary(emmeans(bare_cover_mod.glm1, pairwise ~ Site, adjust="tukey", mode="linear.predictor", type="Score"))
+```
 
 ## Methods for analyzing percent cover of poritid coral
 
@@ -258,45 +240,45 @@ transform01 <- function(x) {
 **Beta Regression I:** $\phi$ does not vary
 
 ```{r}
-plob_cover_mod.beta1 <- betareg(plob_cover_scaled ~ Site, data = plob_percent_cover, link = c("logit"), link.phi = NULL, type = c("ML"))
+bare_cover_mod.beta1 <- betareg(bare_cover_scaled ~ Site, data = bare_percent_cover, link = c("logit"), link.phi = NULL, type = c("ML"))
 ```
 
 ```{r}
-summary(plob_cover_mod.beta1)
+summary(bare_cover_mod.beta1)
 ```
 
 **Beta Regression II:** $\phi$ does vary (by **Site**)
 
 ```{r}
-plob_cover_mod.beta2 <- betareg(plob_cover_scaled ~ Site | Site, data = plob_percent_cover, link = c("logit"), link.phi = NULL, type = c("ML"))
+bare_cover_mod.beta2 <- betareg(bare_cover_scaled ~ Site | Site, data = bare_percent_cover, link = c("logit"), link.phi = NULL, type = c("ML"))
 ```
 
 \#`{r} #test(pairs(emmeans(p_cover.bm2, ~ Site, mode = "link"))) #`
 
 ```{r}
-plob_cover_mod.beta1.aov <- Anova(plob_cover_mod.beta1, type = 'III')
+bare_cover_mod.beta1.aov <- Anova(bare_cover_mod.beta1, type = 'III')
 ```
 
 ```{r}
-plob_cover_mod.beta2.aov <- Anova(plob_cover_mod.beta2, type = 'III')
+bare_cover_mod.beta2.aov <- Anova(bare_cover_mod.beta2, type = 'III')
 ```
 
 ```{r}
-plob_cover_mod.beta2.aov
+bare_cover_mod.beta2.aov
 ```
 
 ```{r}
 models <- list(
   
-  'plob_cover_mod.beta1' = betareg(plob_cover_scaled ~ Site, 
-                                data = plob_percent_cover, 
+  'bare_cover_mod.beta1' = betareg(bare_cover_scaled ~ Site, 
+                                data = bare_percent_cover, 
                                 link = c("logit"), 
                                 link.phi = NULL, 
                                 type = c("ML")
                                 ),
   
-  'plob_cover_mod.beta2' = betareg(plob_cover_scaled ~ Site | Site, 
-                      data = plob_percent_cover,
+  'bare_cover_mod.beta2' = betareg(bare_cover_scaled ~ Site | Site, 
+                      data = bare_percent_cover,
                       link = c("logit"), 
                       link.phi = NULL, 
                       type = c("ML")
@@ -311,13 +293,13 @@ modelsummary(models)
 **Extract AIC from beta regression models**
 
 ```{r}
-plob_cover_mod.beta1_aic <- AIC(plob_cover_mod.beta1)
-plob_cover_mod.beta2_aic <- AIC(plob_cover_mod.beta2)
+bare_cover_mod.beta1_aic <- AIC(bare_cover_mod.beta1)
+bare_cover_mod.beta2_aic <- AIC(bare_cover_mod.beta2)
 ```
 
 ```{r}
-plob_cover_mod.beta1_aic
-plob_cover_mod.beta2_aic
+bare_cover_mod.beta1_aic
+bare_cover_mod.beta2_aic
 ```
 
 ## Interpreting results for poritid corals
@@ -335,9 +317,9 @@ Then $exp(\beta_1)$ is the factor increase/decrease in odds of proportion cover 
 **Beta Regression I:** $\phi$ does not vary
 
 ```{r, tab-betareg, echo=FALSE, eval=T, results = 'asis'}
-plob_cover_mod.beta1 <- betareg(plob_cover_scaled ~ Site, data = plob_percent_cover, link = c("logit"), link.phi = NULL, type = c("ML"))
+bare_cover_mod.beta1 <- betareg(bare_cover_scaled ~ Site, data = bare_percent_cover, link = c("logit"), link.phi = NULL, type = c("ML"))
 
-tab.mod <- Fcn.CreateSummary.betareg(plob_cover_mod.beta1)
+tab.mod <- Fcn.CreateSummary.betareg(bare_cover_mod.beta1)
 
 print(xtable(tab.mod, digits = 3, caption = "Results from using betareg package in R by transforming the 0 and 1's. These are on the logit-scale for $\\mu$ with a common $\\phi$ parameter"), type = "html")
 ```
@@ -345,11 +327,11 @@ print(xtable(tab.mod, digits = 3, caption = "Results from using betareg package 
 **Beta Regression II:** $\phi$ does vary (by **Site**)
 
 ```{r}
-p_cover_mod.beta2 <- betareg(plob_cover_scaled ~ Site | Site, data = plob_percent_cover, link = c("logit"), link.phi = NULL, type = c("ML"))
+p_cover_mod.beta2 <- betareg(bare_cover_scaled ~ Site | Site, data = bare_percent_cover, link = c("logit"), link.phi = NULL, type = c("ML"))
 ```
 
 ```{r}
-summary(plob_cover_mod.beta2)
+summary(bare_cover_mod.beta2)
 ```
 
 Increase of percent cover from the baseline northern site by **factor of...**
@@ -361,7 +343,7 @@ exp(4.09928) # Percent cover of pocilloporids increased by a factor of 60 from t
 ```
 
 ```{r}
-confint(plob_cover_mod.beta2)
+confint(bare_cover_mod.beta2)
 ```
 
 CIs for increase of percent cover from the baseline northern site by factor of...
@@ -504,34 +486,34 @@ plot(p_cover_mod.lm2, which = 2, main = "")
 
 ::: {.fold .o}
 ```{r, eval = T, collapse = T, message = FALSE}
-plob_cover.aov1 <- aov(plob_cover ~ Site, data = plob_percent_cover)
-summary(plob_cover.aov1)
+bare_cover.aov1 <- aov(bare_cover ~ Site, data = bare_percent_cover)
+summary(bare_cover.aov1)
 ```
 :::
 
 ::: {.fold .o}
 ```{r, eval = T, collapse = T, message = FALSE}
-plob_cover.aov2 <- aov(plob_cover ~ Site + Error(plot_id), data = plob_percent_cover)
-summary(plob_cover.aov2)
+bare_cover.aov2 <- aov(bare_cover ~ Site + Error(plot_id), data = bare_percent_cover)
+summary(bare_cover.aov2)
 ```
 :::
 
 A very similar analysis can be conducted using the library `nlme` for mixed effects modeling.
 
 ```{r}
-plob_cover.lme1 <- lme(plob_cover ~ Site, random = ~ 1 | plot_id, data = plob_percent_cover)
+bare_cover.lme1 <- lme(bare_cover ~ Site, random = ~ 1 | plot_id, data = bare_percent_cover)
 ```
 
 ```{r}
-anova(plob_cover.lme1)
+anova(bare_cover.lme1)
 ```
 
 ```{r}
-plob_cover.lme_null <- lme(plob_cover ~ 1, random = ~ 1 | plot_id, data = plob_percent_cover)
+bare_cover.lme_null <- lme(bare_cover ~ 1, random = ~ 1 | plot_id, data = bare_percent_cover)
 ```
 
 ```{r}
-lmtest::lrtest(plob_cover.lme1, plob_cover.lme_null)
+lmtest::lrtest(bare_cover.lme1, bare_cover.lme_null)
 ```
 
 ### Beta regression with no variable precision $\phi$
@@ -543,7 +525,7 @@ The observations of percent cover are based on replicate quadrats replicated wit
 We begin by attempting to fit a beta regression model, with `pland_decimal` as the response, and `Site` as the categorical predictor.
 
 ```{r error = TRUE}
-plob_cover.bm1 <- betareg(plob_cover_scaled ~ Site, data = plob_percent_cover)
+bare_cover.bm1 <- betareg(bare_cover_scaled ~ Site, data = bare_percent_cover)
 ```
 
 `betareg` will not accept values of 0 and 1 in the response variable.
@@ -565,21 +547,21 @@ transform01 <- function(x) {
 With this scaled data we can now successfully fit the model. And test its significance relative to a null model that assumes no effect of wave power on percent cover of poritid corals. For reference we also fit a classical ANOVA model assuming normally distributed errors using `lm`.
 
 ```{r}
-plob_cover.bmnull <- betareg(plob_cover_scaled ~ 1, data = plob_percent_cover)
-summary(plob_cover.bmnull)
+bare_cover.bmnull <- betareg(bare_cover_scaled ~ 1, data = bare_percent_cover)
+summary(bare_cover.bmnull)
 ```
 
 ```{r}
-plob_cover.lm1 <- lm(plob_cover_scaled ~ Site, data = plob_percent_cover)
-summary(plob_cover.lm1)
+bare_cover.lm1 <- lm(bare_cover_scaled ~ Site, data = bare_percent_cover)
+summary(bare_cover.lm1)
 ```
 
 ```{r}
-lmtest::lrtest(plob_cover.bm1, plob_cover.bmnull)
+lmtest::lrtest(bare_cover.bm1, bare_cover.bmnull)
 ```
 
 ```{r}
-AIC(plob_cover.bm1, plob_cover.lm1, plob_cover.bmnull)
+AIC(bare_cover.bm1, bare_cover.lm1, bare_cover.bmnull)
 ```
 
 According to the likelihood-ratio test there is a significant difference between the null model and the treatment model. The AIC analysis supports this conclusion, but also highlights the improved model fit with beta regression relative to normal ANOVA (`lm1`). From this initial analysis we would tentatively conclude that using beta regression improves our ability to model the algal cover, but that there is no effect of grazer manipulation treatment.
@@ -604,11 +586,11 @@ With this function we can plot the distributions corresponding to the MLE parame
 ::: {.fold .s}
 ```{r}
 # extract coefficients of beta regression model
-coefs.bm1 <- coef(plob_cover.bm1)
+coefs.bm1 <- coef(bare_cover.bm1)
 
 # create vector spanning the transformed 0-1 interval
 
-n.bm2 <- length(fitted(plob_cover.bm1))
+n.bm2 <- length(fitted(bare_cover.bm1))
 x.range <- seq(0.5/n.bm2 , 1-0.5/n.bm2 , length.out = 200)
 x.range.bt <- (x.range*n.bm2 - 0.5)/(n.bm2-1)
 ```
@@ -646,7 +628,7 @@ Note that the vertical positioning of the dots is merely to prevent overplotting
 From this plot we can see that the model does a reasonable job of fitting beta distributions to each of the treatment levels... And that likewise, the variance of the groups .... This can be confirmed with a residual plot, using residuals calculated relative to their predicted variance.
 
 ```{r}
-plot(resid(plob_cover.bm1) ~ fitted(plob_cover.bm1))
+plot(resid(bare_cover.bm1) ~ fitted(bare_cover.bm1))
 ```
 
 Is this statement accurate?
@@ -658,10 +640,15 @@ The spread of the standardized residuals is strongly related to the fitted value
 We can repeat the above analysis using a model that allows $\phi$ to vary with predictors. This is achieved by adding a second part to the right hand side of the formula, separated with the `|` symbol. All covariates to the right of this `|` symbol will be used to model $\phi$. Note that they do not have to be the same covariates used to model $\mu$ (specified to the left of the `|`).
 
 ```{r}
-plob_cover.bm2 <- betareg(plob_cover_scaled ~ Site | Site, data = plob_percent_cover)
+bare_cover.bm2 <- betareg(bare_cover_scaled ~ Site | Site, data = bare_percent_cover)
 
-summary(plob_cover.bm2)
+summary(bare_cover.bm2)
 ```
+
+```{r}
+tab_model(bare_cover.bm2, CSS = css_theme("cells"))
+```
+
 
 From the `Coefficients` table we see that the estimate for $\mu$ in the Control treatment is `inv.logit(3.1694)` = `X` = X% coral cover. Moreover, the estimates of $\mu$ for the other two `Sites` (treatments) are each significantly higher.
 
@@ -670,8 +657,8 @@ From the `Phi coefficients` table we can see that the maximum likelihood estimat
 We can use likelihood-ratio tests to compare the new model to the fixed-$\phi$ and null models.
 
 ```{r}
-lmtest::lrtest(plob_cover.bm1, plob_cover.bm2)
-lmtest::lrtest(plob_cover.bmnull, plob_cover.bm1, plob_cover.bm2)
+lmtest::lrtest(bare_cover.bm1, bare_cover.bm2)
+lmtest::lrtest(bare_cover.bmnull, bare_cover.bm1, bare_cover.bm2)
 ```
 
 The likelihood ratio tests indicate that the model with varying $\phi$ is significantly better than both the previous fixed $\phi$ model, and the null model. In this case the conclusion is that including the model for $\phi$ led to a better fitting model than both the fixed $\phi$ model and the null model.
@@ -679,18 +666,18 @@ The likelihood ratio tests indicate that the model with varying $\phi$ is signif
 It is possible to apply post-hoc tests to identify which pairwise contrasts of treatments levels are significant.
 
 ```{r}
-test(pairs(emmeans(plob_cover.bm2, ~ Site, mode = "link")))
+test(pairs(emmeans(bare_cover.bm2, ~ Site, mode = "link")))
 ```
 
 We conclude from this analysis that each `Site` treatment is significantly different to each other. This is an important point: **correct modeling of** $\phi$ can often be important for accurate inference on $\mu$.
 
-Residual plots confirm our conclusion that `plob_cover.bm2` provides a better fit to the observed data than `plob_cover.bm1`. This is seen by the more even spread of residuals in the second plot below.
+Residual plots confirm our conclusion that `bare_cover.bm2` provides a better fit to the observed data than `bare_cover.bm1`. This is seen by the more even spread of residuals in the second plot below.
 
 ::: {.fold .s}
 ```{r fig.height=10}
 par(mfrow = c(2, 1), oma = c(0, 0, 0, 0), mar = c(4, 4, 0.2, 0.2))
-plot(residuals(plob_cover.bm1) ~ fitted(plob_cover.bm1))
-plot(residuals(plob_cover.bm2) ~ fitted(plob_cover.bm2))
+plot(residuals(bare_cover.bm1) ~ fitted(bare_cover.bm1))
+plot(residuals(bare_cover.bm2) ~ fitted(bare_cover.bm2))
 ```
 :::
 
@@ -700,8 +687,8 @@ As above we can plot the MLE distributions for each of the treatments, based on 
 ```{r}
 # plot distributions
 muphi.bm2 <- unique(data.frame(
-  mu = fitted(plob_cover.bm2),
-  phi = predict(plob_cover.bm2, type = "precision"),
+  mu = fitted(bare_cover.bm2),
+  phi = predict(bare_cover.bm2, type = "precision"),
   treatment = p_cover$Site
 ))
 ```
@@ -748,7 +735,7 @@ rug(p_cover$pland_decimal[p_cover$Site == "vhu"], col = "blue", pos = 9.5, side 
 These plots support the conclusion from the likelihood ratio tests above. The best-fit distributions from the variable $\phi$ model better match the observed differences in dispersion between the different groups.
 
 ```{r}
-plob_cover <-
+bare_cover <-
 p_cover %>%
   as_tibble() %>%
 #  mutate(size_cm = area*10000) %>%
@@ -769,8 +756,8 @@ p_cover %>%
 ```
 
 ```{r}
-plob_cover2 <- 
-plob_cover %>%
+bare_cover2 <- 
+bare_cover %>%
   add_column(
           cld = c('a', 'b', 'c')
           ) %>%
@@ -778,7 +765,7 @@ mutate_at(vars(cld), factor)
 ```
 
 ```{r}
-plob_cover2
+bare_cover2
 ```
 
 ```{r}
@@ -787,14 +774,14 @@ x_labels = c("North", "West", "Southeast")
 ```
 
 ```{r}
-plob_cover.ggbarplot <- ggplot(plob_cover2, aes(x = location, y = mean, fill = x_labels)) +   
+bare_cover.ggbarplot <- ggplot(bare_cover2, aes(x = location, y = mean, fill = x_labels)) +   
   geom_bar(stat = "identity", width = 0.75, color = "black", linewidth = 0.50, alpha = 0.6) +
   geom_linerange(aes(ymin = lower.ci, ymax = upper.ci), size = 0.75) +
   scale_y_continuous(expression(paste("Mean Percent Cover (%)")), limits = c(0, 1)) + 
   scale_x_discrete(expand = c(0, 1), labels = x_labels) + 
   scale_fill_manual(values = c("#FFC74E", "#82A5C0", "#ABC178")) +
 #  facet_wrap( ~ depth2, labeller = as_labeller(label_names), dir = "v", ncol = 1) + 
-  ggtitle(expression(paste(italic(" plobllopora "), "spp."))) +
+  ggtitle(expression(paste(italic(" barellopora "), "spp."))) +
   geom_text(aes(label = cld, y = upper.ci), vjust = -0.5) +
   #scale_y_log10(expression(paste("Colony Size (", cm^2, ")"), limits = c(0, 100000))) +
   labs(x = NULL) +
@@ -816,5 +803,5 @@ plob_cover.ggbarplot <- ggplot(plob_cover2, aes(x = location, y = mean, fill = x
 ```
 
 ```{r}
-plob_cover.ggbarplot
+bare_cover.ggbarplot
 ```
