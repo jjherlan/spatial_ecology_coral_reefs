@@ -453,6 +453,13 @@ legend_b <- get_legend(
     theme(legend.position = "bottom")
 )
 
+legend_b <- get_legend(
+  poci_cover.ggbarplot)
++ 
+    guides(color = guide_legend(nrow = 1)) +
+    theme(legend.position = "bottom")
+)
+
 # arrange the three plots in a single row
 prow <- plot_grid(
   plob_cover.ggbarplot + theme(legend.position = "none"),
@@ -472,9 +479,9 @@ prow
 plot_grid(prow, 
           legend_b,
           ncol = 1,
-          rel_heights = c(1, 0.1)
-          #labels = "AUTO", 
-          #scale = c(0.9, 0.9, 0.9, 0.9)
+          rel_heights = c(1, 0.1),
+          labels = "AUTO", 
+          scale = c(0.9, 0.9, 0.9, 0.9)
           )
 
 
