@@ -1,4 +1,5 @@
 require(tidyverse)
+
 require(scatterplot3d)
 
 ana_sh_A <- read.csv('rpn_ana_sh_r0_tran_A.csv')
@@ -63,7 +64,7 @@ with(ana_sh.main,
      scatterplot3d(x,
                    y, 
                    z, 
-                   main = "North Sahllow Rugosity",
+                   main = "North Shallow Rugosity",
                    xlab = "x",
                    ylab = "y",
                    zlab = "rugosity",
